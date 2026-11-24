@@ -16,3 +16,11 @@
 local.properties
 .env
 debug.keystore
+
+# Build outputs are produced by GitHub Actions, do not commit them
+*.apk
+*.aab
+
+# Never commit signing keys
+*.jks
+*.keystore
