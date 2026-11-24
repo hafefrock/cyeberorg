@@ -193,7 +193,7 @@
     <string name="settings_extra_keys_layout">Extra Keys Row Layout</string>
     <string name="settings_language_desc">Choose app interface and Gemini AI response language.</string>
     <string name="settings_data_empty">No additional workspace data controls configured here yet.</string>
-    <string name="settings_about_app_desc">Workspace terminal studio &amp; Gemini AI assistant</string>
+    <string name="settings_about_app_desc">Terminal + AI for Android</string>
     <string name="settings_about_version_title">Application Version</string>
     <string name="settings_about_version_value">v%1$s (build %2$d)</string>
     <string name="settings_about_package_title">Package ID</string>
@@ -218,12 +218,12 @@
     <string name="snippets_insert">Insert</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_badge">WORKSPACE STUDIO</string>
+    <string name="onboarding_badge">TERMINAL + AI</string>
     <string name="onboarding_step_indicator">Step %1$d of %2$d</string>
     <string name="onboarding_step1_title">Choose Your Language</string>
     <string name="onboarding_step1_desc">Cyberorg adapts all workspace labels and Gemini AI responses to your preferred language.</string>
     <string name="onboarding_step2_title">Choose Studio Theme</string>
-    <string name="onboarding_step2_desc">Pick your console geometry, typography, and integrated terminal palette. Change anytime via Command Palette.</string>
+    <string name="onboarding_step2_desc">Pick your console geometry, typography, and integrated terminal palette. Change anytime in Settings &gt; Appearance.</string>
     <string name="onboarding_step3_title">Connect Gemini API Key</string>
     <string name="onboarding_step3_desc">Keys are sealed in Android Keystore EncryptedSharedPreferences. Add one now or skip and configure later.</string>
     <string name="onboarding_key_added_badge">Key encrypted &amp; added: %1$s</string>

@@ -193,7 +193,7 @@
     <string name="settings_extra_keys_layout">Tata Letak Tombol Ekstra</string>
     <string name="settings_language_desc">Pilih bahasa antarmuka aplikasi dan respons Gemini AI.</string>
     <string name="settings_data_empty">Belum ada pengaturan data tambahan di sini.</string>
-    <string name="settings_about_app_desc">Studio terminal ruang kerja &amp; asisten Gemini AI</string>
+    <string name="settings_about_app_desc">Terminal + AI untuk Android</string>
     <string name="settings_about_version_title">Versi Aplikasi</string>
     <string name="settings_about_version_value">v%1$s (build %2$d)</string>
     <string name="settings_about_package_title">ID Paket</string>
@@ -218,12 +218,12 @@
     <string name="snippets_insert">Sisipkan</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_badge">WORKSPACE STUDIO</string>
+    <string name="onboarding_badge">TERMINAL + AI</string>
     <string name="onboarding_step_indicator">Langkah %1$d dari %2$d</string>
     <string name="onboarding_step1_title">Pilih Bahasa Anda</string>
     <string name="onboarding_step1_desc">Cyberorg menyesuaikan seluruh label ruang kerja dan jawaban Gemini AI dengan bahasa pilihan Anda.</string>
     <string name="onboarding_step2_title">Pilih Tema Studio</string>
-    <string name="onboarding_step2_desc">Pilih bentuk panel, tipografi, dan palet terminal terpadu. Dapat diubah kapan saja lewat Palet Perintah.</string>
+    <string name="onboarding_step2_desc">Pilih bentuk panel, tipografi, dan palet terminal terpadu. Dapat diubah kapan saja di Pengaturan &gt; Tampilan.</string>
     <string name="onboarding_step3_title">Hubungkan Kunci API Gemini</string>
     <string name="onboarding_step3_desc">Kunci disegel di Android Keystore EncryptedSharedPreferences. Tambahkan sekarang atau lewati untuk nanti.</string>
     <string name="onboarding_key_added_badge">Kunci terenkripsi ditambahkan: %1$s</string>
