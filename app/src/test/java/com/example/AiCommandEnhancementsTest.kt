@@ -76,7 +76,7 @@ import com.example.ui.terminal.TerminalScreen
 import com.example.ui.terminal.TerminalScreenSnapshot
 import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -517,7 +517,7 @@ class AiCommandEnhancementsTest {
                 LocalContext provides localizedContext,
                 androidx.activity.compose.LocalActivityResultRegistryOwner provides existingRegistryOwner!!
             ) {
-                HackerStudioTheme {
+                CyberorgTheme {
                     if (activeStep.intValue == 0) {
                         androidx.compose.foundation.layout.Column {
                             AiPromptInput(
@@ -655,7 +655,7 @@ class AiCommandEnhancementsTest {
                 LocalContext provides localizedContext,
                 LocalSoftwareKeyboardController provides fakeKeyboard
             ) {
-                HackerStudioTheme {
+                CyberorgTheme {
                     Box(modifier = Modifier.width(360.dp).height(760.dp)) {
                         TerminalConsoleView(
                             sessionTitle = "main",
@@ -765,7 +765,7 @@ class AiCommandEnhancementsTest {
         var fixErrCount = 0
         composeRule.setContent {
             CompositionLocalProvider(LocalContext provides localizedContext) {
-                HackerStudioTheme(appTheme = activeTheme) {
+                CyberorgTheme(appTheme = activeTheme) {
                     // Simulate container shrunk to 460dp (by IME) while full screen height is 780dp
                     Box(modifier = Modifier.width(360.dp).height(460.dp)) {
                         AiBottomSheetOverlay(
@@ -938,7 +938,7 @@ class AiCommandEnhancementsTest {
         var openedFullView = 0
         composeRule.setContent {
             CompositionLocalProvider(LocalContext provides localizedContext) {
-                HackerStudioTheme(appTheme = activeTheme) {
+                CyberorgTheme(appTheme = activeTheme) {
                     Box(modifier = Modifier.width(360.dp).height(760.dp)) {
                         AiBottomSheetOverlay(
                             visible = true,
@@ -1052,7 +1052,7 @@ class AiCommandEnhancementsTest {
 
         composeRule.setContent {
             CompositionLocalProvider(LocalContext provides localizedContext) {
-                HackerStudioTheme {
+                CyberorgTheme {
                     Box(modifier = Modifier.width(360.dp).height(760.dp)) {
                         AiBottomSheetOverlay(
                             visible = true,
@@ -1154,7 +1154,7 @@ class AiCommandEnhancementsTest {
         val scopeJob = h.scope.launch { h.vm.uiState.collect {} }
         try {
             composeRule.setContent {
-                HackerStudioTheme {
+                CyberorgTheme {
                     Box(modifier = Modifier.width(360.dp).height(760.dp)) {
                         TerminalScreen(viewModel = h.vm, onNavigateToSettings = {})
                     }

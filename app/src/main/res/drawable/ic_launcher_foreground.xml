@@ -3,6 +3,6 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/ic_hackerstudio_foreground_1794526397512"
+        android:drawable="@drawable/ic_cyberorg_foreground_1794526397512"
         android:gravity="center" />
 </layer-list>

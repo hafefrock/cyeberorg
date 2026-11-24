@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackerStudio</string>
+    <string name="app_name">Cyberorg</string>
 
     <!-- Accessibility / Content Descriptions -->
     <string name="cd_new_session">Sesi terminal baru</string>
@@ -65,7 +65,7 @@
     <!-- AI Panel & Repository -->
     <string name="ai_panel_title">Gemini Studio AI</string>
     <string name="ai_no_active_key">Tidak ada kunci aktif</string>
-    <string name="ai_welcome_message">HackerStudio AI siap. Ketuk aksi cepat di atas untuk menjelaskan galat terakhir, menyarankan perintah, atau membuat skrip shell. Perintah tidak pernah dijalankan otomatis.</string>
+    <string name="ai_welcome_message">Cyberorg AI siap. Ketuk aksi cepat di atas untuk menjelaskan galat terakhir, menyarankan perintah, atau membuat skrip shell. Perintah tidak pernah dijalankan otomatis.</string>
     <string name="ai_chat_cleared">Obrolan dibersihkan. Tanyakan apa saja tentang perintah shell, galat, atau skrip.</string>
     <string name="ai_no_error_recorded">Belum ada perintah gagal di \'%1$s\'. Jalankan perintah dengan kode keluar non-nol (mis. `sh scripts/deploy.sh`) lalu ketuk Jelaskan Galat.</string>
     <string name="ai_missing_keys_banner">Tambahkan kunci API Gemini di Pengaturan untuk mengaktifkan respons AI langsung.</string>
@@ -221,7 +221,7 @@
     <string name="onboarding_badge">WORKSPACE STUDIO</string>
     <string name="onboarding_step_indicator">Langkah %1$d dari %2$d</string>
     <string name="onboarding_step1_title">Pilih Bahasa Anda</string>
-    <string name="onboarding_step1_desc">HackerStudio menyesuaikan seluruh label ruang kerja dan jawaban Gemini AI dengan bahasa pilihan Anda.</string>
+    <string name="onboarding_step1_desc">Cyberorg menyesuaikan seluruh label ruang kerja dan jawaban Gemini AI dengan bahasa pilihan Anda.</string>
     <string name="onboarding_step2_title">Pilih Tema Studio</string>
     <string name="onboarding_step2_desc">Pilih bentuk panel, tipografi, dan palet terminal terpadu. Dapat diubah kapan saja lewat Palet Perintah.</string>
     <string name="onboarding_step3_title">Hubungkan Kunci API Gemini</string>
@@ -273,7 +273,7 @@
     <string name="risk_reason_pkg_remove">Menghapus atau membersihkan paket terpasang.</string>
     <string name="risk_reason_overwrite">Menimpa isi berkas target melalui pengalihan &gt;.</string>
     <string name="risk_dialog_title">Konfirmasi Sisipkan Perintah Berisiko Tinggi</string>
-    <string name="risk_dialog_warning">Perintah ini diklasifikasikan sebagai RISIKO TINGGI. HackerStudio hanya menyisipkannya ke buffer draf terminal (TIDAK dijalankan otomatis), periksa saksama sebelum menekan Enter.</string>
+    <string name="risk_dialog_warning">Perintah ini diklasifikasikan sebagai RISIKO TINGGI. Cyberorg hanya menyisipkannya ke buffer draf terminal (TIDAK dijalankan otomatis), periksa saksama sebelum menekan Enter.</string>
     <string name="risk_dialog_confirm">Sisipkan Draf</string>
 
     <!-- Tahap 3: Pustaka Buku Skrip & Riwayat Perintah -->
@@ -386,7 +386,7 @@
     <!-- Privasi, Persetujuan AI, Validasi Kunci API & Pemulihan Vault -->
     <string name="ai_err_consent_required">Setujui pemberitahuan pengiriman data AI sebelum mengirim permintaan ke Gemini.</string>
     <string name="ai_consent_dialog_title">Kirim Konteks Terminal ke Gemini AI?</string>
-    <string name="ai_consent_dialog_body_data">Saat Anda bertanya ke Gemini AI, HackerStudio mengirim prompt beserta konteks yang diaktifkan (perintah, keluaran terminal, direktori kerja, atau error).</string>
+    <string name="ai_consent_dialog_body_data">Saat Anda bertanya ke Gemini AI, Cyberorg mengirim prompt beserta konteks yang diaktifkan (perintah, keluaran terminal, direktori kerja, atau error).</string>
     <string name="ai_consent_dialog_body_free_tier">Penting: Pada tingkat gratis Google Gemini API, Google dapat memakai dan meninjau data serta perintah yang dikirimkan sesuai ketentuannya.</string>
     <string name="ai_consent_dialog_body_redaction">Pola rahasia terdeteksi (kunci API, token, password, header Bearer, dan kunci privat PEM) otomatis diganti menjadi [REDACTED] sebelum dikirim, namun tetap hindari mengirim data sensitif.</string>
     <string name="ai_consent_dialog_accept">Setujui &amp; Kirim</string>
@@ -447,7 +447,7 @@
     <string name="settings_notify_grant_permission_btn">Izinkan Notifikasi</string>
     <string name="settings_notify_threshold_seconds">Beri tahu bila perintah lebih dari %1$d detik</string>
     <string name="notif_perm_dialog_title">Izinkan Notifikasi Perintah Selesai?</string>
-    <string name="notif_perm_dialog_body">HackerStudio hanya mengirim satu notifikasi senyap saat perintah selesai melebihi ambang waktu ketika aplikasi berada di latar belakang.</string>
+    <string name="notif_perm_dialog_body">Cyberorg hanya mengirim satu notifikasi senyap saat perintah selesai melebihi ambang waktu ketika aplikasi berada di latar belakang.</string>
     <string name="notif_perm_dialog_allow">Izinkan</string>
     <string name="notif_channel_long_cmd_name">Perintah panjang</string>
     <string name="notif_channel_long_cmd_desc">Notifikasi senyap saat perintah terminal yang berjalan lama selesai di latar belakang</string>

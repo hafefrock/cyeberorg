@@ -28,16 +28,16 @@ import com.example.data.AppSettings
 import com.example.data.LocaleHelper
 import com.example.terminal.LongCommandNotifier
 import com.example.terminal.TerminalBackend
-import com.example.ui.navigation.HackerStudioNavGraph
+import com.example.ui.navigation.CyberorgNavGraph
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
     internal val appContainer: AppContainer
-        get() = (application as HackerStudioApp).appContainer
+        get() = (application as CyberorgApp).appContainer
 
     internal val terminalBackend: TerminalBackend
         get() = appContainer.terminalBackend
@@ -102,11 +102,11 @@ class MainActivity : ComponentActivity() {
                 LocalActivityResultRegistryOwner provides this@MainActivity,
                 LocalOnBackPressedDispatcherOwner provides this@MainActivity
             ) {
-                HackerStudioTheme(
+                CyberorgTheme(
                     appTheme = settings.appTheme,
                     reduceEffects = settings.reduceEffects
                 ) {
-                    HackerStudioNavGraph(
+                    CyberorgNavGraph(
                         appContainer = container,
                         initialOnboardingCompleted = loaded.onboardingCompleted
                     )

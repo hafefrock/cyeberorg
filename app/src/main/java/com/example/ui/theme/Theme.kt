@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HackerStudioTheme(
+fun CyberorgTheme(
     appTheme: AppThemePreset = AppThemePreset.HACKER_PRO,
     reduceEffects: Boolean = false,
     content: @Composable () -> Unit

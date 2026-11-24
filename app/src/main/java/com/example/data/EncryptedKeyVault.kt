@@ -167,7 +167,7 @@ class AndroidEncryptedKeyVault(
     private fun keyPrefix(id: String) = "gemini_key_$id"
 
     companion object {
-        private const val VAULT_FILE_NAME = "hackerstudio_encrypted_key_vault"
+        private const val VAULT_FILE_NAME = "cyberorg_encrypted_key_vault"
 
         private fun defaultCreateEncryptedPrefs(context: Context, fileName: String): SharedPreferences {
             val masterKey = MasterKey.Builder(context)

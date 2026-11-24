@@ -52,7 +52,7 @@ import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.terminal.WorkspaceStatusBar
 import com.example.ui.terminal.groupTerminalRowRuns
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -339,7 +339,7 @@ class TerminalPerformanceOptimizationTest {
 
         composeRule.setContent {
             CompositionLocalProvider(LocalContext provides idContext) {
-                HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+                CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                     Column(modifier = Modifier.fillMaxSize()) {
                         OuterChromeProbe(
                             viewModel = vm,

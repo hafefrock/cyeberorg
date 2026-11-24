@@ -76,7 +76,7 @@ import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.terminal.WorkspaceSection
 import com.example.ui.terminal.resolveTerminalWindowFlags
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import com.example.ui.theme.TerminalColorScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -258,7 +258,7 @@ class TerminalEnhancementsTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 Box(modifier = Modifier.size(380.dp, 280.dp)) {
                     TerminalConsoleView(
                         sessionTitle = "bash-1",
@@ -441,7 +441,7 @@ class TerminalEnhancementsTest {
         try {
             composeRule.setContent {
                 val state by vm.uiState.collectAsState()
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalScreen(viewModel = vm, onNavigateToSettings = {})
                 }
             }
@@ -586,7 +586,7 @@ class TerminalEnhancementsTest {
     fun `share output sheet shows non-blocking sensitive data warning and both Text & PNG buttons`() {
         val buf = buildBufferFromLines(listOf("echo ok"), cols = 30, rows = 6)
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 Box(modifier = Modifier.size(360.dp, 240.dp)) {
                     TerminalConsoleView(
                         sessionTitle = "bash-1",
@@ -648,7 +648,7 @@ class TerminalEnhancementsTest {
                 LocalContext provides context,
                 androidx.activity.compose.LocalActivityResultRegistryOwner provides existingRegistryOwner!!
             ) {
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalSettingsScreen(state = state, viewModel = settingsVm)
                 }
             }

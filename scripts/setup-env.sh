@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# HackerStudio Android Environment Setup Script
+# Cyberorg Android Environment Setup Script
 # Verifies Java, Android SDK, Gradle availability, and prepares signing env vars.
 
-echo "=== HackerStudio Environment Check ==="
+echo "=== Cyberorg Environment Check ==="
 
 if ! command -v java >/dev/null 2>&1; then
   echo "ERROR: Java (JDK 11+) not found in PATH."

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackerStudio</string>
+    <string name="app_name">Cyberorg</string>
 
     <!-- Accessibility / Content Descriptions -->
     <string name="cd_new_session">New terminal session</string>
@@ -65,7 +65,7 @@
     <!-- AI Panel & Repository -->
     <string name="ai_panel_title">Gemini Studio AI</string>
     <string name="ai_no_active_key">No active key</string>
-    <string name="ai_welcome_message">HackerStudio AI ready. Tap a quick action above to explain your last error, suggest a command, or draft a shell script. Commands are never auto-executed.</string>
+    <string name="ai_welcome_message">Cyberorg AI ready. Tap a quick action above to explain your last error, suggest a command, or draft a shell script. Commands are never auto-executed.</string>
     <string name="ai_chat_cleared">Chat cleared. Ask anything about shell commands, errors, or scripts.</string>
     <string name="ai_no_error_recorded">No failed command recorded in \'%1$s\' yet. Run a command that exits non-zero (e.g. `sh scripts/deploy.sh`) and tap Explain Last Error.</string>
     <string name="ai_missing_keys_banner">Add a Gemini API key in Settings to enable live AI responses.</string>
@@ -221,7 +221,7 @@
     <string name="onboarding_badge">WORKSPACE STUDIO</string>
     <string name="onboarding_step_indicator">Step %1$d of %2$d</string>
     <string name="onboarding_step1_title">Choose Your Language</string>
-    <string name="onboarding_step1_desc">HackerStudio adapts all workspace labels and Gemini AI responses to your preferred language.</string>
+    <string name="onboarding_step1_desc">Cyberorg adapts all workspace labels and Gemini AI responses to your preferred language.</string>
     <string name="onboarding_step2_title">Choose Studio Theme</string>
     <string name="onboarding_step2_desc">Pick your console geometry, typography, and integrated terminal palette. Change anytime via Command Palette.</string>
     <string name="onboarding_step3_title">Connect Gemini API Key</string>
@@ -273,7 +273,7 @@
     <string name="risk_reason_pkg_remove">Removes or purges installed packages.</string>
     <string name="risk_reason_overwrite">Overwrites target file contents via &gt; redirection.</string>
     <string name="risk_dialog_title">Confirm High-Risk Command Insert</string>
-    <string name="risk_dialog_warning">This command is classified as HIGH RISK. HackerStudio only inserts it into the terminal line buffer (it will NOT auto-run), so review carefully before pressing Enter.</string>
+    <string name="risk_dialog_warning">This command is classified as HIGH RISK. Cyberorg only inserts it into the terminal line buffer (it will NOT auto-run), so review carefully before pressing Enter.</string>
     <string name="risk_dialog_confirm">Insert Draft</string>
 
     <!-- Stage 3: Scriptbook Library & Prompt History -->
@@ -386,7 +386,7 @@
     <!-- Privacy, AI Consent, API Key Validation & Vault Recovery -->
     <string name="ai_err_consent_required">Review and accept AI data consent before sending requests to Gemini.</string>
     <string name="ai_consent_dialog_title">Share Terminal Context with Gemini AI?</string>
-    <string name="ai_consent_dialog_body_data">When you ask Gemini AI, HackerStudio sends your prompt along with selected context (commands, terminal output, working directory, or error logs).</string>
+    <string name="ai_consent_dialog_body_data">When you ask Gemini AI, Cyberorg sends your prompt along with selected context (commands, terminal output, working directory, or error logs).</string>
     <string name="ai_consent_dialog_body_free_tier">Important: On Google\'s free Gemini API tier, submitted prompts and terminal data may be used and reviewed by Google to improve its products.</string>
     <string name="ai_consent_dialog_body_redaction">Detected secrets (API keys, tokens, passwords, Bearer headers, and PEM private keys) are automatically replaced with [REDACTED] before sending, though you should avoid sharing sensitive data.</string>
     <string name="ai_consent_dialog_accept">Accept &amp; Send</string>
@@ -447,7 +447,7 @@
     <string name="settings_notify_grant_permission_btn">Grant Notification Permission</string>
     <string name="settings_notify_threshold_seconds">Notify if command runs longer than %1$d s</string>
     <string name="notif_perm_dialog_title">Allow Background Completion Alerts?</string>
-    <string name="notif_perm_dialog_body">HackerStudio only posts a quiet alert when a command takes longer than your threshold while the app is in the background.</string>
+    <string name="notif_perm_dialog_body">Cyberorg only posts a quiet alert when a command takes longer than your threshold while the app is in the background.</string>
     <string name="notif_perm_dialog_allow">Allow</string>
     <string name="notif_channel_long_cmd_name">Long commands</string>
     <string name="notif_channel_long_cmd_desc">Quiet alerts when long-running background terminal commands finish</string>

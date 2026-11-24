@@ -15,7 +15,7 @@ import com.example.ui.onboarding.OnboardingScreen
 import com.example.ui.terminal.TerminalScreen
 import com.example.ui.terminal.TerminalViewModel
 
-object HackerStudioRoutes {
+object CyberorgRoutes {
     const val ONBOARDING = "onboarding"
     const val TERMINAL = "terminal"
     const val SETTINGS = "settings"
@@ -23,7 +23,7 @@ object HackerStudioRoutes {
 }
 
 @Composable
-fun HackerStudioNavGraph(
+fun CyberorgNavGraph(
     appContainer: AppContainer,
     initialOnboardingCompleted: Boolean
 ) {
@@ -50,69 +50,69 @@ fun HackerStudioNavGraph(
     val settingsState = settingsViewModel.uiState.collectAsStateWithLifecycle().value
     LaunchedEffect(settingsState.settings.onboardingCompleted) {
         if (settingsState.settings.onboardingCompleted &&
-            navController.currentBackStackEntry?.destination?.route == HackerStudioRoutes.ONBOARDING
+            navController.currentBackStackEntry?.destination?.route == CyberorgRoutes.ONBOARDING
         ) {
-            navController.navigate(HackerStudioRoutes.TERMINAL) {
-                popUpTo(HackerStudioRoutes.ONBOARDING) { inclusive = true }
+            navController.navigate(CyberorgRoutes.TERMINAL) {
+                popUpTo(CyberorgRoutes.ONBOARDING) { inclusive = true }
             }
         }
     }
 
     val startDestination = if (initialOnboardingCompleted) {
-        HackerStudioRoutes.TERMINAL
+        CyberorgRoutes.TERMINAL
     } else {
-        HackerStudioRoutes.ONBOARDING
+        CyberorgRoutes.ONBOARDING
     }
 
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(route = HackerStudioRoutes.ONBOARDING) {
+        composable(route = CyberorgRoutes.ONBOARDING) {
             OnboardingScreen(
                 viewModel = settingsViewModel,
                 onCompleted = {
-                    navController.navigate(HackerStudioRoutes.TERMINAL) {
-                        popUpTo(HackerStudioRoutes.ONBOARDING) { inclusive = true }
+                    navController.navigate(CyberorgRoutes.TERMINAL) {
+                        popUpTo(CyberorgRoutes.ONBOARDING) { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(route = HackerStudioRoutes.TERMINAL) {
+        composable(route = CyberorgRoutes.TERMINAL) {
             TerminalScreen(
                 viewModel = terminalViewModel,
                 onNavigateToSettings = {
-                    navController.navigate(HackerStudioRoutes.SETTINGS) {
+                    navController.navigate(CyberorgRoutes.SETTINGS) {
                         launchSingleTop = true
                     }
                 },
                 onNavigateToApiKeysSettings = {
-                    navController.navigate(HackerStudioRoutes.SETTINGS_API_KEYS) {
+                    navController.navigate(CyberorgRoutes.SETTINGS_API_KEYS) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        composable(route = HackerStudioRoutes.SETTINGS) {
+        composable(route = CyberorgRoutes.SETTINGS) {
             SettingsScreen(
                 viewModel = settingsViewModel,
                 onNavigateBack = { navController.popBackStack() },
                 onOpenOnboarding = {
-                    navController.navigate(HackerStudioRoutes.ONBOARDING) {
+                    navController.navigate(CyberorgRoutes.ONBOARDING) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        composable(route = HackerStudioRoutes.SETTINGS_API_KEYS) {
+        composable(route = CyberorgRoutes.SETTINGS_API_KEYS) {
             SettingsScreen(
                 viewModel = settingsViewModel,
                 onNavigateBack = { navController.popBackStack() },
                 onOpenOnboarding = {
-                    navController.navigate(HackerStudioRoutes.ONBOARDING) {
+                    navController.navigate(CyberorgRoutes.ONBOARDING) {
                         launchSingleTop = true
                     }
                 },

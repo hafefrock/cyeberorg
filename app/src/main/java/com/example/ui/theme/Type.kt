@@ -27,7 +27,7 @@ fun terminalComposeFontFamily(fontId: String?): FontFamily =
         else -> JetBrainsMonoFamily
     }
 
-val HackerStudioTypography = Typography(
+val CyberorgTypography = Typography(
     headlineSmall = TextStyle(
         fontFamily = InterFamily,
         fontWeight = FontWeight.SemiBold,

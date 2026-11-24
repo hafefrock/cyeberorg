@@ -21,7 +21,7 @@ import java.util.UUID
 class FakeTerminalBackend(
     private val stateDirectory: File = File(
         System.getProperty("java.io.tmpdir") ?: "/tmp",
-        "hackerstudio_pty_state"
+        "cyberorg_pty_state"
     ),
     private val clockMillis: () -> Long = System::currentTimeMillis
 ) : TerminalBackend {
@@ -51,14 +51,14 @@ class FakeTerminalBackend(
     private fun seedVirtualFilesystem() {
         vfs[HOME_DIR] = VirtualNode(isDirectory = true)
         vfs["$HOME_DIR/projects"] = VirtualNode(isDirectory = true)
-        vfs["$HOME_DIR/projects/hackerstudio-cli"] = VirtualNode(isDirectory = true)
-        vfs["$HOME_DIR/projects/hackerstudio-cli/.git"] = VirtualNode(isDirectory = true)
-        vfs["$HOME_DIR/projects/hackerstudio-cli/main.py"] = VirtualNode(
+        vfs["$HOME_DIR/projects/cyberorg-cli"] = VirtualNode(isDirectory = true)
+        vfs["$HOME_DIR/projects/cyberorg-cli/.git"] = VirtualNode(isDirectory = true)
+        vfs["$HOME_DIR/projects/cyberorg-cli/main.py"] = VirtualNode(
             isDirectory = false,
             content = """
                 #!/usr/bin/env python3
                 def main():
-                    print("HackerStudio CLI diagnostics online")
+                    print("Cyberorg CLI diagnostics online")
 
                 if __name__ == "__main__":
                     main()
@@ -78,7 +78,7 @@ class FakeTerminalBackend(
         vfs["$HOME_DIR/notes.md"] = VirtualNode(
             isDirectory = false,
             content = """
-                # HackerStudio Notes
+                # Cyberorg Notes
                 - Plug Termux TerminalSession into TerminalSessionHandle
                 - Configure Gemini API keys in Settings -> API Vault
             """.trimIndent()
@@ -260,7 +260,7 @@ class FakeTerminalBackend(
         init {
             if (showWelcome) {
                 emitToTerminal(
-                    "\u001B[1;36mHackerStudio PTY Shell v2.0\u001B[0m\r\n" +
+                    "\u001B[1;36mCyberorg PTY Shell v2.0\u001B[0m\r\n" +
                         "\u001B[90m[VT Cell Grid • OSC 7777 Ready]\u001B[0m\r\n" +
                         "\u001B[36mType 'help' for commands, or run\r\n" +
                         "'sh scripts/deploy.sh' for AI fix.\u001B[0m\r\n"
@@ -888,7 +888,7 @@ class FakeTerminalBackend(
                     0
                 }
                 "ps" -> {
-                    out("  PID TTY      TIME CMD\n 4102 pts/0    00:00:00 bash\n 4188 pts/0    00:00:01 hackerstudio-pty")
+                    out("  PID TTY      TIME CMD\n 4102 pts/0    00:00:00 bash\n 4188 pts/0    00:00:01 cyberorg-pty")
                     0
                 }
                 "ls" -> {
@@ -1001,7 +1001,7 @@ class FakeTerminalBackend(
                     }
                 }
                 "git" -> {
-                    if (!_cwd.value.contains("hackerstudio-cli")) {
+                    if (!_cwd.value.contains("cyberorg-cli")) {
                         out("fatal: not a git repository (or any parent up to mount point /data)", "\u001B[31m")
                         128
                     } else {
@@ -1025,13 +1025,13 @@ class FakeTerminalBackend(
                         out("python3: can't open file '${script ?: ""}': [Errno 2] No such file or directory", "\u001B[31m")
                         2
                     } else {
-                        out("HackerStudio CLI diagnostics online", "\u001B[32m")
+                        out("Cyberorg CLI diagnostics online", "\u001B[32m")
                         0
                     }
                 }
                 "sh", "bash" -> {
                     val script = args.firstOrNull()
-                    if (script == null) { out("Already inside HackerStudio PTY bash session.", "\u001B[36m"); 0 }
+                    if (script == null) { out("Already inside Cyberorg PTY bash session.", "\u001B[36m"); 0 }
                     else {
                         val node = vfs[resolvePath(_cwd.value, script)]
                         when {

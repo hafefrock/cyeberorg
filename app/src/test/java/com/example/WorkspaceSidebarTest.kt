@@ -72,7 +72,7 @@ import com.example.ui.terminal.WorkspaceSection
 import com.example.ui.terminal.WorkspaceSidebarDrawer
 import com.example.ui.terminal.WorkspaceStatusBar
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -245,7 +245,7 @@ class WorkspaceSidebarTest {
         try {
             composeRule.setContent {
                 val state by vm.uiState.collectAsState()
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalScreen(viewModel = vm, onNavigateToSettings = {})
                 }
             }
@@ -343,7 +343,7 @@ class WorkspaceSidebarTest {
         try {
             composeRule.setContent {
                 val state by vm.uiState.collectAsState()
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalScreen(
                         viewModel = vm,
                         onNavigateToSettings = { settingsOpened++ }
@@ -402,7 +402,7 @@ class WorkspaceSidebarTest {
             composeRule.setContent {
                 val state by vm.uiState.collectAsState()
                 backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalScreen(viewModel = vm, onNavigateToSettings = {})
                 }
             }
@@ -484,7 +484,7 @@ class WorkspaceSidebarTest {
 
             composeRule.setContent {
                 val state by retainedAfterRotation.uiState.collectAsState()
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalScreen(viewModel = retainedAfterRotation, onNavigateToSettings = {})
                 }
             }
@@ -504,7 +504,7 @@ class WorkspaceSidebarTest {
         try {
             composeRule.setContent {
                 val state by vm.uiState.collectAsState()
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalScreen(viewModel = vm, onNavigateToSettings = {})
                 }
             }
@@ -542,7 +542,7 @@ class WorkspaceSidebarTest {
             CompositionLocalProvider(
                 LocalDensity provides Density(density = baseDensity, fontScale = 1.3f)
             ) {
-                HackerStudioTheme(appTheme = currentPreset) {
+                CyberorgTheme(appTheme = currentPreset) {
                     Box(modifier = Modifier.width(320.dp)) {
                         SessionTabsBar(
                             sessions = listOf(
@@ -651,7 +651,7 @@ class WorkspaceSidebarTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK) {
+            CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     WorkspaceStatusBar(
                         cwd = "/home/hacker/project",

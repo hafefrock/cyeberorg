@@ -42,7 +42,7 @@ import com.example.settings.visibleSettingsGroups
 import com.example.ui.UiText
 import com.example.ui.onboarding.OnboardingScreen
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.performSemanticsAction
 import kotlinx.coroutines.flow.Flow
@@ -259,7 +259,7 @@ class SettingsArchitectureTest {
 
         composeRule.setContent {
             val live by store.settingsFlow.collectAsState(initial = store.current)
-            HackerStudioTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
+            CyberorgTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
                 Box(modifier = Modifier.size(width = 400.dp, height = 800.dp)) {
                     SettingsScreen(
                         viewModel = viewModel,
@@ -302,7 +302,7 @@ class SettingsArchitectureTest {
 
         composeRule.setContent {
             val live by store.settingsFlow.collectAsState(initial = store.current)
-            HackerStudioTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
+            CyberorgTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
                 Box(modifier = Modifier.size(width = 760.dp, height = 800.dp)) {
                     SettingsScreen(
                         viewModel = viewModel,
@@ -337,7 +337,7 @@ class SettingsArchitectureTest {
 
         composeRule.setContent {
             val live by store.settingsFlow.collectAsState(initial = store.current)
-            HackerStudioTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
+            CyberorgTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
                 Box(modifier = Modifier.size(width = 412.dp, height = 900.dp)) {
                     SettingsScreen(
                         viewModel = viewModel,
@@ -413,7 +413,7 @@ class SettingsArchitectureTest {
 
         composeRule.setContent {
             val live by store.settingsFlow.collectAsState(initial = store.current)
-            HackerStudioTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
+            CyberorgTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
                 Box(modifier = Modifier.size(width = 412.dp, height = 900.dp)) {
                     SettingsScreen(
                         viewModel = viewModel,
@@ -483,7 +483,7 @@ class SettingsArchitectureTest {
         val viewModel = SettingsViewModel(store, KeyManager(store))
         composeRule.setContent {
             val live by store.settingsFlow.collectAsState(initial = store.current)
-            HackerStudioTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
+            CyberorgTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
                 Box(modifier = Modifier.size(width = 412.dp, height = 900.dp)) {
                     SettingsScreen(
                         viewModel = viewModel,
@@ -515,7 +515,7 @@ class SettingsArchitectureTest {
 
         composeRule.setContent {
             val live by store.settingsFlow.collectAsState(initial = store.current)
-            HackerStudioTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
+            CyberorgTheme(appTheme = live.appTheme, reduceEffects = live.reduceEffects) {
                 OnboardingScreen(
                     viewModel = viewModel,
                     onCompleted = {}

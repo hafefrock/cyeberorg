@@ -6,7 +6,7 @@ import android.provider.Settings
 object SystemEffectsHelper {
     /**
      * Checks system animator duration scale. When the user or device has disabled system
-     * animations (scale <= 0f), HackerStudio defaults "Reduce effects" to true.
+     * animations (scale <= 0f), Cyberorg defaults "Reduce effects" to true.
      */
     fun areSystemAnimationsDisabled(context: Context): Boolean {
         return runCatching {

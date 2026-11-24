@@ -59,7 +59,7 @@ import com.example.ui.terminal.TerminalConsoleView
 import com.example.ui.terminal.TerminalScreenSnapshot
 import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -187,7 +187,7 @@ class TerminalPinchZoomTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 Box(modifier = Modifier.size(width = 400.dp, height = 560.dp)) {
                     TerminalConsoleView(
                         sessionTitle = "bash",
@@ -288,7 +288,7 @@ class TerminalPinchZoomTest {
         var fontSizeState by mutableStateOf(12f)
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 Box(modifier = Modifier.size(width = 400.dp, height = 500.dp)) {
                     TerminalConsoleView(
                         sessionTitle = "bash",
@@ -483,7 +483,7 @@ class TerminalPinchZoomTest {
         composeRule.setContent {
             val settingsUi by settingsViewModel.uiState.collectAsStateWithLifecycle()
             val termUi by terminalViewModel.uiState.collectAsStateWithLifecycle()
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 Box(modifier = Modifier.size(width = 411.dp, height = 800.dp)) {
                     if (showSettings) {
                         AppearanceSettingsScreen(

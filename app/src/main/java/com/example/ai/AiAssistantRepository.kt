@@ -505,7 +505,7 @@ class AiAssistantRepository(
             "ALWAYS reply in English."
         }
         return """
-            You are HackerStudio AI, a concise, expert Linux/Termux shell engineering assistant.
+            You are Cyberorg AI, a concise, expert Linux/Termux shell engineering assistant.
             - $replyDirective
             - Keep explanations crisp, technical, and terminal-friendly.
             - Whenever you recommend shell commands or scripts, ALWAYS put each runnable command or script inside a fenced ```bash code block so the UI can turn it into an Insert/Copy/Save card with safety classification.

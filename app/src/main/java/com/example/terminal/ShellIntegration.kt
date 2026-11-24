@@ -3,7 +3,7 @@ package com.example.terminal
 import java.io.ByteArrayOutputStream
 
 /**
- * Dual-channel shell integration contract between the PTY shell and HackerStudio:
+ * Dual-channel shell integration contract between the PTY shell and Cyberorg:
  *
  * 1. **In-band OSC 7777 stream channel** ([OscStreamParser]):
  *    `ESC ] 7777 ; exit=<int> ; cwd=<path> BEL` (or `ST` = `ESC \`).

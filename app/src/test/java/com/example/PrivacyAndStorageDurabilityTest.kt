@@ -58,7 +58,7 @@ import com.example.ui.UiText
 import com.example.ui.terminal.TerminalScreen
 import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -508,7 +508,7 @@ class PrivacyAndStorageDurabilityTest {
 
         composeRule.setContent {
             val state by settingsVm.uiState.collectAsStateWithLifecycle()
-            HackerStudioTheme {
+            CyberorgTheme {
                 AiSettingsScreen(state = state, viewModel = settingsVm)
             }
         }
@@ -642,7 +642,7 @@ class PrivacyAndStorageDurabilityTest {
 
         composeRule.setContent {
             val state by vm.uiState.collectAsStateWithLifecycle()
-            HackerStudioTheme {
+            CyberorgTheme {
                 ApiKeysScreen(state = state, viewModel = vm)
             }
         }

@@ -1,4 +1,4 @@
-# HackerStudio
+# Cyberorg
 
 A modern, bilingual **Workspace Studio** terminal shell UI for Android (`applicationId = "com.termux"`) built with **Kotlin**, **Jetpack Compose**, and **Material 3**, featuring holistic layered design tokens (`Hacker Pro` and `Cyberpunk Futuristik` themes with automatically paired terminal palettes, geometry, typography, motion, cursor styles, and `Reduce visual effects`), adaptive rail/split-pane layouts, a glassmorphic Command Palette, a PTY-ready cell-grid terminal backend, Gemini AI assistant, and fail-closed Android Keystore multi-key management.
 
@@ -14,7 +14,7 @@ app/src/main/
 │   ├── values-in/strings.xml        # Bahasa Indonesia localization resources
 │   └── xml/locales_config.xml       # Per-app locale declaration (en, id)
 └── java/com/example/
-    ├── HackerStudioApp.kt           # Custom Application owning the single process-wide AppContainer instance
+    ├── CyberorgApp.kt           # Custom Application owning the single process-wide AppContainer instance
     ├── MainActivity.kt              # SplashScreen API + async DataStore hydration (no runBlocking), edge-to-edge host, LocaleManager
     ├── terminal/                    # PTY-ready terminal interface & VT cell-grid simulator
     │   ├── TerminalModels.kt        # TerminalCell, TerminalScreenBuffer, ExtraKeyCode byte sequences, TerminalInputEncoder
@@ -34,7 +34,7 @@ app/src/main/
     │   ├── SnippetModels.kt         # Moshi-backed CommandSnippet, SnippetExportEnvelope, PromptHistoryItem
     │   ├── SnippetRepository.kt     # DataStore JSON Snippets Library + SAF export/import codec
     │   ├── PromptHistoryRepository.kt # DataStore JSON Prompt History (last 30 prompts)
-    │   └── AppContainer.kt          # Process-scoped manual DI graph instantiated once in HackerStudioApp
+    │   └── AppContainer.kt          # Process-scoped manual DI graph instantiated once in CyberorgApp
     ├── settings/                    # Two-level & wide two-pane adaptive Settings module
     │   ├── SettingsRoutes.kt        # Typed SettingsRoute, Saver, SettingsGroup, pure summary formatters
     │   ├── SettingsComponents.kt    # Uniform token-driven SettingsGroupRow/ToggleRow/ChoiceRow/ActionRow, DangerZoneSection & shared GeminiModelChoiceList
@@ -46,11 +46,11 @@ app/src/main/
         ├── onboarding/              # OnboardingScreen.kt (First-run Language -> Theme/Palette -> Skippable API Key wizard)
         ├── terminal/                # TerminalViewModel, TerminalScreen, SnippetsScreen, WorkspaceComponents, SessionTabsBar, TerminalConsoleView, ExtraKeysBar
         ├── ai/                      # AiPanel (SSE streaming, Stop/Retry, Context Chips, Prompt History) & CommandSuggestionCard (Risk Badge, Save, Insert, Copy)
-        └── navigation/              # HackerStudioNavGraph (Onboarding <-> Terminal Workspace <-> Settings)
+        └── navigation/              # CyberorgNavGraph (Onboarding <-> Terminal Workspace <-> Settings)
 ```
 
 ### Process-Scoped State & Startup Lifecycle
-- **Single `AppContainer` (`HackerStudioApp`)**: Registered via `android:name=".HackerStudioApp"` in `AndroidManifest.xml`, `HackerStudioApp` creates the single `AppContainer` once per process. `MainActivity` reads `appContainer` from `application as HackerStudioApp` and never instantiates it, ensuring `TerminalBackend`, live PTY sessions, and `KeyManager` state survive screen rotation, language switching, theme changes, and Activity recreation.
+- **Single `AppContainer` (`CyberorgApp`)**: Registered via `android:name=".CyberorgApp"` in `AndroidManifest.xml`, `CyberorgApp` creates the single `AppContainer` once per process. `MainActivity` reads `appContainer` from `application as CyberorgApp` and never instantiates it, ensuring `TerminalBackend`, live PTY sessions, and `KeyManager` state survive screen rotation, language switching, theme changes, and Activity recreation.
 - **Non-Blocking Startup (`SplashScreen` API)**: `MainActivity.onCreate` calls `installSplashScreen()` (`androidx.core:core-splashscreen`) and keeps the splash screen up only until the first DataStore `AppSettings` emission resolves asynchronously inside `lifecycleScope.launch` — eliminating `runBlocking` from the main thread.
 - **Predictive Back Navigation**: `AndroidManifest.xml` enables `android:enableOnBackInvokedCallback="true"`, paired with layered Compose `BackHandler` hooks in `TerminalScreen` (Command Palette -> non-Terminal section -> AI panel).
 
@@ -65,7 +65,7 @@ app/src/main/
   - **Blocked / Empty Finish**: Streams ending with `finishReason` `SAFETY`/`BLOCKED` or empty text render `"Response blocked or empty"` without penalizing the active key's error count or cooldown.
 - **Bracketed Paste Insert Safeguard (`DECSET 2004`)**:
   - `TerminalSessionHandle` exposes `bracketedPasteEnabled: StateFlow<Boolean>` (tracked from `ESC[?2004h` / `ESC[?2004l` in the emulator parser) and `pasteText(text: String)`.
-  - Tapping **Insert** wraps text in `ESC[200~ ... ESC[201~` (with no trailing newline) when bracketed paste mode is enabled rather than rewriting newlines with `&&`. If DECSET 2004 is off and a command contains newlines, HackerStudio copies it to the clipboard and displays an explanatory banner instead of pasting raw newlines; single-line commands insert as-is.
+  - Tapping **Insert** wraps text in `ESC[200~ ... ESC[201~` (with no trailing newline) when bracketed paste mode is enabled rather than rewriting newlines with `&&`. If DECSET 2004 is off and a command contains newlines, Cyberorg copies it to the clipboard and displays an explanatory banner instead of pasting raw newlines; single-line commands insert as-is.
 - **In-Terminal "Fix with AI" & Selection Toolbar**:
   - When the active session reports a non-zero exit code, a lightweight dismissible **Explain / Fix with AI** chip appears above the terminal edge without blocking keyboard or extra-key input.
   - Long-pressing and dragging across the terminal cell grid highlights characters and opens a floating **Copy / Ask AI / Explain** toolbar.
@@ -99,7 +99,7 @@ app/src/main/
 
 1. Theme presets live in `AppThemePreset` (`app/src/main/java/com/example/ui/theme/Color.kt`), each supplying a complete `StudioSurfaceTokens` specification (`cardShape`, `buttonShape`, `smallShape`, `pillShape`, `sheetShape`, typography, spacing density, motion duration, `promptGlyph`, `cursorStyle`, `badgeStyle`, `navIndicatorStyle`, `iconStyle`, glow parameters) and its paired `TerminalColorScheme`.
 2. Legacy or unknown stored theme names pass through `AppThemePreset.fromStoredName(String?)` and safely fall back to `HACKER_PRO`.
-3. Settings, Onboarding, Command Palette, `TerminalConsoleView`, and `HackerStudioTheme` iterate `AppThemePreset.entries` and consume `StudioTheme.tokens` automatically.
+3. Settings, Onboarding, Command Palette, `TerminalConsoleView`, and `CyberorgTheme` iterate `AppThemePreset.entries` and consume `StudioTheme.tokens` automatically.
 
 ---
 
@@ -144,7 +144,7 @@ Follow this checklist to replace `FakeTerminalBackend` with a live native PTY sh
   - Provide a unique per-session `stateFilePath()` inside `context.filesDir/session-state/<id>.state` and watch/read it after output changes alongside `ShellIntegration.OscStreamParser`.
 - [ ] **4. Inject Shell Integration on Startup**: Pass `ShellIntegration.bashSnippet(stateFilePath)` (or `zshSnippet(...)`) via `PROMPT_COMMAND` env / startup rc file so `cwd`, `lastExitCode`, and the in-terminal **Fix with AI** chip populate automatically from live shell commands.
 - [ ] **5. Implement `TermuxTerminalBackend : TerminalBackend`**: Manage session lifecycle (`createSession`, `closeSession`, `switchSession`) and clean up PTY file descriptors + `.state` files on close.
-- [ ] **6. Swap DI Binding in `AppContainer.kt`**: Replace `FakeTerminalBackend()` with `TermuxTerminalBackend(context)` inside `HackerStudioApp`'s `AppContainer`. All ViewModels, AI context chips, selection toolbar, and Snippets keep working without UI changes.
+- [ ] **6. Swap DI Binding in `AppContainer.kt`**: Replace `FakeTerminalBackend()` with `TermuxTerminalBackend(context)` inside `CyberorgApp`'s `AppContainer`. All ViewModels, AI context chips, selection toolbar, and Snippets keep working without UI changes.
 
 ---
 

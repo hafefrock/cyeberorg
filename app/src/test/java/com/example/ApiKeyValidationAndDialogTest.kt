@@ -48,7 +48,7 @@ import com.example.data.SettingsRepository
 import com.example.data.VaultStatus
 import com.example.settings.ApiKeysScreen
 import com.example.settings.SettingsViewModel
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -181,7 +181,7 @@ class ApiKeyValidationAndDialogTest {
         try {
             composeRule.setContent {
                 val state by vm.uiState.collectAsStateWithLifecycle()
-                HackerStudioTheme {
+                CyberorgTheme {
                     ApiKeysScreen(state = state, viewModel = vm)
                 }
             }
@@ -273,7 +273,7 @@ class ApiKeyValidationAndDialogTest {
         try {
             composeRule.setContent {
                 val state by vm.uiState.collectAsStateWithLifecycle()
-                HackerStudioTheme {
+                CyberorgTheme {
                     ApiKeysScreen(state = state, viewModel = vm)
                 }
             }

@@ -49,7 +49,7 @@ import com.example.ui.terminal.ExtraKeysBar
 import com.example.ui.terminal.TerminalScreen
 import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import com.example.ui.theme.StudioDimens
 import com.example.ui.theme.chamferInset
 import java.io.File
@@ -112,7 +112,7 @@ class ExtraKeysBarTest {
         var activeLayout by mutableStateOf(ExtraKeysLayout.STANDARD)
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 Box(modifier = Modifier.width(360.dp)) {
                     ExtraKeysBar(
                         layout = activeLayout,
@@ -204,7 +204,7 @@ class ExtraKeysBarTest {
         val clicks = mutableListOf<ExtraKeyCode>()
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = preset) {
+            CyberorgTheme(appTheme = preset) {
                 ExtraKeysBar(
                     layout = ExtraKeysLayout.STANDARD,
                     ctrlArmed = ctrlArmed,
@@ -256,7 +256,7 @@ class ExtraKeysBarTest {
             CompositionLocalProvider(
                 LocalDensity provides Density(density = baseDensity.density, fontScale = 1.3f)
             ) {
-                HackerStudioTheme(appTheme = preset) {
+                CyberorgTheme(appTheme = preset) {
                     Box(modifier = Modifier.width(widthDp)) {
                         ExtraKeysBar(
                             layout = layout,
@@ -339,7 +339,7 @@ class ExtraKeysBarTest {
         val clicked = mutableListOf<ExtraKeyCode>()
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK) {
+            CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK) {
                 Box(modifier = Modifier.width(360.dp)) {
                     ExtraKeysBar(
                         layout = ExtraKeysLayout.STANDARD,
@@ -504,7 +504,7 @@ class ExtraKeysBarTest {
 
         try {
             composeRule.setContent {
-                HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+                CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                     TerminalScreen(
                         viewModel = viewModel,
                         onNavigateToSettings = {}

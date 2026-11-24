@@ -44,7 +44,7 @@ import com.example.ui.terminal.SplitMode
 import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.terminal.WorkspaceSection
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -360,7 +360,7 @@ class AiUiAndStateTest {
     @Test
     fun `ui quick action Explain error is disabled when activeLastError is null and SessionTabsBar shows unread dot`() {
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 AiQuickActionsBar(
                     hasLastError = false,
                     isLoading = false,
@@ -383,7 +383,7 @@ class AiUiAndStateTest {
         val unreadDesc = context.getString(R.string.cd_ai_star_unread)
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 SessionTabsBar(
                     sessions = emptyList(),
                     activeSessionId = "",
@@ -417,7 +417,7 @@ class AiUiAndStateTest {
             risk = CommandRiskClassifier.classify(command)
         )
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK) {
+            CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK) {
                 AiCommandCard(
                     suggestion = suggestion,
                     onInsert = {},

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import java.util.UUID
 
 private val Context.promptHistoryDataStore: DataStore<Preferences> by preferencesDataStore(
-    name = "hackerstudio_prompt_history",
+    name = "cyberorg_prompt_history",
     corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() }
 )
 

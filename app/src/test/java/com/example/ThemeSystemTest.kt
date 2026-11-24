@@ -40,7 +40,7 @@ import com.example.ui.terminal.WorkspaceSection
 import com.example.ui.terminal.WorkspaceSidebarDrawer
 import com.example.ui.theme.AppThemePreset
 import com.example.ui.theme.ChamferShape
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import com.example.ui.theme.NavIndicatorStyle
 import com.example.ui.theme.RiskBadgeStyle
 import com.example.ui.theme.StudioTheme
@@ -263,7 +263,7 @@ class ThemeSystemTest {
         var observedGlow = 99.dp
         var observedMotion = 99
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK, reduceEffects = true) {
+            CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK, reduceEffects = true) {
                 observedReduceEffects = StudioTheme.reduceEffects
                 observedGlow = StudioTheme.tokens.glowRadius
                 observedMotion = StudioTheme.tokens.motionDurationMs
@@ -355,7 +355,7 @@ class ThemeSystemTest {
     fun `ui ThemeOptionPreviewCard renders distinct Hacker Pro and Cyberpunk tokens with RadioButton semantics`() {
         var selectedPreset = AppThemePreset.HACKER_PRO
         composeRule.setContent {
-            HackerStudioTheme(appTheme = selectedPreset) {
+            CyberorgTheme(appTheme = selectedPreset) {
                 Column {
                     AppThemePreset.entries.forEach { preset ->
                         ThemeOptionPreviewCard(
@@ -382,7 +382,7 @@ class ThemeSystemTest {
         val currentTheme = MutableStateFlow(AppThemePreset.HACKER_PRO)
         composeRule.setContent {
             val preset by currentTheme.collectAsState()
-            HackerStudioTheme(appTheme = preset) {
+            CyberorgTheme(appTheme = preset) {
                 WorkspaceSidebarDrawer(
                     visible = true,
                     selectedSection = WorkspaceSection.TERMINAL,
@@ -418,7 +418,7 @@ class ThemeSystemTest {
 
         composeRule.setContent {
             val liveSettings by store.settingsFlow.collectAsState(initial = store.current)
-            HackerStudioTheme(
+            CyberorgTheme(
                 appTheme = liveSettings.appTheme,
                 reduceEffects = liveSettings.reduceEffects
             ) {

@@ -11,7 +11,7 @@ import com.example.data.AppContainer
  * [com.example.ai.KeyManager] state alive across Activity recreation
  * (screen rotation, locale switches, and theme changes).
  */
-class HackerStudioApp : Application() {
+class CyberorgApp : Application() {
 
     lateinit var appContainer: AppContainer
         private set

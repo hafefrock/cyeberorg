@@ -63,7 +63,7 @@ import com.example.ui.terminal.TerminalConsoleView
 import com.example.ui.terminal.TerminalScreen
 import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import java.io.File
 import kotlin.math.abs
 import kotlinx.coroutines.CoroutineScope
@@ -303,7 +303,7 @@ class TerminalScreenCleanupAndInsetsTest {
             composeRule.setContent {
                 val state by vm.uiState.collectAsState()
                 composeHostView = LocalView.current
-                HackerStudioTheme(appTheme = state.settings.appTheme) {
+                CyberorgTheme(appTheme = state.settings.appTheme) {
                     TerminalScreen(viewModel = vm, onNavigateToSettings = {})
                 }
             }
@@ -401,7 +401,7 @@ class TerminalScreenCleanupAndInsetsTest {
 
         composeRule.setContent {
             CompositionLocalProvider(LocalContext provides idContext) {
-                HackerStudioTheme(appTheme = preset) {
+                CyberorgTheme(appTheme = preset) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         TerminalConsoleView(
                             sessionTitle = "custom-tab-name",
@@ -510,7 +510,7 @@ class TerminalScreenCleanupAndInsetsTest {
                 LocalContext provides idContext,
                 LocalDensity provides Density(baseDensity.density, fontScale)
             ) {
-                HackerStudioTheme(appTheme = preset) {
+                CyberorgTheme(appTheme = preset) {
                     Box(modifier = Modifier.width(widthDp).fillMaxSize()) {
                         TerminalConsoleView(
                             sessionTitle = "bash-1",
@@ -631,7 +631,7 @@ class TerminalScreenCleanupAndInsetsTest {
 
             val recent = primary.readRecentText()
             val expectedLines = listOf(
-                "HackerStudio PTY Shell v2.0",
+                "Cyberorg PTY Shell v2.0",
                 "[VT Cell Grid • OSC 7777 Ready]",
                 "Type 'help' for commands, or run",
                 "'sh scripts/deploy.sh' for AI fix."
