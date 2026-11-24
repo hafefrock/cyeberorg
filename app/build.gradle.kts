@@ -15,7 +15,10 @@ android {
   defaultConfig {
     applicationId = "com.termux"
     minSdk = 24
-    targetSdk = 36
+    // Termux bootstrap programs live in the app data directory and are executed from there.
+    // Android 10+ forbids that for apps targeting API 29 or higher, so this must stay at 28.
+    // (An app targeting 28 cannot be published on Google Play; this app is sideloaded.)
+    targetSdk = 28
     versionCode = 1
     versionName = "1.0"
 
@@ -70,6 +73,10 @@ android {
   buildFeatures {
     compose = true
     buildConfig = true
+  }
+  lint {
+    // This app is sideloaded, not published on Google Play, and Termux requires targetSdk 28.
+    disable += "ExpiredTargetSdkVersion"
   }
   testOptions {
     unitTests {
@@ -142,6 +149,8 @@ dependencies {
   implementation(libs.okhttp)
   // implementation(libs.play.services.location)
   implementation(libs.retrofit)
+  implementation(libs.termux.terminal.emulator)
+  implementation(libs.termux.terminal.view)
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.core)
   testImplementation(libs.androidx.junit)
@@ -193,5 +202,4 @@ tasks.matching { it.name == "assembleDebug" }.configureEach {
 tasks.matching { it.name == "assembleFast" }.configureEach {
   finalizedBy(syncRootFastApk)
 }
-
 
