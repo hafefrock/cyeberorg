@@ -1,7 +1,7 @@
 name: Apply patch (maintenance)
 
-# If "patch.diff" exists in the root of branch "dev", apply it, delete the file, commit and
-# push to "dev", then start the APK build. Used to change large files without re-uploading them.
+# If "patch.diff" exists in the root of branch "main", apply it, delete the file, commit and
+# push to "main", then start the APK build. Used to change large files without re-uploading them.
 on:
   workflow_dispatch:
 
@@ -13,17 +13,17 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout dev
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          ref: dev
+          ref: main
 
       - name: Apply patch.diff and push
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if [ ! -f patch.diff ]; then echo "No patch.diff on dev, nothing to do."; exit 1; fi
+          if [ ! -f patch.diff ]; then echo "No patch.diff on main, nothing to do."; exit 1; fi
           if grep -E '^(\+\+\+|---) [ab]/\.github/' patch.diff; then
             echo "Patch touches .github, which this job cannot push."; exit 1
           fi
@@ -33,6 +33,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Apply patch.diff"
-          git push origin dev
+          git push origin main
           # Pushes made with GITHUB_TOKEN do not start other workflows, so start the build here.
-          gh workflow run build.yml --ref dev
+          gh workflow run build.yml --ref main

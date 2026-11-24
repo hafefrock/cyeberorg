@@ -1,7 +1,7 @@
 name: Update bootstrap manifest
 
 # Looks up a Termux bootstrap release, downloads the four archives, records their SHA-256 in
-# app/src/main/assets/bootstrap-manifest.json and commits that file to the "dev" branch.
+# app/src/main/assets/bootstrap-manifest.json and commits that file to the "main" branch.
 # The app later downloads the archive and refuses it if the hash does not match.
 on:
   workflow_dispatch:
@@ -18,10 +18,10 @@ jobs:
   manifest:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout dev
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          ref: dev
+          ref: main
 
       - name: Build manifest
         env:
@@ -74,7 +74,7 @@ jobs:
               out.write("\n")
           PY
 
-      - name: Commit manifest to dev
+      - name: Commit manifest to main
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -82,4 +82,4 @@ jobs:
           git add app/src/main/assets/bootstrap-manifest.json
           if git diff --cached --quiet; then echo "Manifest unchanged"; exit 0; fi
           git commit -m "Update Termux bootstrap manifest"
-          git push origin dev
+          git push origin main
