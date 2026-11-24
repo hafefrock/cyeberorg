@@ -2,7 +2,7 @@ name: Build APK
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
   workflow_dispatch:
 
@@ -39,17 +39,26 @@ jobs:
         with:
           gradle-version: "9.3.1"
 
-      # debug.keystore is git-ignored. Generate the standard Android debug key so the
-      # "debugConfig" signing config in app/build.gradle.kts can sign the APKs.
-      # This is a throw-away debug key, NOT a release key.
-      - name: Create debug keystore
+      # debug.keystore is git-ignored. If the repository secret DEBUG_KEYSTORE_BASE64 exists,
+      # use it so every build is signed with the SAME key (APKs then update over each other
+      # without uninstalling). Otherwise generate a throw-away key (each build differs).
+      # This is a debug key, NOT a release key.
+      - name: Prepare debug keystore
+        env:
+          DEBUG_KEYSTORE_BASE64: ${{ secrets.DEBUG_KEYSTORE_BASE64 }}
         run: |
-          keytool -genkeypair -v \
-            -keystore debug.keystore \
-            -storepass android -keypass android \
-            -alias androiddebugkey \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
+          if [ -n "$DEBUG_KEYSTORE_BASE64" ]; then
+            echo "$DEBUG_KEYSTORE_BASE64" | base64 -d > debug.keystore
+            echo "Using the stored debug keystore"
+          else
+            keytool -genkeypair -v \
+              -keystore debug.keystore \
+              -storepass android -keypass android \
+              -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+            echo "Generated a throw-away debug keystore (set DEBUG_KEYSTORE_BASE64 for a stable one)"
+          fi
 
       - name: Build debug and fast APKs
         run: gradle assembleDebug assembleFast --stacktrace

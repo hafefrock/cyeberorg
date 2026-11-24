@@ -1,41 +1,38 @@
 name: Apply patch (maintenance)
 
-# Applies "patch.diff" from a given branch onto main and pushes the result to a new
-# branch "apply/<patch-branch>". Used to change large files without re-uploading them.
+# If "patch.diff" exists in the root of branch "dev", apply it, delete the file, commit and
+# push to "dev", then start the APK build. Used to change large files without re-uploading them.
 on:
   workflow_dispatch:
-    inputs:
-      patch_branch:
-        description: "Branch that contains patch.diff (for example patch/tagline)"
-        required: true
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   apply:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout dev
         uses: actions/checkout@v4
         with:
-          ref: main
-          fetch-depth: 0
+          ref: dev
 
-      - name: Apply patch and push branch
+      - name: Apply patch.diff and push
         env:
-          PATCH_BRANCH: ${{ inputs.patch_branch }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          git fetch origin "$PATCH_BRANCH"
-          git show "origin/$PATCH_BRANCH:patch.diff" > "$RUNNER_TEMP/change.diff"
-          if grep -E '^(\+\+\+|---) [ab]/\.github/' "$RUNNER_TEMP/change.diff"; then
+          if [ ! -f patch.diff ]; then echo "No patch.diff on dev, nothing to do."; exit 1; fi
+          if grep -E '^(\+\+\+|---) [ab]/\.github/' patch.diff; then
             echo "Patch touches .github, which this job cannot push."; exit 1
           fi
-          git apply --index --whitespace=nowarn "$RUNNER_TEMP/change.diff"
-          NEW_BRANCH="apply/$(echo "$PATCH_BRANCH" | tr '/' '-')"
+          git apply --index --whitespace=nowarn patch.diff
+          git rm -q --cached patch.diff
+          rm patch.diff
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git switch -c "$NEW_BRANCH"
-          git commit -m "Apply patch from $PATCH_BRANCH"
-          git push origin "$NEW_BRANCH"
+          git commit -m "Apply patch.diff"
+          git push origin dev
+          # Pushes made with GITHUB_TOKEN do not start other workflows, so start the build here.
+          gh workflow run build.yml --ref dev
