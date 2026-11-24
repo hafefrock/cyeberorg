@@ -21,20 +21,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Never touch the workflow files themselves (this job cannot push changes to .github/workflows)
+          FILES() { git ls-files -z -- . ':(exclude).github'; }
           # 1) rename files/folders whose name contains the old name
           while IFS= read -r p; do
             new="$(dirname "$p")/$(basename "$p" | sed -e 's/HackerStudio/Cyberorg/g' -e 's/hackerstudio/cyberorg/g')"
             git mv "$p" "$new"
-          done < <(git ls-files | grep -i 'hackerstudio' || true)
+          done < <(FILES | tr '\0' '\n' | grep -i 'hackerstudio' || true)
           # 2) replace the name inside text files (binary files are skipped by grep -I)
-          git ls-files -z | xargs -0 grep -IlZ -i 'hacker.\?studio' | xargs -0 -r sed -i -E \
+          FILES | xargs -0 grep -IlZ -i 'hacker.\?studio' | xargs -0 -r sed -i -E \
             -e 's/HackerStudio/Cyberorg/g' \
             -e 's/hackerStudio/cyberorg/g' \
             -e 's/hackerstudio/cyberorg/g' \
             -e 's/Hacker Studio/Cyberorg/g'
           # 3) fail if anything is left behind (file names or contents)
-          if git ls-files | grep -i 'hacker.\?studio'; then echo "Leftover file names"; exit 1; fi
-          if git ls-files -z | xargs -0 grep -In -i 'hacker.\?studio'; then echo "Leftover text"; exit 1; fi
+          if FILES | tr '\0' '\n' | grep -i 'hacker.\?studio'; then echo "Leftover file names"; exit 1; fi
+          if FILES | xargs -0 grep -In -i 'hacker.\?studio'; then echo "Leftover text"; exit 1; fi
 
       - name: Commit and push branch
         run: |
