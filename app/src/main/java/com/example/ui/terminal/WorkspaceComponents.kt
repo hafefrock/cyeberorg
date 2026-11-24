@@ -682,8 +682,8 @@ fun FilesPlaceholderPane(
     val compactType = StudioTheme.compactTypography
     val sampleTree = remember {
         listOf(
-            Triple("~/projects/hackerstudio-cli", true, "ls -la ~/projects/hackerstudio-cli"),
-            Triple("~/projects/hackerstudio-cli/main.py", false, "cat ~/projects/hackerstudio-cli/main.py"),
+            Triple("~/projects/cyberorg-cli", true, "ls -la ~/projects/cyberorg-cli"),
+            Triple("~/projects/cyberorg-cli/main.py", false, "cat ~/projects/cyberorg-cli/main.py"),
             Triple("~/scripts/deploy.sh", false, "cat ~/scripts/deploy.sh"),
             Triple("~/.bashrc", false, "cat ~/.bashrc"),
             Triple("~/notes.md", false, "cat ~/notes.md")

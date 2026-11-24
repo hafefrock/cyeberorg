@@ -23,8 +23,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 
-private val Context.hackerStudioDataStore: DataStore<Preferences> by preferencesDataStore(
-    name = "hackerstudio_settings",
+private val Context.cyberorgDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "cyberorg_settings",
     corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() }
 )
 
@@ -63,7 +63,7 @@ class SettingsRepository @JvmOverloads constructor(
 ) : SettingsStore {
 
     private val appContext = context.applicationContext
-    private val dataStore = customDataStore ?: appContext.hackerStudioDataStore
+    private val dataStore = customDataStore ?: appContext.cyberorgDataStore
 
     override val vaultStatus: StateFlow<VaultStatus> = keyVault.vaultStatus
 

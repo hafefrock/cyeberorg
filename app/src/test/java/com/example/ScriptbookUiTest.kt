@@ -43,7 +43,7 @@ import com.example.ui.terminal.WorkspaceNavigationRail
 import com.example.ui.terminal.WorkspaceSection
 import com.example.ui.terminal.WorkspaceSidebarDrawer
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import com.example.ui.theme.StudioTheme
 import com.example.ui.theme.chamferInset
 import org.junit.Assert.assertEquals
@@ -114,7 +114,7 @@ class ScriptbookUiTest {
         val observed = mutableListOf<Float>()
         var currentPreset by mutableStateOf(AppThemePreset.HACKER_PRO)
         composeRule.setContent {
-            HackerStudioTheme(appTheme = currentPreset) {
+            CyberorgTheme(appTheme = currentPreset) {
                 val compact = StudioTheme.compactTypography
                 val m3 = MaterialTheme.typography
                 observed.clear()
@@ -190,7 +190,7 @@ class ScriptbookUiTest {
         var snippetsState by mutableStateOf<List<CommandSnippet>>(emptyList())
         var presetState by mutableStateOf(AppThemePreset.HACKER_PRO)
         composeRule.setContent {
-            HackerStudioTheme(appTheme = presetState) {
+            CyberorgTheme(appTheme = presetState) {
                 SnippetsScreen(
                     snippets = snippetsState,
                     onInsertSnippet = {},
@@ -244,7 +244,7 @@ class ScriptbookUiTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 SnippetsScreen(
                     snippets = snippets,
                     onInsertSnippet = {},
@@ -292,7 +292,7 @@ class ScriptbookUiTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK) {
+            CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK) {
                 SnippetsScreen(
                     snippets = snippets,
                     onInsertSnippet = {},
@@ -343,7 +343,7 @@ class ScriptbookUiTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 SnippetsScreen(
                     snippets = snippets,
                     onInsertSnippet = { insertedCmd = it },
@@ -393,7 +393,7 @@ class ScriptbookUiTest {
                 LocalDensity provides Density(density = baseDensity, fontScale = 1.3f)
             ) {
                 if (!useRail) {
-                    HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+                    CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                         Box(modifier = Modifier.width(320.dp)) {
                             WorkspaceSidebarDrawer(
                                 visible = true,
@@ -407,7 +407,7 @@ class ScriptbookUiTest {
                         }
                     }
                 } else {
-                    HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK) {
+                    CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK) {
                         WorkspaceNavigationRail(
                             selectedSection = WorkspaceSection.SNIPPETS,
                             aiEnabled = true,
@@ -453,7 +453,7 @@ class ScriptbookUiTest {
             CompositionLocalProvider(
                 LocalDensity provides Density(density = baseDensity, fontScale = 1.3f)
             ) {
-                HackerStudioTheme(appTheme = currentPreset) {
+                CyberorgTheme(appTheme = currentPreset) {
                     val d = StudioTheme.dimens
                     assertEquals(32.dp, d.controlHeight)
                     assertEquals(28.dp, d.controlHeightSmall)
@@ -526,7 +526,7 @@ class ScriptbookUiTest {
         var chamferCutDp = 0.dp
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = currentPreset) {
+            CyberorgTheme(appTheme = currentPreset) {
                 chamferCutDp = StudioTheme.tokens.cardShape.chamferInset()
                 SnippetsScreen(
                     snippets = snippets,
@@ -624,7 +624,7 @@ class ScriptbookUiTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK) {
+            CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK) {
                 Box(modifier = Modifier.width(320.dp)) {
                     SnippetsScreen(
                         snippets = snippets,
@@ -664,7 +664,7 @@ class ScriptbookUiTest {
         )
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 SessionTabsBar(
                     sessions = tabs,
                     activeSessionId = "s1",
@@ -710,7 +710,7 @@ class ScriptbookUiTest {
         val pressedKeys = mutableListOf<ExtraKeyCode>()
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.CYBERPUNK) {
+            CyberorgTheme(appTheme = AppThemePreset.CYBERPUNK) {
                 ExtraKeysBar(
                     layout = ExtraKeysLayout.STANDARD,
                     ctrlArmed = true,

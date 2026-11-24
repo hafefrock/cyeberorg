@@ -33,7 +33,7 @@ import com.example.terminal.TerminalPasteSanitizer
 import com.example.ui.terminal.SnippetsScreen
 import com.example.ui.terminal.TerminalViewModel
 import com.example.ui.theme.AppThemePreset
-import com.example.ui.theme.HackerStudioTheme
+import com.example.ui.theme.CyberorgTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -181,7 +181,7 @@ class InputSecurityAndImportTest {
         var insertedCommand: String? = null
 
         composeRule.setContent {
-            HackerStudioTheme(appTheme = AppThemePreset.HACKER_PRO) {
+            CyberorgTheme(appTheme = AppThemePreset.HACKER_PRO) {
                 SnippetsScreen(
                     snippets = snippets,
                     onInsertSnippet = { insertedCommand = it },

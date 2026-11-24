@@ -21,7 +21,7 @@ import java.io.InputStream
 import java.util.UUID
 
 private val Context.snippetsDataStore: DataStore<Preferences> by preferencesDataStore(
-    name = "hackerstudio_snippets",
+    name = "cyberorg_snippets",
     corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() }
 )
 
@@ -342,7 +342,7 @@ class DataStoreSnippetRepository(
             CommandSnippet(
                 id = "builtin_python",
                 title = "Run CLI Diagnostics (Python)",
-                command = "python3 ~/projects/hackerstudio-cli/main.py",
+                command = "python3 ~/projects/cyberorg-cli/main.py",
                 tags = listOf("python", "cli")
             )
         )

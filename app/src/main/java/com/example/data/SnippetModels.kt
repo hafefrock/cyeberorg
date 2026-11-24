@@ -13,7 +13,7 @@ data class CommandSnippet(
 
 @JsonClass(generateAdapter = true)
 data class SnippetExportEnvelope(
-    val format: String = "hackerstudio_snippets",
+    val format: String = "cyberorg_snippets",
     val version: Int = 1,
     val exportedAtMillis: Long = System.currentTimeMillis(),
     val snippets: List<CommandSnippet> = emptyList()

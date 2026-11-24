@@ -347,7 +347,7 @@ fun SnippetsScreen(
                                     onClick = {
                                         headerMenuExpanded = false
                                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                                        exportLauncher.launch("hackerstudio_scriptbook.json")
+                                        exportLauncher.launch("cyberorg_scriptbook.json")
                                     },
                                     modifier = Modifier.testTag("snippets_export_button")
                                 )

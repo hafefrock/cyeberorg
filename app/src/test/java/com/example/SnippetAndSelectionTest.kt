@@ -33,7 +33,7 @@ class SnippetAndSelectionTest {
         )
 
         val json = SnippetJsonCodec.exportToJson(original, exportedAtMillis = 999L)
-        assertTrue(json.contains("hackerstudio_snippets"))
+        assertTrue(json.contains("cyberorg_snippets"))
 
         val imported = SnippetJsonCodec.parseImportJson(json)
         assertTrue(imported.isSuccess)

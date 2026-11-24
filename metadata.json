@@ -1,5 +1,5 @@
 {
-  "name": "HackerStudio",
+  "name": "Cyberorg",
   "description": "A modern, pro terminal-style shell UI with a collapsible Gemini AI assistant and multi-API-key failover.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

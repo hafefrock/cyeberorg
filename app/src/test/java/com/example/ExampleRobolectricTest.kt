@@ -51,9 +51,9 @@ import org.robolectric.annotation.Config
 class ExampleRobolectricTest {
 
     @Test
-    fun `verify HackerStudio app name, com_termux package name, and bilingual localization`() {
+    fun `verify Cyberorg app name, com_termux package name, and bilingual localization`() {
         val baseContext = ApplicationProvider.getApplicationContext<Context>()
-        assertEquals("HackerStudio", baseContext.getString(R.string.app_name))
+        assertEquals("Cyberorg", baseContext.getString(R.string.app_name))
         assertEquals("com.termux", baseContext.packageName)
 
         val enContext = LocaleHelper.createLocalizedContext(baseContext, AppLanguage.ENGLISH)

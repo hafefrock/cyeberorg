@@ -23,7 +23,7 @@ import com.example.ui.UiText
 
 /**
  * Typed two-level Settings routes and complete, 1-to-1 inventory mapping of ALL existing
- * HackerStudio settings, toggles, choices, sliders, actions, and dialogs.
+ * Cyberorg settings, toggles, choices, sliders, actions, and dialogs.
  *
  * Inventory & Group Mapping (zero missing, zero duplicate items):
  *

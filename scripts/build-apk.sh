@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Build Debug or Release APK using HackerStudio signingConfigs in app/build.gradle.kts
+# Build Debug or Release APK using Cyberorg signingConfigs in app/build.gradle.kts
 # Usage:
 #   ./scripts/build-apk.sh debug
 #   KEYSTORE_PATH=/path/to/upload.jks STORE_PASSWORD=*** KEY_PASSWORD=*** ./scripts/build-apk.sh release
