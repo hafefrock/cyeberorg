@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.HackerStudio" parent="android:Theme.DeviceDefault.NoActionBar" />
+
+    <style name="Theme.HackerStudio.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#0A0D12</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="postSplashScreenTheme">@style/Theme.HackerStudio</item>
+    </style>
+</resources>

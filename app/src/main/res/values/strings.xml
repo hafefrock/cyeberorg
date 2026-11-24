@@ -1,0 +1,502 @@
+<resources>
+    <string name="app_name">HackerStudio</string>
+
+    <!-- Accessibility / Content Descriptions -->
+    <string name="cd_new_session">New terminal session</string>
+    <string name="cd_close_session">Close session</string>
+    <string name="cd_rename_session">Rename session</string>
+    <string name="cd_toggle_ai_panel">Toggle AI assistant panel</string>
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_copy_command">Copy command</string>
+    <string name="cd_insert_command">Insert command into terminal</string>
+    <string name="cd_send_ai_prompt">Send prompt to AI</string>
+    <string name="cd_add_api_key">Add Gemini API key</string>
+    <string name="cd_delete_api_key">Remove API key</string>
+    <string name="cd_clear_terminal">Clear terminal output</string>
+    <string name="cd_open_keyboard">Open keyboard</string>
+    <string name="cd_split_workspace">Toggle split pane mode</string>
+    <string name="cd_clear_ai_chat">Clear AI chat</string>
+    <string name="cd_recheck_key">Recheck API key</string>
+    <string name="cd_reset_cooldowns">Reset cooldowns</string>
+    <string name="cd_hide_key">Hide key</string>
+    <string name="cd_show_key">Show key</string>
+
+    <!-- Workspace Navigation -->
+    <string name="nav_terminal">Terminal</string>
+    <string name="nav_files">Files</string>
+    <string name="nav_ai">AI</string>
+    <string name="nav_snippets">Scriptbook</string>
+    <string name="nav_settings">Settings</string>
+    <string name="cd_open_sidebar_menu">Navigation menu</string>
+    <string name="sidebar_state_open">Navigation drawer open</string>
+    <string name="sidebar_state_closed">Navigation drawer closed</string>
+    <string name="cd_sidebar_scrim">Close navigation menu</string>
+    <string name="cd_sidebar_panel">Workspace navigation drawer</string>
+    <string name="sidebar_header_meta">%1$s · v%2$s</string>
+
+    <!-- Session Tabs & Empty State -->
+    <string name="session_rename_title">Rename Session</string>
+    <string name="session_tab_name_label">Tab Name</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="action_skip">Skip for now</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_back">Back</string>
+    <string name="action_finish">Launch Studio</string>
+    <string name="empty_sessions_title">No Active Terminal Sessions</string>
+    <string name="empty_sessions_subtitle">Launch a new PTY shell session to start running commands or debugging with Gemini AI.</string>
+    <string name="empty_sessions_cta">New Shell Session</string>
+
+    <!-- Status Bar & Terminal Console -->
+    <string name="status_no_key">No Key</string>
+    <string name="status_delay">Delay</string>
+    <string name="status_ready_count">%1$d Ready</string>
+    <string name="status_exit_code">EXIT %1$d</string>
+    <string name="status_explain_short">Explain</string>
+    <string name="status_scrollback_jump">↑ %1$d lines • Jump to live</string>
+    <string name="status_inserted_draft">Inserted into terminal buffer (not executed)</string>
+    <string name="status_paste_truncated">Pasted text exceeded 64 KB limit and was truncated.</string>
+    <string name="status_snippet_confirm_required">Confirm script insertion before pasting control characters or new lines.</string>
+    <string name="status_copied_clipboard">Copied to clipboard</string>
+    <string name="status_ai_disabled_banner">AI Assistant is turned off in Settings</string>
+    <string name="split_second_session_hint">Open a second session tab to use Dual Terminal split.</string>
+
+    <!-- AI Panel & Repository -->
+    <string name="ai_panel_title">Gemini Studio AI</string>
+    <string name="ai_no_active_key">No active key</string>
+    <string name="ai_welcome_message">HackerStudio AI ready. Tap a quick action above to explain your last error, suggest a command, or draft a shell script. Commands are never auto-executed.</string>
+    <string name="ai_chat_cleared">Chat cleared. Ask anything about shell commands, errors, or scripts.</string>
+    <string name="ai_no_error_recorded">No failed command recorded in \'%1$s\' yet. Run a command that exits non-zero (e.g. `sh scripts/deploy.sh`) and tap Explain Last Error.</string>
+    <string name="ai_missing_keys_banner">Add a Gemini API key in Settings to enable live AI responses.</string>
+    <string name="ai_quick_explain">Explain Error</string>
+    <string name="ai_quick_suggest">Suggest Command</string>
+    <string name="ai_quick_script">Write Script</string>
+    <string name="ai_thinking">Thinking via %1$s…</string>
+    <string name="ai_prompt_placeholder">Ask for a command or script…</string>
+    <string name="ai_role_error">ERROR</string>
+    <string name="ai_role_assistant">GEMINI AI</string>
+    <string name="ai_btn_insert">Insert</string>
+    <string name="ai_btn_copy">Copy</string>
+    <string name="ai_goal_default">Find large files and inspect disk usage in the current directory</string>
+    <string name="ai_script_default">Backup project directory with timestamp and error checks</string>
+    <string name="ai_user_explain_error">Explain last error (exit %1$d): `%2$s`</string>
+    <string name="ai_user_suggest_cmd">Suggest command: %1$s</string>
+    <string name="ai_user_write_script">Write shell script: %1$s</string>
+    <string name="ai_err_disabled">AI assistant is disabled in Settings.</string>
+    <string name="ai_err_quota">Quota / Rate Limit (HTTP %1$d): %2$s</string>
+    <string name="ai_err_forbidden">Access Delayed (HTTP %1$d): %2$s. Key placed on retry delay.</string>
+    <string name="ai_err_auth">API Key Error (HTTP %1$d): %2$s</string>
+    <string name="ai_err_network">Request Failed: %1$s</string>
+    <string name="ai_suggested_fallback">Suggested command:</string>
+    <string name="ai_block_shell_script">Shell Script #%1$d</string>
+    <string name="ai_block_command">Command #%1$d</string>
+    <string name="ai_block_snippet">%1$s Script #%2$d</string>
+
+    <!-- KeyManager Status Notes -->
+    <string name="key_note_rechecking">Rechecking…</string>
+    <string name="key_note_network_retry">Network error, try again</string>
+    <string name="key_note_forbidden_delay">403 Retry (%1$ds)</string>
+    <string name="key_note_cooldown">429 Cooldown (%1$ds)</string>
+    <string name="key_note_auth_rejected">Auth rejected</string>
+    <string name="key_note_disabled">Disabled</string>
+    <string name="key_note_active">Active</string>
+    <string name="key_note_ready">Ready</string>
+    <string name="key_err_no_keys">No Gemini API keys configured. Add a key in Settings.</string>
+    <string name="key_err_all_disabled">All Gemini API keys are disabled in Settings.</string>
+    <string name="key_err_all_unavailable">All enabled API keys are on cooldown or invalid. Wait, tap Recheck, or add another key.</string>
+    <string name="key_err_missing_secret">Encrypted key unavailable</string>
+    <string name="key_err_network_generic">Network error</string>
+
+    <!-- Themes, Layouts, Languages -->
+    <string name="theme_hacker_pro">Hacker Pro</string>
+    <string name="theme_hacker_pro_desc">Crisp dark console • Sharp 4dp edges, monospace-first, block cursor</string>
+    <string name="theme_cyberpunk">Cyberpunk Futuristic</string>
+    <string name="theme_cyberpunk_desc">Chamfered neon panels • Cyan/magenta glow, wide headings, underline cursor</string>
+    <string name="cd_theme_preview_card">%1$s theme option: %2$s</string>
+    <string name="theme_preview_prompt_cmd">%1$s ls -la</string>
+    <string name="theme_preview_card_cmd">git status -sb</string>
+
+    <string name="layout_standard">Standard</string>
+    <string name="layout_standard_desc">ESC, TAB, CTRL, ALT, arrows, | ~ / -</string>
+    <string name="layout_developer">Developer Pro</string>
+    <string name="layout_developer_desc">Standard keys + { } [ ] $ &amp; &gt;</string>
+    <string name="layout_compact">Compact</string>
+    <string name="layout_compact_desc">Essential navigation &amp; pipe symbols</string>
+
+    <string name="routing_round_robin">Round-Robin</string>
+    <string name="routing_round_robin_desc">Rotates across enabled keys on every request</string>
+    <string name="routing_failover">Primary Failover</string>
+    <string name="routing_failover_desc">Uses top key until HTTP 429/403 delay</string>
+
+    <string name="lang_system">System default</string>
+    <string name="lang_indonesian">Bahasa Indonesia</string>
+    <string name="lang_english">English</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Workspace Settings</string>
+    <string name="settings_group_ai">AI Assistant</string>
+    <string name="settings_group_keys">API Keys</string>
+    <string name="settings_group_appearance">Appearance</string>
+    <string name="settings_group_terminal">Terminal</string>
+    <string name="settings_group_language">Language</string>
+    <string name="settings_group_data">Data &amp; Privacy</string>
+    <string name="settings_group_about">About</string>
+
+    <string name="settings_summary_ai_off">Disabled</string>
+    <string name="settings_summary_ai_with_fallback">%1$s · %2$d fallback</string>
+    <string name="settings_summary_keys_empty">No keys added</string>
+    <string name="settings_summary_keys_vault_unavailable">Encrypted vault unavailable</string>
+    <string name="settings_summary_keys_single">1 key</string>
+    <string name="settings_summary_keys_many">%1$d keys</string>
+    <string name="settings_summary_keys_cooldown">%1$d keys · %2$d cooldown</string>
+    <string name="settings_summary_keys_attention">%1$d keys · %2$d error</string>
+    <string name="settings_summary_appearance_reduced">%1$s · Reduced effects</string>
+    <string name="settings_summary_appearance_normal">%1$s · %2$ssp font</string>
+    <string name="settings_summary_terminal">Extra keys: %1$s</string>
+    <string name="settings_summary_about">Version %1$s</string>
+
+    <string name="settings_vault_error_title">Encrypted Key Storage Error</string>
+    <string name="settings_sec_general">General</string>
+    <string name="settings_sec_vault_status">Vault &amp; Active Key</string>
+    <string name="settings_sec_theme">Studio Theme</string>
+    <string name="settings_sec_effects_font">Effects &amp; Terminal Font</string>
+    <string name="settings_sec_danger_zone">Danger Zone</string>
+    <string name="settings_ai_toggle_title">AI Side Panel</string>
+    <string name="settings_ai_toggle_desc">Show collapsible Gemini assistant in workspace</string>
+    <string name="settings_active_key_label">Active Key: %1$s</string>
+    <string name="settings_none">None</string>
+    <string name="settings_vault_ready_summary">%1$d/%2$d usable • Android Keystore AES-256</string>
+    <string name="settings_vault_unavailable_summary">Encrypted vault unavailable — key storage disabled</string>
+    <string name="settings_sec_api_keys">Gemini API Keys (%1$d)</string>
+    <string name="settings_empty_keys_title">No Gemini API keys stored yet.</string>
+    <string name="settings_empty_keys_desc">Add multiple keys for automatic round-robin &amp; HTTP 429/403 failover.</string>
+    <string name="settings_add_key_btn">Add Gemini API Key</string>
+    <string name="settings_vault_disabled_btn">Encrypted Storage Unavailable</string>
+    <string name="settings_key_metrics">%1$s • req:%2$d err:%3$d</string>
+    <string name="settings_btn_recheck">Recheck</string>
+    <string name="settings_btn_checking">Checking…</string>
+    <string name="settings_advanced_title">Advanced</string>
+    <string name="settings_advanced_desc">Key routing strategy &amp; HTTP 429/403 retry delay</string>
+    <string name="cd_expand_section">Expand or collapse section</string>
+    <string name="settings_routing_strategy">Key Routing Strategy</string>
+    <string name="settings_cooldown_label">429 / 403 Retry Delay: %1$ds</string>
+    <string name="settings_delete_key_title">Remove API Key?</string>
+    <string name="settings_delete_key_desc">Remove key "%1$s" from Android Keystore storage? You can re-add it later.</string>
+    <string name="settings_delete_key_confirm">Remove Key</string>
+    <string name="settings_app_theme">Studio Theme (applies to UI &amp; terminal)</string>
+    <string name="settings_reduce_effects_title">Reduce effects</string>
+    <string name="settings_reduce_effects_desc">Disable neon glow, pulsing indicators, and motion transitions (follows system animation setting by default)</string>
+    <string name="settings_font_size">Terminal Font Size: %1$ssp</string>
+    <string name="terminal_font_zoom_indicator">%1$s sp</string>
+    <string name="settings_font_preview">u0_a137@termux:~%1$s ls -la | grep .sh</string>
+    <string name="settings_extra_keys_layout">Extra Keys Row Layout</string>
+    <string name="settings_language_desc">Choose app interface and Gemini AI response language.</string>
+    <string name="settings_data_empty">No additional workspace data controls configured here yet.</string>
+    <string name="settings_about_app_desc">Workspace terminal studio &amp; Gemini AI assistant</string>
+    <string name="settings_about_version_title">Application Version</string>
+    <string name="settings_about_version_value">v%1$s (build %2$d)</string>
+    <string name="settings_about_package_title">Package ID</string>
+    <string name="settings_reopen_onboarding">Run First-Time Setup Wizard</string>
+    <string name="settings_reopen_onboarding_desc">Reopen the guided setup flow for language, theme, key, and model</string>
+    <string name="settings_reopen_onboarding_confirm_title">Run Setup Wizard Again?</string>
+    <string name="settings_reopen_onboarding_confirm_desc">This will reopen the first-time setup wizard. Your existing API keys and preferences remain saved.</string>
+    <string name="settings_reopen_onboarding_confirm_btn">Open Wizard</string>
+    <string name="dialog_add_key_title">Add Gemini API Key</string>
+    <string name="dialog_add_key_desc">Stored strictly inside Android Keystore EncryptedSharedPreferences. Never logged or stored in plaintext.</string>
+    <string name="dialog_add_key_label">Label (e.g. Primary, Backup-2)</string>
+    <string name="dialog_add_key_secret">Gemini API Key</string>
+    <string name="dialog_add_key_save">Save Key</string>
+    <string name="vault_err_empty_key">API key cannot be empty.</string>
+    <string name="vault_err_commit">EncryptedSharedPreferences failed to commit key.</string>
+    <string name="vault_err_unavailable">Encrypted Keystore storage unavailable (%1$s). Refusing to store keys unencrypted.</string>
+
+    <!-- Files & Snippets Placeholders -->
+    <string name="files_title">Workspace Files</string>
+    <string name="files_subtitle">Local Termux tree preview • Plug Termux Storage / SAF for live filesystem browsing</string>
+    <string name="files_open_in_terminal">Inspect in Terminal</string>
+    <string name="snippets_insert">Insert</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_badge">WORKSPACE STUDIO</string>
+    <string name="onboarding_step_indicator">Step %1$d of %2$d</string>
+    <string name="onboarding_step1_title">Choose Your Language</string>
+    <string name="onboarding_step1_desc">HackerStudio adapts all workspace labels and Gemini AI responses to your preferred language.</string>
+    <string name="onboarding_step2_title">Choose Studio Theme</string>
+    <string name="onboarding_step2_desc">Pick your console geometry, typography, and integrated terminal palette. Change anytime via Command Palette.</string>
+    <string name="onboarding_step3_title">Connect Gemini API Key</string>
+    <string name="onboarding_step3_desc">Keys are sealed in Android Keystore EncryptedSharedPreferences. Add one now or skip and configure later.</string>
+    <string name="onboarding_key_added_badge">Key encrypted &amp; added: %1$s</string>
+
+    <!-- Stage 3: Streaming AI, Stop & Retry -->
+    <string name="cd_stop_ai">Stop AI generation</string>
+    <string name="cd_retry_ai">Retry AI generation</string>
+    <string name="cd_prompt_history">Open prompt history</string>
+    <string name="cd_save_snippet">Save command to Scriptbook</string>
+    <string name="cd_dismiss_chip">Dismiss</string>
+    <string name="ai_btn_retry">Retry</string>
+    <string name="ai_btn_save">Save to Scriptbook</string>
+    <string name="ai_streaming_badge">Streaming…</string>
+    <string name="ai_stream_interrupted">Stream interrupted: %1$s</string>
+    <string name="ai_stream_stopped">Generation stopped by user.</string>
+
+    <!-- Stage 3: Terminal Fix with AI & Selection Toolbar -->
+    <string name="terminal_chip_explain">Explain</string>
+    <string name="terminal_chip_fix_ai">Fix with AI</string>
+    <string name="terminal_sel_copy">Copy</string>
+    <string name="terminal_sel_ask_ai">Ask AI</string>
+    <string name="terminal_sel_explain">Explain</string>
+    <string name="ai_user_fix_error">Fix last error (exit %1$d): `%2$s`</string>
+    <string name="ai_user_explain_selection">Explain selected terminal output</string>
+
+    <!-- Stage 3: Context Chips -->
+
+    <!-- Stage 3: Command Safety Classifier -->
+    <string name="risk_badge_low">LOW</string>
+    <string name="risk_badge_medium">MEDIUM</string>
+    <string name="risk_badge_high">HIGH RISK</string>
+    <string name="risk_badge_low_bracket">[LOW]</string>
+    <string name="risk_badge_medium_bracket">[MED]</string>
+    <string name="risk_badge_high_bracket">[HIGH]</string>
+    <string name="risk_reason_rm_root">Recursive force-delete (rm -rf) targets root, home, or wildcard paths and can destroy critical files.</string>
+    <string name="risk_reason_dd_device">Direct disk write (dd) to a device path can overwrite partitions or corrupt storage.</string>
+    <string name="risk_reason_mkfs">Formatting commands (mkfs / wipefs / fdisk) erase filesystems permanently.</string>
+    <string name="risk_reason_chmod_777">Recursive chmod 777 grants world-writable permissions across directories.</string>
+    <string name="risk_reason_pipe_shell">Piping remote content directly into sh/bash executes unverified scripts immediately.</string>
+    <string name="risk_reason_fork_bomb">Fork bomb pattern can exhaust system processes and freeze the device.</string>
+    <string name="risk_reason_device_redirect">Redirecting output directly into a raw block or system device can corrupt data.</string>
+    <string name="risk_reason_find_delete">find -delete permanently deletes matched files immediately without confirmation.</string>
+    <string name="risk_reason_root_perm">Recursive chmod/chown on root (/) alters system-wide permissions or ownership.</string>
+    <string name="risk_reason_too_long">Command exceeds 4,000 characters; classified at least MEDIUM risk for manual review.</string>
+    <string name="risk_reason_multiline_or_control">Script contains multiple lines or control characters. Confirm to insert into the draft buffer without running.</string>
+    <string name="risk_reason_privilege">Runs with elevated root privileges (sudo / su).</string>
+    <string name="risk_reason_pkg_remove">Removes or purges installed packages.</string>
+    <string name="risk_reason_overwrite">Overwrites target file contents via &gt; redirection.</string>
+    <string name="risk_dialog_title">Confirm High-Risk Command Insert</string>
+    <string name="risk_dialog_warning">This command is classified as HIGH RISK. HackerStudio only inserts it into the terminal line buffer (it will NOT auto-run), so review carefully before pressing Enter.</string>
+    <string name="risk_dialog_confirm">Insert Draft</string>
+
+    <!-- Stage 3: Scriptbook Library & Prompt History -->
+    <string name="snippets_lib_title">Scriptbook</string>
+    <string name="snippets_search_hint">Search Scriptbook…</string>
+    <string name="snippets_filter_all">All</string>
+    <string name="snippets_new_btn">New script</string>
+    <string name="snippets_export_btn">Export JSON</string>
+    <string name="snippets_import_btn">Import JSON</string>
+    <string name="snippets_empty_library_title">No scripts yet</string>
+    <string name="snippets_empty_library_desc">Save commands from Gemini AI cards or create your first script for quick terminal insertion.</string>
+    <string name="snippets_create_first_btn">Create first script</string>
+    <string name="snippets_empty_search_title">No matching scripts</string>
+    <string name="snippets_empty_search_desc">Try a different keyword or clear the selected tag filter.</string>
+    <string name="snippets_clear_filters_btn">Clear filters</string>
+    <string name="snippets_dialog_create_title">New script</string>
+    <string name="snippets_dialog_edit_title">Edit script</string>
+    <string name="snippets_dialog_save_from_ai_title">Save command to Scriptbook</string>
+    <string name="snippets_field_title">Title</string>
+    <string name="snippets_field_command">Shell Command or Script</string>
+    <string name="snippets_field_tags">Tags (comma-separated, e.g. git, disk)</string>
+    <string name="snippets_saved_banner">Saved to Scriptbook</string>
+    <string name="snippets_deleted_banner">Script deleted</string>
+    <string name="snippets_exported_banner">Exported %1$d scripts to JSON</string>
+    <string name="snippets_imported_banner">Imported %1$d scripts</string>
+    <string name="snippets_io_error_banner">Scriptbook file operation failed: %1$s</string>
+    <string name="snippets_import_err_file_size">Import rejected: file exceeds the 1 MB size limit.</string>
+    <string name="snippets_import_err_count">Import rejected: exceeds the maximum of %1$d scripts.</string>
+    <string name="snippets_import_err_title_length">Import rejected: script #%1$d title exceeds %2$d characters.</string>
+    <string name="snippets_import_err_command_length">Import rejected: script #%1$d command exceeds %2$d characters.</string>
+    <string name="snippets_import_err_tags_count">Import rejected: script #%1$d exceeds %2$d tags.</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="snippets_delete_title">Delete script?</string>
+    <string name="snippets_delete_desc">Remove \"%1$s\" from Scriptbook? This cannot be undone.</string>
+    <string name="cd_search_scriptbook">Search Scriptbook</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_scriptbook_more">Scriptbook import and export options</string>
+    <string name="cd_script_card">Open script details for %1$s</string>
+    <string name="cd_script_actions">More actions for %1$s</string>
+
+    <string name="history_title">Prompt History</string>
+    <string name="history_subtitle">Last %1$d prompts • Tap to reuse in composer</string>
+    <string name="history_clear_all">Clear All</string>
+    <string name="history_empty">No prompts recorded yet. Ask Gemini AI anything to build your history.</string>
+
+    <!-- Safety, Paste & Stream Safeguard Fixes -->
+    <string name="status_multiline_paste_copied">Bracketed paste mode is off; multi-line command copied to clipboard so lines don\'t auto-run.</string>
+    <string name="risk_heuristic_disclaimer">Heuristic check, not a guarantee</string>
+    <string name="risk_info_dialog_title">Command Safety Check</string>
+    <string name="risk_info_low_desc">No known destructive patterns matched. Always review commands before pressing Enter.</string>
+    <string name="risk_info_medium_desc">Uses elevated privileges, package removal, or file overwrite redirection.</string>
+    <string name="risk_info_ok">Got it</string>
+    <string name="ai_response_blocked_or_empty">Response blocked or empty</string>
+
+    <!-- Gemini Model Selection, Failover & Response Handling -->
+    <string name="model_desc_hydrogen">Highest reasoning &amp; output quality</string>
+    <string name="model_desc_3_8_flash">Balanced speed and quality</string>
+    <string name="model_desc_3_6_flash">Balanced general-purpose model</string>
+    <string name="model_desc_3_5_flash_lite">Most quota-efficient</string>
+
+    <string name="ai_choose_model_title">Choose AI Model</string>
+    <string name="ai_choose_model_desc">Select a Gemini model before sending your first prompt.</string>
+    <string name="ai_err_select_model_first">Select an AI model before sending a prompt.</string>
+    <string name="ai_model_unselected_short">No model selected</string>
+    <string name="ai_response_truncated">Response truncated</string>
+    <string name="ai_err_model_unavailable">Model is not available for this key (HTTP 404).</string>
+    <string name="key_note_model_unavailable">Not available for this key</string>
+
+    <string name="settings_primary_model">Primary model</string>
+    <string name="settings_primary_model_unset">Not selected yet — choose here or in the AI panel</string>
+    <string name="settings_fallback_models">Fallback models</string>
+    <string name="settings_fallback_models_desc">Tried in this exact order only after all active keys hit quota or are unavailable on the primary model.</string>
+    <string name="settings_fallback_empty">Fallback list is empty. Quota errors are shown without switching models.</string>
+    <string name="settings_fallback_add_label">Add model to fallback list:</string>
+    <string name="cd_move_up">Move up</string>
+    <string name="cd_move_down">Move down</string>
+    <string name="cd_remove_fallback">Remove from fallback list</string>
+
+    <string name="onboarding_step4_title">Choose AI Model</string>
+    <string name="onboarding_step4_desc">Pick a Gemini model for the AI assistant, or skip to choose later when opening the AI panel.</string>
+
+    <!-- AI UI Modernization, Bottom Sheet & Accessibility -->
+    <string name="ai_star_state_normal">AI assistant ready</string>
+    <string name="ai_star_state_open">AI sheet open</string>
+    <string name="ai_star_state_unread">New AI reply available</string>
+    <string name="cd_ai_star_open">Close AI sheet</string>
+    <string name="cd_ai_star_unread">Open AI sheet, unread reply available</string>
+    <string name="ai_status_bar_text">%1$s · %2$s · Context: %3$d</string>
+    <string name="cd_ai_status_bar">AI quick settings: %1$s. Tap to configure model, keys, and context.</string>
+    <string name="ai_quick_settings_title">AI Quick Settings</string>
+    <string name="ai_quick_settings_model_sec">Model</string>
+    <string name="ai_quick_settings_keys_sec">API Keys</string>
+    <string name="ai_quick_settings_keys_summary">%1$d/%2$d keys ready</string>
+    <string name="ai_quick_settings_manage_keys">Manage Keys in Settings</string>
+    <string name="ai_quick_settings_ctx_sec">Terminal Context</string>
+    <string name="ai_ctx_toggle_cwd">Working directory (%1$s)</string>
+    <string name="ai_ctx_toggle_last_error">Last command error</string>
+    <string name="ai_ctx_toggle_last_error_code">Exit code %1$d</string>
+    <string name="ai_ctx_toggle_last_error_none">No recent failed command</string>
+    <string name="ai_ctx_toggle_selected">Selected terminal text</string>
+    <string name="ai_ctx_toggle_selected_chars">%1$d chars attached</string>
+    <string name="ai_ctx_toggle_selected_none">No text selected</string>
+    <string name="ai_ctx_toggle_recent">Recent terminal lines (%1$d lines)</string>
+    <string name="ai_view_full_conversation">View full conversation</string>
+    <string name="cd_ai_sheet_handle">Drag handle: expand or dismiss AI sheet</string>
+    <string name="cd_ai_sheet_scrim">Dismiss AI sheet</string>
+    <string name="cd_ai_clear_selected_ctx">Clear selected text context</string>
+
+    <!-- Privacy, AI Consent, API Key Validation & Vault Recovery -->
+    <string name="ai_err_consent_required">Review and accept AI data consent before sending requests to Gemini.</string>
+    <string name="ai_consent_dialog_title">Share Terminal Context with Gemini AI?</string>
+    <string name="ai_consent_dialog_body_data">When you ask Gemini AI, HackerStudio sends your prompt along with selected context (commands, terminal output, working directory, or error logs).</string>
+    <string name="ai_consent_dialog_body_free_tier">Important: On Google\'s free Gemini API tier, submitted prompts and terminal data may be used and reviewed by Google to improve its products.</string>
+    <string name="ai_consent_dialog_body_redaction">Detected secrets (API keys, tokens, passwords, Bearer headers, and PEM private keys) are automatically replaced with [REDACTED] before sending, though you should avoid sharing sensitive data.</string>
+    <string name="ai_consent_dialog_accept">Accept &amp; Send</string>
+
+    <string name="settings_ai_privacy_title">Privacy &amp; Data Consent</string>
+    <string name="settings_ai_consent_revoke_title">Revoke AI Data Consent</string>
+    <string name="settings_ai_consent_granted_desc">Consent granted. Tap to revoke so future AI requests ask again before sending.</string>
+    <string name="settings_ai_consent_revoked_desc">Consent not granted (or revoked). AI sends nothing until you accept again.</string>
+
+    <string name="vault_err_invalid_format">Invalid Gemini API key format. Keys must start with "AQ." or "AIza", have 20–300 valid characters, and contain no spaces.</string>
+    <string name="vault_err_duplicate_key">This API key is already saved in the vault.</string>
+    <string name="vault_err_corrupted">Corrupted vault (%1$s). Stored encryption keys cannot be decrypted; reset the vault to continue.</string>
+    <string name="settings_summary_keys_vault_corrupted">Corrupted vault — reset required</string>
+    <string name="settings_vault_corrupted_title">Corrupted Vault</string>
+    <string name="settings_vault_corrupted_summary">Corrupted vault — reset required before adding keys</string>
+    <string name="settings_reset_vault_btn">Reset Vault</string>
+    <string name="settings_reset_vault_confirm_title">Reset Corrupted Vault?</string>
+    <string name="settings_reset_vault_confirm_desc">This deletes the corrupted encrypted storage and clears unreachable key entries so you can save fresh API keys safely.</string>
+    <string name="settings_reset_vault_confirm_btn">Reset Vault</string>
+
+    <!-- Terminal Enhancements: Tappable Tokens, Display Flags, Notifications, Export & Fonts -->
+    <string name="cd_share_output">Share terminal output</string>
+    <string name="terminal_sel_share">Share</string>
+    <string name="token_kind_url">URL Address</string>
+    <string name="token_kind_ipv4">IPv4 Address</string>
+    <string name="token_kind_path">File Path</string>
+    <string name="token_action_open">Open Link</string>
+    <string name="token_action_open_confirm">Open in Browser</string>
+    <string name="token_open_url_confirm_prompt">Confirm opening this external link? Address:\n%1$s</string>
+    <string name="token_action_insert_terminal">Insert into terminal</string>
+    <string name="token_open_url_failed">No browser or handler found for this URL.</string>
+
+    <string name="share_output_title">Share Terminal Output</string>
+    <string name="share_output_sensitive_warning">Check output carefully: terminal text or screenshots may contain tokens, passwords, or private paths.</string>
+    <string name="share_output_text_selection">Share Selected Text</string>
+    <string name="share_output_text_screen">Share Visible Text</string>
+    <string name="share_output_image_png">Share PNG Image</string>
+    <string name="share_output_chooser_title">Share terminal output via</string>
+    <string name="share_output_empty">Terminal output is empty.</string>
+    <string name="share_output_failed">Could not open share sheet for this output.</string>
+
+    <string name="font_jetbrains_mono">JetBrains Mono</string>
+    <string name="font_jetbrains_mono_desc">Bundled monospace coding font with crisp punctuation (OFL)</string>
+    <string name="font_system_monospace">System Monospace</string>
+    <string name="font_system_monospace_desc">Default Android system monospace typeface</string>
+
+    <string name="settings_sec_terminal_font">Terminal Typeface</string>
+    <string name="settings_sec_terminal_display">Fullscreen &amp; Display</string>
+    <string name="settings_fullscreen_terminal_title">Terminal fullscreen mode</string>
+    <string name="settings_fullscreen_terminal_desc">Hide system status and navigation bars while viewing Terminal (swipe edge to reveal)</string>
+    <string name="settings_keep_screen_on_title">Keep screen awake</string>
+    <string name="settings_keep_screen_on_desc">Prevent screen timeout while Terminal stays active in the foreground</string>
+    <string name="settings_sec_long_command_notif">Long Command Notifications</string>
+    <string name="settings_notify_long_commands_title">Notify when long command finishes</string>
+    <string name="settings_notify_long_commands_desc">Alert once in the background when a shell command exceeds the duration threshold</string>
+    <string name="settings_notify_needs_permission_title">Needs permission</string>
+    <string name="settings_notify_needs_permission_desc">Notification permission is off. Grant POST_NOTIFICATIONS so background completion alerts can appear.</string>
+    <string name="settings_notify_grant_permission_btn">Grant Notification Permission</string>
+    <string name="settings_notify_threshold_seconds">Notify if command runs longer than %1$d s</string>
+    <string name="notif_perm_dialog_title">Allow Background Completion Alerts?</string>
+    <string name="notif_perm_dialog_body">HackerStudio only posts a quiet alert when a command takes longer than your threshold while the app is in the background.</string>
+    <string name="notif_perm_dialog_allow">Allow</string>
+    <string name="notif_channel_long_cmd_name">Long commands</string>
+    <string name="notif_channel_long_cmd_desc">Quiet alerts when long-running background terminal commands finish</string>
+    <string name="notif_long_command_body">%1$s · exit %2$d</string>
+
+    <!-- Features 6, 7, 8: Natural Language Command, Command Explain Sheet & Output Analysis -->
+    <string name="ai_quick_write_command">Write command</string>
+    <string name="ai_write_command_placeholder">Describe task (e.g. find files &gt; 100 MB)</string>
+    <string name="ai_user_write_command">Write shell command: %1$s</string>
+    <string name="cd_write_command_chip">Write shell command from natural language</string>
+    <string name="ai_btn_explain">Explain</string>
+    <string name="cd_explain_command">Explain command breakdown and side effects</string>
+    <string name="ai_explain_sheet_title">Command Explanation</string>
+    <string name="ai_explain_sheet_subtitle">Breakdown of program, flags, arguments &amp; side effects</string>
+    <string name="ai_explain_sheet_close">Close</string>
+    <string name="ai_explain_sheet_loading">Analyzing command parts…</string>
+    <string name="ai_quick_summarize_output">Summarize output</string>
+    <string name="ai_quick_root_cause">Find root cause</string>
+    <string name="terminal_sel_summarize">Summarize output</string>
+    <string name="terminal_sel_root_cause">Find root cause</string>
+    <string name="ai_user_summarize_selection">Summarize selected terminal output</string>
+    <string name="ai_user_summarize_recent">Summarize recent terminal output</string>
+    <string name="ai_user_root_cause_selection">Find root cause in selected output</string>
+    <string name="ai_user_root_cause_recent">Find root cause in recent terminal output</string>
+    <string name="ai_empty_output_notice">Terminal output is empty; nothing to analyze yet.</string>
+    <string name="ai_key_status_active">Active</string>
+    <string name="ai_select_key">Select key</string>
+    <string name="cd_ai_select_model">Select AI model</string>
+    <string name="cd_ai_select_key">No active API key. Select key in Settings</string>
+    <string name="cd_ai_key_status_active">Active API key: %1$s</string>
+    <string name="ai_empty_title">Ask about commands, errors, or logs</string>
+    <string name="ai_empty_suggestion_1">Check disk space (du -sh *)</string>
+    <string name="ai_empty_suggestion_2">Find recently modified files</string>
+    <string name="ai_empty_suggestion_3">Explain why last build failed</string>
+
+    <!-- AQ./AIza Key Validation, Add Key Dialog & 401/403 Rejection -->
+    <string name="action_paste">Paste</string>
+    <string name="settings_key_saved_snackbar">Key saved</string>
+    <string name="settings_action_test_key">Test key</string>
+    <string name="settings_key_recheck_ok">Key is active and ready</string>
+    <string name="key_err_rejected_by_google">Key rejected by Google. Make sure the key is active and the Gemini API is enabled.</string>
+    <string name="ai_err_key_rejected_google">Key rejected by Google. Make sure the key is active and the Gemini API is enabled. (HTTP %1$d)</string>
+
+    <!-- AI Bottom Sheet Layout Refinement -->
+    <string name="cd_ai_expand_sheet">Expand AI sheet</string>
+    <string name="cd_ai_collapse_sheet">Collapse AI sheet</string>
+    <string name="ai_no_api_key_title">No API key yet</string>
+    <string name="ai_add_key_cta">Add key</string>
+    <string name="ai_empty_suggest_explain_error">Explain last error</string>
+    <string name="ai_error_card_summary">Exit %1$d: %2$s</string>
+    <string name="ai_btn_fix">Fix</string>
+</resources>

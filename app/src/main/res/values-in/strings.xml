@@ -1,0 +1,502 @@
+<resources>
+    <string name="app_name">HackerStudio</string>
+
+    <!-- Accessibility / Content Descriptions -->
+    <string name="cd_new_session">Sesi terminal baru</string>
+    <string name="cd_close_session">Tutup sesi</string>
+    <string name="cd_rename_session">Ubah nama sesi</string>
+    <string name="cd_toggle_ai_panel">Buka atau tutup panel asisten AI</string>
+    <string name="cd_navigate_back">Kembali</string>
+    <string name="cd_copy_command">Salin perintah</string>
+    <string name="cd_insert_command">Sisipkan perintah ke terminal</string>
+    <string name="cd_send_ai_prompt">Kirim pertanyaan ke AI</string>
+    <string name="cd_add_api_key">Tambah kunci API Gemini</string>
+    <string name="cd_delete_api_key">Hapus kunci API</string>
+    <string name="cd_clear_terminal">Bersihkan layar terminal</string>
+    <string name="cd_open_keyboard">Buka papan ketik</string>
+    <string name="cd_split_workspace">Ubah mode layar terpisah</string>
+    <string name="cd_clear_ai_chat">Hapus riwayat chat AI</string>
+    <string name="cd_recheck_key">Periksa ulang kunci API</string>
+    <string name="cd_reset_cooldowns">Atur ulang masa jeda</string>
+    <string name="cd_hide_key">Sembunyikan kunci</string>
+    <string name="cd_show_key">Tampilkan kunci</string>
+
+    <!-- Workspace Navigation -->
+    <string name="nav_terminal">Terminal</string>
+    <string name="nav_files">Berkas</string>
+    <string name="nav_ai">AI</string>
+    <string name="nav_snippets">Buku Skrip</string>
+    <string name="nav_settings">Pengaturan</string>
+    <string name="cd_open_sidebar_menu">Menu navigasi</string>
+    <string name="sidebar_state_open">Menu navigasi terbuka</string>
+    <string name="sidebar_state_closed">Menu navigasi tertutup</string>
+    <string name="cd_sidebar_scrim">Tutup menu navigasi</string>
+    <string name="cd_sidebar_panel">Panel navigasi ruang kerja</string>
+    <string name="sidebar_header_meta">%1$s · v%2$s</string>
+
+    <!-- Session Tabs & Empty State -->
+    <string name="session_rename_title">Ubah Nama Sesi</string>
+    <string name="session_tab_name_label">Nama Tab</string>
+    <string name="action_save">Simpan</string>
+    <string name="action_cancel">Batal</string>
+    <string name="action_dismiss">Tutup</string>
+    <string name="action_skip">Lewati dulu</string>
+    <string name="action_continue">Lanjutkan</string>
+    <string name="action_back">Kembali</string>
+    <string name="action_finish">Buka Studio</string>
+    <string name="empty_sessions_title">Belum Ada Sesi Terminal Aktif</string>
+    <string name="empty_sessions_subtitle">Mulai sesi shell PTY baru untuk menjalankan perintah atau menganalisis galat dengan Gemini AI.</string>
+    <string name="empty_sessions_cta">Sesi Shell Baru</string>
+
+    <!-- Status Bar & Terminal Console -->
+    <string name="status_no_key">Tanpa Kunci</string>
+    <string name="status_delay">Jeda</string>
+    <string name="status_ready_count">%1$d Siap</string>
+    <string name="status_exit_code">KELUAR %1$d</string>
+    <string name="status_explain_short">Jelaskan</string>
+    <string name="status_scrollback_jump">↑ %1$d baris • Kembali ke bawah</string>
+    <string name="status_inserted_draft">Disisipkan ke draf terminal (tidak dijalankan otomatis)</string>
+    <string name="status_paste_truncated">Teks tempelan melebihi batas 64 KB dan dipotong.</string>
+    <string name="status_snippet_confirm_required">Konfirmasi penyisipan skrip sebelum menempelkan karakter kontrol atau baris baru.</string>
+    <string name="status_copied_clipboard">Disalin ke papan klip</string>
+    <string name="status_ai_disabled_banner">Asisten AI dimatikan di Pengaturan</string>
+    <string name="split_second_session_hint">Buka tab sesi kedua untuk menggunakan mode Dua Terminal.</string>
+
+    <!-- AI Panel & Repository -->
+    <string name="ai_panel_title">Gemini Studio AI</string>
+    <string name="ai_no_active_key">Tidak ada kunci aktif</string>
+    <string name="ai_welcome_message">HackerStudio AI siap. Ketuk aksi cepat di atas untuk menjelaskan galat terakhir, menyarankan perintah, atau membuat skrip shell. Perintah tidak pernah dijalankan otomatis.</string>
+    <string name="ai_chat_cleared">Obrolan dibersihkan. Tanyakan apa saja tentang perintah shell, galat, atau skrip.</string>
+    <string name="ai_no_error_recorded">Belum ada perintah gagal di \'%1$s\'. Jalankan perintah dengan kode keluar non-nol (mis. `sh scripts/deploy.sh`) lalu ketuk Jelaskan Galat.</string>
+    <string name="ai_missing_keys_banner">Tambahkan kunci API Gemini di Pengaturan untuk mengaktifkan respons AI langsung.</string>
+    <string name="ai_quick_explain">Jelaskan Galat</string>
+    <string name="ai_quick_suggest">Sarankan Perintah</string>
+    <string name="ai_quick_script">Buat Skrip</string>
+    <string name="ai_thinking">Memproses via %1$s…</string>
+    <string name="ai_prompt_placeholder">Minta perintah atau skrip…</string>
+    <string name="ai_role_error">GALAT</string>
+    <string name="ai_role_assistant">GEMINI AI</string>
+    <string name="ai_btn_insert">Sisipkan</string>
+    <string name="ai_btn_copy">Salin</string>
+    <string name="ai_goal_default">Cari berkas berukuran besar dan periksa penggunaan ruang disk di direktori saat ini</string>
+    <string name="ai_script_default">Cadangkan direktori proyek dengan stempel waktu dan pemeriksaan galat</string>
+    <string name="ai_user_explain_error">Jelaskan galat terakhir (kode %1$d): `%2$s`</string>
+    <string name="ai_user_suggest_cmd">Sarankan perintah: %1$s</string>
+    <string name="ai_user_write_script">Buat skrip shell: %1$s</string>
+    <string name="ai_err_disabled">Asisten AI dimatikan di Pengaturan.</string>
+    <string name="ai_err_quota">Kuota / Batas Laju (HTTP %1$d): %2$s</string>
+    <string name="ai_err_forbidden">Akses Tertunda (HTTP %1$d): %2$s. Kunci masuk masa jeda coba ulang.</string>
+    <string name="ai_err_auth">Galat Kunci API (HTTP %1$d): %2$s</string>
+    <string name="ai_err_network">Permintaan Gagal: %1$s</string>
+    <string name="ai_suggested_fallback">Perintah yang disarankan:</string>
+    <string name="ai_block_shell_script">Skrip Shell #%1$d</string>
+    <string name="ai_block_command">Perintah #%1$d</string>
+    <string name="ai_block_snippet">Skrip %1$s #%2$d</string>
+
+    <!-- KeyManager Status Notes -->
+    <string name="key_note_rechecking">Memeriksa ulang…</string>
+    <string name="key_note_network_retry">Galat jaringan, coba lagi</string>
+    <string name="key_note_forbidden_delay">Coba ulang 403 (%1$dd)</string>
+    <string name="key_note_cooldown">Jeda 429 (%1$dd)</string>
+    <string name="key_note_auth_rejected">Autentikasi ditolak</string>
+    <string name="key_note_disabled">Nonaktif</string>
+    <string name="key_note_active">Aktif</string>
+    <string name="key_note_ready">Siap</string>
+    <string name="key_err_no_keys">Belum ada kunci API Gemini. Tambahkan kunci di Pengaturan.</string>
+    <string name="key_err_all_disabled">Semua kunci API Gemini dinonaktifkan di Pengaturan.</string>
+    <string name="key_err_all_unavailable">Semua kunci API aktif sedang dalam masa jeda atau tidak valid. Tunggu, ketuk Periksa Ulang, atau tambah kunci lain.</string>
+    <string name="key_err_missing_secret">Kunci terenkripsi tidak tersedia</string>
+    <string name="key_err_network_generic">Galat jaringan</string>
+
+    <!-- Tema, Tata Letak, Bahasa -->
+    <string name="theme_hacker_pro">Hacker Pro</string>
+    <string name="theme_hacker_pro_desc">Konsol gelap presisi • Sudut tajam 4dp, dominan mono, kursor blok</string>
+    <string name="theme_cyberpunk">Cyberpunk Futuristik</string>
+    <string name="theme_cyberpunk_desc">Panel sudut terpangkas • Pendar cyan/magenta, judul lebar, kursor garis bawah</string>
+    <string name="cd_theme_preview_card">Opsi tema %1$s: %2$s</string>
+    <string name="theme_preview_prompt_cmd">%1$s ls -la</string>
+    <string name="theme_preview_card_cmd">git status -sb</string>
+
+    <string name="layout_standard">Standar</string>
+    <string name="layout_standard_desc">ESC, TAB, CTRL, ALT, panah, | ~ / -</string>
+    <string name="layout_developer">Pro Pengembang</string>
+    <string name="layout_developer_desc">Tombol standar + { } [ ] $ &amp; &gt;</string>
+    <string name="layout_compact">Ringkas</string>
+    <string name="layout_compact_desc">Navigasi inti &amp; simbol pipa</string>
+
+    <string name="routing_round_robin">Round-Robin</string>
+    <string name="routing_round_robin_desc">Bergilir ke setiap kunci aktif pada tiap permintaan</string>
+    <string name="routing_failover">Failover Utama</string>
+    <string name="routing_failover_desc">Memakai kunci teratas hingga terkena jeda HTTP 429/403</string>
+
+    <string name="lang_system">Ikuti sistem</string>
+    <string name="lang_indonesian">Bahasa Indonesia</string>
+    <string name="lang_english">English</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Pengaturan Ruang Kerja</string>
+    <string name="settings_group_ai">Asisten AI</string>
+    <string name="settings_group_keys">Kunci API</string>
+    <string name="settings_group_appearance">Tampilan</string>
+    <string name="settings_group_terminal">Terminal</string>
+    <string name="settings_group_language">Bahasa</string>
+    <string name="settings_group_data">Data &amp; Privasi</string>
+    <string name="settings_group_about">Tentang</string>
+
+    <string name="settings_summary_ai_off">Nonaktif</string>
+    <string name="settings_summary_ai_with_fallback">%1$s · %2$d cadangan</string>
+    <string name="settings_summary_keys_empty">Belum ada kunci</string>
+    <string name="settings_summary_keys_vault_unavailable">Brankas terenkripsi tidak tersedia</string>
+    <string name="settings_summary_keys_single">1 kunci</string>
+    <string name="settings_summary_keys_many">%1$d kunci</string>
+    <string name="settings_summary_keys_cooldown">%1$d kunci · %2$d cooldown</string>
+    <string name="settings_summary_keys_attention">%1$d kunci · %2$d galat</string>
+    <string name="settings_summary_appearance_reduced">%1$s · Efek dikurangi</string>
+    <string name="settings_summary_appearance_normal">%1$s · font %2$ssp</string>
+    <string name="settings_summary_terminal">Tombol ekstra: %1$s</string>
+    <string name="settings_summary_about">Versi %1$s</string>
+
+    <string name="settings_vault_error_title">Galat Penyimpanan Kunci Terenkripsi</string>
+    <string name="settings_sec_general">Umum</string>
+    <string name="settings_sec_vault_status">Brankas &amp; Kunci Aktif</string>
+    <string name="settings_sec_theme">Tema Studio</string>
+    <string name="settings_sec_effects_font">Efek &amp; Font Terminal</string>
+    <string name="settings_sec_danger_zone">Zona Berbahaya</string>
+    <string name="settings_ai_toggle_title">Panel Samping AI</string>
+    <string name="settings_ai_toggle_desc">Tampilkan asisten Gemini yang dapat dilipat di ruang kerja</string>
+    <string name="settings_active_key_label">Kunci Aktif: %1$s</string>
+    <string name="settings_none">Tidak ada</string>
+    <string name="settings_vault_ready_summary">%1$d/%2$d siap pakai • Android Keystore AES-256</string>
+    <string name="settings_vault_unavailable_summary">Brankas terenkripsi tidak tersedia — penyimpanan kunci dimatikan</string>
+    <string name="settings_sec_api_keys">Kunci API Gemini (%1$d)</string>
+    <string name="settings_empty_keys_title">Belum ada kunci API Gemini tersimpan.</string>
+    <string name="settings_empty_keys_desc">Tambahkan beberapa kunci untuk rotasi otomatis &amp; failover HTTP 429/403.</string>
+    <string name="settings_add_key_btn">Tambah Kunci API Gemini</string>
+    <string name="settings_vault_disabled_btn">Penyimpanan Terenkripsi Tidak Tersedia</string>
+    <string name="settings_key_metrics">%1$s • req:%2$d err:%3$d</string>
+    <string name="settings_btn_recheck">Periksa Ulang</string>
+    <string name="settings_btn_checking">Memeriksa…</string>
+    <string name="settings_advanced_title">Lanjutan</string>
+    <string name="settings_advanced_desc">Strategi perutean kunci &amp; jeda coba ulang HTTP 429/403</string>
+    <string name="cd_expand_section">Buka atau lipat bagian</string>
+    <string name="settings_routing_strategy">Strategi Perutean Kunci</string>
+    <string name="settings_cooldown_label">Jeda Coba Ulang 429 / 403: %1$dd</string>
+    <string name="settings_delete_key_title">Hapus Kunci API?</string>
+    <string name="settings_delete_key_desc">Hapus kunci "%1$s" dari penyimpanan Android Keystore? Anda dapat menambahkannya lagi nanti.</string>
+    <string name="settings_delete_key_confirm">Hapus Kunci</string>
+    <string name="settings_app_theme">Tema Studio (berlaku untuk UI &amp; terminal)</string>
+    <string name="settings_reduce_effects_title">Kurangi efek</string>
+    <string name="settings_reduce_effects_desc">Matikan pendar neon, indikator berdenyut, dan transisi gerak (bawaan mengikuti pengaturan animasi sistem)</string>
+    <string name="settings_font_size">Ukuran Font Terminal: %1$ssp</string>
+    <string name="terminal_font_zoom_indicator">%1$s sp</string>
+    <string name="settings_font_preview">u0_a137@termux:~%1$s ls -la | grep .sh</string>
+    <string name="settings_extra_keys_layout">Tata Letak Tombol Ekstra</string>
+    <string name="settings_language_desc">Pilih bahasa antarmuka aplikasi dan respons Gemini AI.</string>
+    <string name="settings_data_empty">Belum ada pengaturan data tambahan di sini.</string>
+    <string name="settings_about_app_desc">Studio terminal ruang kerja &amp; asisten Gemini AI</string>
+    <string name="settings_about_version_title">Versi Aplikasi</string>
+    <string name="settings_about_version_value">v%1$s (build %2$d)</string>
+    <string name="settings_about_package_title">ID Paket</string>
+    <string name="settings_reopen_onboarding">Jalankan Panduan Awal</string>
+    <string name="settings_reopen_onboarding_desc">Buka kembali panduan penyiapan awal untuk bahasa, tema, kunci, dan model</string>
+    <string name="settings_reopen_onboarding_confirm_title">Jalankan Panduan Awal Lagi?</string>
+    <string name="settings_reopen_onboarding_confirm_desc">Ini akan membuka kembali panduan penyiapan awal. Kunci API dan preferensi Anda tetap tersimpan.</string>
+    <string name="settings_reopen_onboarding_confirm_btn">Buka Panduan</string>
+    <string name="dialog_add_key_title">Tambah Kunci API Gemini</string>
+    <string name="dialog_add_key_desc">Disimpan ketat di Android Keystore EncryptedSharedPreferences. Tidak pernah dicatat atau disimpan polos.</string>
+    <string name="dialog_add_key_label">Label (mis. Utama, Cadangan-2)</string>
+    <string name="dialog_add_key_secret">Kunci API Gemini</string>
+    <string name="dialog_add_key_save">Simpan Kunci</string>
+    <string name="vault_err_empty_key">Kunci API tidak boleh kosong.</string>
+    <string name="vault_err_commit">EncryptedSharedPreferences gagal menyimpan kunci.</string>
+    <string name="vault_err_unavailable">Penyimpanan Keystore terenkripsi tidak tersedia (%1$s). Menolak menyimpan kunci tanpa enkripsi.</string>
+
+    <!-- Files & Snippets Placeholders -->
+    <string name="files_title">Berkas Ruang Kerja</string>
+    <string name="files_subtitle">Pratinjau pohon berkas lokal Termux • Hubungkan Termux Storage / SAF untuk penjelajahan langsung</string>
+    <string name="files_open_in_terminal">Periksa di Terminal</string>
+    <string name="snippets_insert">Sisipkan</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_badge">WORKSPACE STUDIO</string>
+    <string name="onboarding_step_indicator">Langkah %1$d dari %2$d</string>
+    <string name="onboarding_step1_title">Pilih Bahasa Anda</string>
+    <string name="onboarding_step1_desc">HackerStudio menyesuaikan seluruh label ruang kerja dan jawaban Gemini AI dengan bahasa pilihan Anda.</string>
+    <string name="onboarding_step2_title">Pilih Tema Studio</string>
+    <string name="onboarding_step2_desc">Pilih bentuk panel, tipografi, dan palet terminal terpadu. Dapat diubah kapan saja lewat Palet Perintah.</string>
+    <string name="onboarding_step3_title">Hubungkan Kunci API Gemini</string>
+    <string name="onboarding_step3_desc">Kunci disegel di Android Keystore EncryptedSharedPreferences. Tambahkan sekarang atau lewati untuk nanti.</string>
+    <string name="onboarding_key_added_badge">Kunci terenkripsi ditambahkan: %1$s</string>
+
+    <!-- Stage 3: Streaming AI, Stop & Retry -->
+    <string name="cd_stop_ai">Hentikan pembuatan AI</string>
+    <string name="cd_retry_ai">Coba ulang permintaan AI</string>
+    <string name="cd_prompt_history">Buka riwayat perintah AI</string>
+    <string name="cd_save_snippet">Simpan perintah ke Buku Skrip</string>
+    <string name="cd_dismiss_chip">Tutup</string>
+    <string name="ai_btn_retry">Coba Lagi</string>
+    <string name="ai_btn_save">Simpan ke Buku Skrip</string>
+    <string name="ai_streaming_badge">Mengalirkan…</string>
+    <string name="ai_stream_interrupted">Aliran terputus: %1$s</string>
+    <string name="ai_stream_stopped">Pembuatan dihentikan oleh pengguna.</string>
+
+    <!-- Stage 3: Terminal Fix with AI & Selection Toolbar -->
+    <string name="terminal_chip_explain">Jelaskan</string>
+    <string name="terminal_chip_fix_ai">Perbaiki dengan AI</string>
+    <string name="terminal_sel_copy">Salin</string>
+    <string name="terminal_sel_ask_ai">Tanya AI</string>
+    <string name="terminal_sel_explain">Jelaskan</string>
+    <string name="ai_user_fix_error">Perbaiki galat terakhir (kode %1$d): `%2$s`</string>
+    <string name="ai_user_explain_selection">Jelaskan teks terminal yang dipilih</string>
+
+    <!-- Stage 3: Context Chips -->
+
+    <!-- Stage 3: Command Safety Classifier -->
+    <string name="risk_badge_low">RENDAH</string>
+    <string name="risk_badge_medium">SEDANG</string>
+    <string name="risk_badge_high">RISIKO TINGGI</string>
+    <string name="risk_badge_low_bracket">[RENDAH]</string>
+    <string name="risk_badge_medium_bracket">[SEDANG]</string>
+    <string name="risk_badge_high_bracket">[TINGGI]</string>
+    <string name="risk_reason_rm_root">Penghapusan paksa rekursif (rm -rf) menargetkan root, home, atau wildcard dan dapat merusak berkas penting.</string>
+    <string name="risk_reason_dd_device">Penulisan disk langsung (dd) ke perangkat blok dapat menimpa partisi atau merusak penyimpanan.</string>
+    <string name="risk_reason_mkfs">Perintah format (mkfs / wipefs / fdisk) menghapus sistem berkas secara permanen.</string>
+    <string name="risk_reason_chmod_777">chmod -R 777 memberikan izin tulis terbuka ke semua pengguna di seluruh direktori.</string>
+    <string name="risk_reason_pipe_shell">Menyalurkan skrip jarak jauh langsung ke sh/bash mengeksekusi kode tak terverifikasi.</string>
+    <string name="risk_reason_fork_bomb">Pola fork bomb dapat menghabiskan proses sistem dan membekukan perangkat.</string>
+    <string name="risk_reason_device_redirect">Mengarahkan output langsung ke perangkat blok atau sistem dapat merusak data.</string>
+    <string name="risk_reason_find_delete">find -delete menghapus berkas yang cocok secara permanen tanpa konfirmasi.</string>
+    <string name="risk_reason_root_perm">chmod/chown rekursif pada root (/) mengubah izin atau kepemilikan sistem secara luas.</string>
+    <string name="risk_reason_too_long">Perintah melebihi 4.000 karakter; diklasifikasikan minimal risiko SEDANG untuk ditinjau.</string>
+    <string name="risk_reason_multiline_or_control">Skrip berisi beberapa baris atau karakter kontrol. Konfirmasi untuk menyisipkan ke draf tanpa menjalankan.</string>
+    <string name="risk_reason_privilege">Berjalan dengan hak akses root yang ditinggikan (sudo / su).</string>
+    <string name="risk_reason_pkg_remove">Menghapus atau membersihkan paket terpasang.</string>
+    <string name="risk_reason_overwrite">Menimpa isi berkas target melalui pengalihan &gt;.</string>
+    <string name="risk_dialog_title">Konfirmasi Sisipkan Perintah Berisiko Tinggi</string>
+    <string name="risk_dialog_warning">Perintah ini diklasifikasikan sebagai RISIKO TINGGI. HackerStudio hanya menyisipkannya ke buffer draf terminal (TIDAK dijalankan otomatis), periksa saksama sebelum menekan Enter.</string>
+    <string name="risk_dialog_confirm">Sisipkan Draf</string>
+
+    <!-- Tahap 3: Pustaka Buku Skrip & Riwayat Perintah -->
+    <string name="snippets_lib_title">Buku Skrip</string>
+    <string name="snippets_search_hint">Cari di Buku Skrip…</string>
+    <string name="snippets_filter_all">Semua</string>
+    <string name="snippets_new_btn">Skrip baru</string>
+    <string name="snippets_export_btn">Ekspor JSON</string>
+    <string name="snippets_import_btn">Impor JSON</string>
+    <string name="snippets_empty_library_title">Belum ada skrip</string>
+    <string name="snippets_empty_library_desc">Simpan perintah dari kartu Gemini AI atau buat skrip pertama untuk disisipkan cepat ke terminal.</string>
+    <string name="snippets_create_first_btn">Buat skrip pertama</string>
+    <string name="snippets_empty_search_title">Tidak ada skrip yang cocok</string>
+    <string name="snippets_empty_search_desc">Coba kata kunci lain atau hapus filter tag yang dipilih.</string>
+    <string name="snippets_clear_filters_btn">Hapus filter</string>
+    <string name="snippets_dialog_create_title">Skrip baru</string>
+    <string name="snippets_dialog_edit_title">Ubah skrip</string>
+    <string name="snippets_dialog_save_from_ai_title">Simpan perintah ke Buku Skrip</string>
+    <string name="snippets_field_title">Judul</string>
+    <string name="snippets_field_command">Perintah Shell atau Skrip</string>
+    <string name="snippets_field_tags">Tag (pisahkan dengan koma, mis. git, disk)</string>
+    <string name="snippets_saved_banner">Disimpan ke Buku Skrip</string>
+    <string name="snippets_deleted_banner">Skrip dihapus</string>
+    <string name="snippets_exported_banner">Mengekspor %1$d skrip ke JSON</string>
+    <string name="snippets_imported_banner">Mengimpor %1$d skrip</string>
+    <string name="snippets_io_error_banner">Operasi berkas Buku Skrip gagal: %1$s</string>
+    <string name="snippets_import_err_file_size">Impor ditolak: ukuran berkas melebihi batas 1 MB.</string>
+    <string name="snippets_import_err_count">Impor ditolak: melebihi batas maksimum %1$d skrip.</string>
+    <string name="snippets_import_err_title_length">Impor ditolak: judul skrip #%1$d melebihi %2$d karakter.</string>
+    <string name="snippets_import_err_command_length">Impor ditolak: perintah skrip #%1$d melebihi %2$d karakter.</string>
+    <string name="snippets_import_err_tags_count">Impor ditolak: skrip #%1$d melebihi %2$d tag.</string>
+    <string name="action_edit">Ubah</string>
+    <string name="action_delete">Hapus</string>
+    <string name="snippets_delete_title">Hapus skrip?</string>
+    <string name="snippets_delete_desc">Hapus \"%1$s\" dari Buku Skrip? Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="cd_search_scriptbook">Cari di Buku Skrip</string>
+    <string name="cd_clear_search">Hapus pencarian</string>
+    <string name="cd_scriptbook_more">Menu impor dan ekspor Buku Skrip</string>
+    <string name="cd_script_card">Buka detail skrip %1$s</string>
+    <string name="cd_script_actions">Aksi lainnya untuk %1$s</string>
+
+    <string name="history_title">Riwayat Perintah AI</string>
+    <string name="history_subtitle">%1$d perintah terakhir • Ketuk untuk memakai ulang</string>
+    <string name="history_clear_all">Hapus Semua</string>
+    <string name="history_empty">Belum ada riwayat perintah. Tanyakan sesuatu ke Gemini AI untuk mulai menyimpan riwayat.</string>
+
+    <!-- Safety, Paste & Stream Safeguard Fixes -->
+    <string name="status_multiline_paste_copied">Mode bracketed paste nonaktif; perintah multibaris disalin ke papan klip agar tidak otomatis dijalankan.</string>
+    <string name="risk_heuristic_disclaimer">Pemeriksaan heuristik, bukan jaminan</string>
+    <string name="risk_info_dialog_title">Pemeriksaan Keamanan Perintah</string>
+    <string name="risk_info_low_desc">Tidak ada pola destruktif yang terdeteksi. Selalu periksa perintah sebelum menekan Enter.</string>
+    <string name="risk_info_medium_desc">Menggunakan hak akses tinggi, penghapusan paket, atau pengalihan penimpaan berkas.</string>
+    <string name="risk_info_ok">Mengerti</string>
+    <string name="ai_response_blocked_or_empty">Respons diblokir atau kosong</string>
+
+    <!-- Pilihan Model Gemini, Failover & Penanganan Respons -->
+    <string name="model_desc_hydrogen">Kualitas tertinggi</string>
+    <string name="model_desc_3_8_flash">Seimbang (kecepatan &amp; kualitas)</string>
+    <string name="model_desc_3_6_flash">Seimbang</string>
+    <string name="model_desc_3_5_flash_lite">Paling hemat kuota</string>
+
+    <string name="ai_choose_model_title">Pilih model AI</string>
+    <string name="ai_choose_model_desc">Pilih model Gemini utama sebelum mengirim prompt pertama.</string>
+    <string name="ai_err_select_model_first">Pilih model AI terlebih dahulu sebelum mengirim prompt.</string>
+    <string name="ai_model_unselected_short">Belum dipilih</string>
+    <string name="ai_response_truncated">Jawaban terpotong</string>
+    <string name="ai_err_model_unavailable">Model tidak tersedia untuk kunci ini (HTTP 404).</string>
+    <string name="key_note_model_unavailable">Tidak tersedia untuk kunci ini</string>
+
+    <string name="settings_primary_model">Model utama</string>
+    <string name="settings_primary_model_unset">Belum dipilih — pilih di sini atau di panel AI</string>
+    <string name="settings_fallback_models">Model cadangan</string>
+    <string name="settings_fallback_models_desc">Dipakai sesuai urutan hanya bila semua kunci aktif kehabisan kuota atau model utama tidak tersedia.</string>
+    <string name="settings_fallback_empty">Daftar model cadangan kosong. Galat kuota ditampilkan tanpa pindah model.</string>
+    <string name="settings_fallback_add_label">Tambahkan model ke cadangan:</string>
+    <string name="cd_move_up">Naikkan urutan</string>
+    <string name="cd_move_down">Turunkan urutan</string>
+    <string name="cd_remove_fallback">Hapus dari cadangan</string>
+
+    <string name="onboarding_step4_title">Pilih Model AI</string>
+    <string name="onboarding_step4_desc">Pilih model Gemini untuk asisten AI, atau lewati untuk memilih nanti saat membuka panel AI.</string>
+
+    <!-- Modernisasi UI AI, Bottom Sheet & Aksesibilitas -->
+    <string name="ai_star_state_normal">Asisten AI siap</string>
+    <string name="ai_star_state_open">Panel AI terbuka</string>
+    <string name="ai_star_state_unread">Ada balasan AI baru</string>
+    <string name="cd_ai_star_open">Tutup panel AI</string>
+    <string name="cd_ai_star_unread">Buka panel AI, ada balasan baru belum dibaca</string>
+    <string name="ai_status_bar_text">%1$s · %2$s · Konteks: %3$d</string>
+    <string name="cd_ai_status_bar">Pengaturan cepat AI: %1$s. Ketuk untuk mengatur model, kunci, dan konteks.</string>
+    <string name="ai_quick_settings_title">Pengaturan Cepat AI</string>
+    <string name="ai_quick_settings_model_sec">Model</string>
+    <string name="ai_quick_settings_keys_sec">Kunci API</string>
+    <string name="ai_quick_settings_keys_summary">%1$d/%2$d kunci siap</string>
+    <string name="ai_quick_settings_manage_keys">Kelola Kunci di Pengaturan</string>
+    <string name="ai_quick_settings_ctx_sec">Konteks Terminal</string>
+    <string name="ai_ctx_toggle_cwd">Direktori aktif (%1$s)</string>
+    <string name="ai_ctx_toggle_last_error">Galat perintah terakhir</string>
+    <string name="ai_ctx_toggle_last_error_code">Kode keluar %1$d</string>
+    <string name="ai_ctx_toggle_last_error_none">Belum ada perintah gagal</string>
+    <string name="ai_ctx_toggle_selected">Teks terminal terpilih</string>
+    <string name="ai_ctx_toggle_selected_chars">%1$d karakter terlampir</string>
+    <string name="ai_ctx_toggle_selected_none">Tidak ada teks terpilih</string>
+    <string name="ai_ctx_toggle_recent">Baris output terakhir (%1$d baris)</string>
+    <string name="ai_view_full_conversation">Lihat percakapan penuh</string>
+    <string name="cd_ai_sheet_handle">Gagang tarik: perluas atau tutup panel AI</string>
+    <string name="cd_ai_sheet_scrim">Tutup panel AI</string>
+    <string name="cd_ai_clear_selected_ctx">Hapus konteks teks terpilih</string>
+
+    <!-- Privasi, Persetujuan AI, Validasi Kunci API & Pemulihan Vault -->
+    <string name="ai_err_consent_required">Setujui pemberitahuan pengiriman data AI sebelum mengirim permintaan ke Gemini.</string>
+    <string name="ai_consent_dialog_title">Kirim Konteks Terminal ke Gemini AI?</string>
+    <string name="ai_consent_dialog_body_data">Saat Anda bertanya ke Gemini AI, HackerStudio mengirim prompt beserta konteks yang diaktifkan (perintah, keluaran terminal, direktori kerja, atau error).</string>
+    <string name="ai_consent_dialog_body_free_tier">Penting: Pada tingkat gratis Google Gemini API, Google dapat memakai dan meninjau data serta perintah yang dikirimkan sesuai ketentuannya.</string>
+    <string name="ai_consent_dialog_body_redaction">Pola rahasia terdeteksi (kunci API, token, password, header Bearer, dan kunci privat PEM) otomatis diganti menjadi [REDACTED] sebelum dikirim, namun tetap hindari mengirim data sensitif.</string>
+    <string name="ai_consent_dialog_accept">Setujui &amp; Kirim</string>
+
+    <string name="settings_ai_privacy_title">Privasi &amp; Persetujuan Data</string>
+    <string name="settings_ai_consent_revoke_title">Cabut Persetujuan Data AI</string>
+    <string name="settings_ai_consent_granted_desc">Persetujuan aktif. Ketuk untuk mencabut agar permintaan AI berikutnya meminta izin ulang.</string>
+    <string name="settings_ai_consent_revoked_desc">Persetujuan belum diberikan (atau telah dicabut). AI tidak akan mengirim apa pun sebelum Anda setuju kembali.</string>
+
+    <string name="vault_err_invalid_format">Format kunci API Gemini tidak valid. Kunci harus diawali "AQ." atau "AIza", panjang 20–300 karakter yang valid, dan tanpa spasi.</string>
+    <string name="vault_err_duplicate_key">Kunci API ini sudah tersimpan di dalam vault.</string>
+    <string name="vault_err_corrupted">Vault rusak (%1$s). Penyimpanan terenkripsi gagal didekripsi; reset vault untuk memulihkan.</string>
+    <string name="settings_summary_keys_vault_corrupted">Vault rusak — perlu reset</string>
+    <string name="settings_vault_corrupted_title">Vault Rusak</string>
+    <string name="settings_vault_corrupted_summary">Vault rusak — reset vault diperlukan sebelum menambah kunci</string>
+    <string name="settings_reset_vault_btn">Reset Vault</string>
+    <string name="settings_reset_vault_confirm_title">Reset Vault yang Rusak?</string>
+    <string name="settings_reset_vault_confirm_desc">Tindakan ini menghapus penyimpanan terenkripsi yang rusak dan membersihkan daftar kunci lama agar Anda dapat menyimpan kunci API baru dengan aman.</string>
+    <string name="settings_reset_vault_confirm_btn">Reset Vault</string>
+
+    <!-- Peningkatan Terminal: Tautan Ketuk, Layar Penuh, Notifikasi Perintah, Ekspor & Font -->
+    <string name="cd_share_output">Bagikan keluaran terminal</string>
+    <string name="terminal_sel_share">Bagikan</string>
+    <string name="token_kind_url">Alamat URL</string>
+    <string name="token_kind_ipv4">Alamat IPv4</string>
+    <string name="token_kind_path">Jalur Berkas</string>
+    <string name="token_action_open">Buka</string>
+    <string name="token_action_open_confirm">Buka di Browser</string>
+    <string name="token_open_url_confirm_prompt">Konfirmasi sebelum membuka tautan eksternal ini:\n%1$s</string>
+    <string name="token_action_insert_terminal">Sisipkan ke terminal</string>
+    <string name="token_open_url_failed">Tidak ditemukan aplikasi pembuka untuk URL ini.</string>
+
+    <string name="share_output_title">Bagikan Keluaran Terminal</string>
+    <string name="share_output_sensitive_warning">Periksa sebelum berbagi: keluaran atau tangkapan layar terminal mungkin berisi token, kata sandi, atau jalur sensitif.</string>
+    <string name="share_output_text_selection">Bagikan Teks Terpilih</string>
+    <string name="share_output_text_screen">Bagikan Teks Layar</string>
+    <string name="share_output_image_png">Bagikan Gambar PNG</string>
+    <string name="share_output_chooser_title">Bagikan keluaran terminal lewat</string>
+    <string name="share_output_empty">Keluaran terminal kosong.</string>
+    <string name="share_output_failed">Gagal membuka menu berbagi untuk keluaran ini.</string>
+
+    <string name="font_jetbrains_mono">JetBrains Mono</string>
+    <string name="font_jetbrains_mono_desc">Font monospace bawaan aplikasi yang tajam untuk kode (OFL)</string>
+    <string name="font_system_monospace">Monospace Sistem</string>
+    <string name="font_system_monospace_desc">Jenis huruf monospace standar perangkat Android</string>
+
+    <string name="settings_sec_terminal_font">Pilihan Font Terminal</string>
+    <string name="settings_sec_terminal_display">Layar Penuh &amp; Tampilan</string>
+    <string name="settings_fullscreen_terminal_title">Layar penuh terminal</string>
+    <string name="settings_fullscreen_terminal_desc">Sembunyikan bilah status dan navigasi sistem saat di layar Terminal (geser tepi untuk menampilkan)</string>
+    <string name="settings_keep_screen_on_title">Jaga layar tetap menyala</string>
+    <string name="settings_keep_screen_on_desc">Cegah layar mati selama layar Terminal tampil dan aplikasi berada di latar depan</string>
+    <string name="settings_sec_long_command_notif">Notifikasi Perintah Panjang</string>
+    <string name="settings_notify_long_commands_title">Beri tahu bila perintah panjang selesai</string>
+    <string name="settings_notify_long_commands_desc">Tampilkan satu notifikasi saat perintah selesai di latar belakang melebihi ambang waktu</string>
+    <string name="settings_notify_needs_permission_title">Perlu izin</string>
+    <string name="settings_notify_needs_permission_desc">Izin notifikasi mati. Berikan izin POST_NOTIFICATIONS agar notifikasi selesai perintah bisa tampil.</string>
+    <string name="settings_notify_grant_permission_btn">Izinkan Notifikasi</string>
+    <string name="settings_notify_threshold_seconds">Beri tahu bila perintah lebih dari %1$d detik</string>
+    <string name="notif_perm_dialog_title">Izinkan Notifikasi Perintah Selesai?</string>
+    <string name="notif_perm_dialog_body">HackerStudio hanya mengirim satu notifikasi senyap saat perintah selesai melebihi ambang waktu ketika aplikasi berada di latar belakang.</string>
+    <string name="notif_perm_dialog_allow">Izinkan</string>
+    <string name="notif_channel_long_cmd_name">Perintah panjang</string>
+    <string name="notif_channel_long_cmd_desc">Notifikasi senyap saat perintah terminal yang berjalan lama selesai di latar belakang</string>
+    <string name="notif_long_command_body">%1$s · keluar %2$d</string>
+
+    <!-- Fitur 6, 7, 8: Bahasa Alami ke Perintah, Jelaskan Perintah & Analisis Keluaran -->
+    <string name="ai_quick_write_command">Tulis perintah</string>
+    <string name="ai_write_command_placeholder">Jelaskan tujuan (mis. cari file &gt; 100 MB)</string>
+    <string name="ai_user_write_command">Tulis perintah shell: %1$s</string>
+    <string name="cd_write_command_chip">Tulis perintah shell dari bahasa alami</string>
+    <string name="ai_btn_explain">Jelaskan</string>
+    <string name="cd_explain_command">Jelaskan bagian perintah dan efek sampingnya</string>
+    <string name="ai_explain_sheet_title">Penjelasan Perintah</string>
+    <string name="ai_explain_sheet_subtitle">Rincian program, bendera, argumen &amp; efek samping</string>
+    <string name="ai_explain_sheet_close">Tutup</string>
+    <string name="ai_explain_sheet_loading">Menganalisis bagian perintah…</string>
+    <string name="ai_quick_summarize_output">Ringkas keluaran</string>
+    <string name="ai_quick_root_cause">Cari akar masalah</string>
+    <string name="terminal_sel_summarize">Ringkas keluaran</string>
+    <string name="terminal_sel_root_cause">Cari akar masalah</string>
+    <string name="ai_user_summarize_selection">Ringkas keluaran terminal terpilih</string>
+    <string name="ai_user_summarize_recent">Ringkas keluaran terminal terbaru</string>
+    <string name="ai_user_root_cause_selection">Cari akar masalah dari keluaran terpilih</string>
+    <string name="ai_user_root_cause_recent">Cari akar masalah dari keluaran terminal terbaru</string>
+    <string name="ai_empty_output_notice">Keluaran terminal kosong; belum ada yang bisa dianalisis.</string>
+    <string name="ai_key_status_active">Aktif</string>
+    <string name="ai_select_key">Pilih kunci</string>
+    <string name="cd_ai_select_model">Pilih model AI</string>
+    <string name="cd_ai_select_key">Tidak ada kunci API aktif. Pilih kunci di Pengaturan</string>
+    <string name="cd_ai_key_status_active">Kunci API aktif: %1$s</string>
+    <string name="ai_empty_title">Tanyakan perintah, galat, atau log</string>
+    <string name="ai_empty_suggestion_1">Cek pemakaian disk (du -sh *)</string>
+    <string name="ai_empty_suggestion_2">Cari berkas yang baru diubah</string>
+    <string name="ai_empty_suggestion_3">Jelaskan penyebab build gagal</string>
+
+    <!-- Validasi Kunci AQ./AIza, Dialog Tambah Kunci & Penolakan 401/403 -->
+    <string name="action_paste">Tempel</string>
+    <string name="settings_key_saved_snackbar">Kunci disimpan</string>
+    <string name="settings_action_test_key">Uji kunci</string>
+    <string name="settings_key_recheck_ok">Kunci aktif dan siap digunakan</string>
+    <string name="key_err_rejected_by_google">Kunci ditolak oleh Google. Pastikan kunci aktif dan API Gemini diaktifkan.</string>
+    <string name="ai_err_key_rejected_google">Kunci ditolak oleh Google. Pastikan kunci aktif dan API Gemini diaktifkan. (HTTP %1$d)</string>
+
+    <!-- Perapihan Tata Letak Panel AI -->
+    <string name="cd_ai_expand_sheet">Perluas panel AI</string>
+    <string name="cd_ai_collapse_sheet">Ciutkan panel AI</string>
+    <string name="ai_no_api_key_title">Belum ada kunci API</string>
+    <string name="ai_add_key_cta">Tambah kunci</string>
+    <string name="ai_empty_suggest_explain_error">Jelaskan galat terakhir</string>
+    <string name="ai_error_card_summary">Keluar %1$d: %2$s</string>
+    <string name="ai_btn_fix">Perbaiki</string>
+</resources>
