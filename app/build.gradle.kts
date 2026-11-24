@@ -74,6 +74,10 @@ android {
     compose = true
     buildConfig = true
   }
+  lint {
+    // This app is sideloaded, not published on Google Play, and Termux requires targetSdk 28.
+    disable += "ExpiredTargetSdkVersion"
+  }
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -198,5 +202,4 @@ tasks.matching { it.name == "assembleDebug" }.configureEach {
 tasks.matching { it.name == "assembleFast" }.configureEach {
   finalizedBy(syncRootFastApk)
 }
-
 
