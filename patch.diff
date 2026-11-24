@@ -1,0 +1,44 @@
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+index c14ae7a..9555991 100644
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -15,7 +15,10 @@ android {
+   defaultConfig {
+     applicationId = "com.termux"
+     minSdk = 24
+-    targetSdk = 36
++    // Termux bootstrap programs live in the app data directory and are executed from there.
++    // Android 10+ forbids that for apps targeting API 29 or higher, so this must stay at 28.
++    // (An app targeting 28 cannot be published on Google Play; this app is sideloaded.)
++    targetSdk = 28
+     versionCode = 1
+     versionName = "1.0"
+ 
+@@ -142,6 +145,8 @@ dependencies {
+   implementation(libs.okhttp)
+   // implementation(libs.play.services.location)
+   implementation(libs.retrofit)
++  implementation(libs.termux.terminal.emulator)
++  implementation(libs.termux.terminal.view)
+   testImplementation(libs.androidx.compose.ui.test.junit4)
+   testImplementation(libs.androidx.core)
+   testImplementation(libs.androidx.junit)
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+index 143795b..ebab6da 100644
+--- a/gradle/libs.versions.toml
++++ b/gradle/libs.versions.toml
+@@ -1,4 +1,5 @@
+ [versions]
++termuxApp = "v0.118.0"
+ agp = "9.1.1"
+ coreKtx = "1.18.0"
+ junit = "4.13.2"
+@@ -46,6 +47,8 @@ profileinstaller = "1.4.1"
+ 
+ 
+ [libraries]
++termux-terminal-emulator = { group = "com.github.termux.termux-app", name = "terminal-emulator", version.ref = "termuxApp" }
++termux-terminal-view = { group = "com.github.termux.termux-app", name = "terminal-view", version.ref = "termuxApp" }
+ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+ junit = { group = "junit", name = "junit", version.ref = "junit" }
