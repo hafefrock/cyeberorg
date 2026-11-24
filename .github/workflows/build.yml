@@ -24,12 +24,13 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install SDK packages
+      # ubuntu-latest already ships the Android SDK (ANDROID_HOME). Only the licenses need
+      # accepting; the Android platform and build-tools are downloaded by Gradle on demand.
+      - name: Accept Android SDK licenses
         run: |
-          sdkmanager "platforms;android-36" "build-tools;36.0.0" || true
+          SDKMANAGER="$(ls -d "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | head -n 1)"
+          echo "Using $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
 
       # The Gradle wrapper script/jar are not in the repository yet, so install the
       # same Gradle version as gradle/wrapper/gradle-wrapper.properties.
