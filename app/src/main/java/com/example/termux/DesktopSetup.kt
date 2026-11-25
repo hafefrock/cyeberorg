@@ -12,6 +12,19 @@ object DesktopSetup {
 
     fun isInstalled(rootfs: File): Boolean = File(rootfs, "root/$MARKER").exists()
 
+    /**
+     * Desktop size (WxH, multiples of 8) that maps roughly 1:1 onto the viewer area for the screen's
+     * current orientation, so text stays readable. Pure and tested.
+     */
+    fun geometryFor(screenWidthPx: Int, screenHeightPx: Int): String {
+        if (screenWidthPx <= 0 || screenHeightPx <= 0) return DEFAULT_GEOMETRY
+        val landscape = screenWidthPx > screenHeightPx
+        val heightShare = if (landscape) 0.8 else 0.68
+        val w = (minOf(screenWidthPx, 1600) / 8) * 8
+        val h = ((screenHeightPx * heightShare).toInt() / 8) * 8
+        return "${maxOf(w, 640)}x${maxOf(h, 360)}"
+    }
+
     /** Copies the bundled scripts into Ubuntu's /root so they can be run inside proot. */
     fun writeScripts(context: Context, rootfs: File) {
         val dir = File(rootfs, "root")
