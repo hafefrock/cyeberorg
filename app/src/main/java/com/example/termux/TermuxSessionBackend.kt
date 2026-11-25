@@ -30,7 +30,7 @@ class TermuxSessionBackend(private val context: Context) : TerminalBackend {
     private val paths = TermuxPaths(context.filesDir)
     private val stateDir = File(context.filesDir, "hs_state").apply { mkdirs() }
     private val handles = linkedMapOf<String, TermuxSessionHandle>()
-    private var counter = 1
+    private val numbers = mutableMapOf<String, Int>()
 
     private val _sessions = MutableStateFlow<List<TerminalSessionHandle>>(emptyList())
     override val sessions: StateFlow<List<TerminalSessionHandle>> = _sessions.asStateFlow()
@@ -40,13 +40,14 @@ class TermuxSessionBackend(private val context: Context) : TerminalBackend {
 
     init {
         TermuxIntegration.install(context, paths.home)
-        createSession("bash-1")
+        createSession(null)
     }
 
     override fun createSession(title: String?): TerminalSessionHandle {
         val id = "sess-" + java.util.UUID.randomUUID().toString().take(8)
-        val resolved = title?.takeIf { it.isNotBlank() } ?: "bash-${counter++}"
-        if (title != null) counter++
+        val number = SessionNaming.lowestFreeNumber(numbers.values)
+        val resolved = title?.takeIf { it.isNotBlank() } ?: "bash-$number"
+        numbers[id] = number
         val handle = TermuxSessionHandle(
             context = context,
             paths = paths,
@@ -64,6 +65,7 @@ class TermuxSessionBackend(private val context: Context) : TerminalBackend {
         val keys = handles.keys.toList()
         val idx = keys.indexOf(sessionId)
         val removed = handles.remove(sessionId) ?: return
+        numbers.remove(sessionId)
         removed.close()
         if (_activeSessionId.value == sessionId) {
             val remaining = handles.keys.toList()
