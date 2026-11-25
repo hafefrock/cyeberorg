@@ -66,7 +66,7 @@ class TermuxSessionBackend(private val context: Context) : TerminalBackend {
         val idx = keys.indexOf(sessionId)
         val removed = handles.remove(sessionId) ?: return
         numbers.remove(sessionId)
-        removed.close()
+        runCatching { removed.close() }
         if (_activeSessionId.value == sessionId) {
             val remaining = handles.keys.toList()
             _activeSessionId.value = if (remaining.isEmpty()) "" else remaining[(idx - 1).coerceIn(0, remaining.lastIndex)]
@@ -119,6 +119,7 @@ class TermuxSessionHandle(
     override val commandEvents: Flow<TerminalCommandEvent> = _events.asSharedFlow()
 
     private var customTitle = false
+    private var closed = false
     private var lastCwdCheck = 0L
     private var lastStateCheck = 0L
     private var lastStateMtime = stateFile.lastModified()
@@ -162,10 +163,11 @@ class TermuxSessionHandle(
     private val client = object : TerminalSessionClient {
         override fun onTextChanged(changedSession: TerminalSession) {
             _screenVersion.value = _screenVersion.value + 1
+            if (closed) return
             val now = SystemClock.elapsedRealtime()
             if (now - lastStateCheck > 200) {
                 lastStateCheck = now
-                pollState()
+                runCatching { pollState() }
             }
             if (now - lastCwdCheck > 1000) {
                 lastCwdCheck = now
@@ -227,7 +229,8 @@ class TermuxSessionHandle(
     override fun stateFilePath(): String = stateFile.absolutePath
 
     override fun write(bytes: ByteArray) {
-        if (bytes.isNotEmpty()) session.write(bytes, 0, bytes.size)
+        if (closed || bytes.isEmpty()) return
+        session.write(bytes, 0, bytes.size)
     }
 
     override fun pasteText(text: String) {
@@ -237,12 +240,19 @@ class TermuxSessionHandle(
 
     /** First call creates the emulator and starts the shell process; later calls resize the PTY. */
     override fun resize(cols: Int, rows: Int) {
-        if (cols < 1 || rows < 1) return
-        session.updateSize(cols, rows)
+        if (closed || cols < 1 || rows < 1) return
+        // After the shell exited its PTY fd is closed: do not touch it (and never restart).
+        if (session.emulator != null && !session.isRunning) return
+        runCatching { session.updateSize(cols, rows) }
     }
 
     override fun close() {
-        session.finishIfRunning()
+        if (closed) return
+        closed = true
+        // pid 0 = process never started; kill(0, SIGKILL) would signal our whole process group.
+        if (session.pid > 0 && session.isRunning) {
+            runCatching { session.finishIfRunning() }
+        }
     }
 
     override fun rename(newTitle: String) {
@@ -259,22 +269,26 @@ class TermuxSessionHandle(
     override fun readScreen(): TerminalScreenBuffer {
         val em = session.emulator
             ?: return TerminalScreenBuffer(cols = 1, rows = 1, cursorRow = 0, cursorCol = 0, visibleRows = listOf(listOf(TerminalCell.EMPTY)))
-        val screen = em.screen
-        val cols = em.mColumns
-        val rows = em.mRows
-        val transcript = screen.activeTranscriptRows.coerceAtMost(MAX_SCROLLBACK_READ)
-        val visible = ArrayList<List<TerminalCell>>(rows)
-        val scrollback = ArrayList<List<TerminalCell>>(transcript)
-        for (y in -transcript until 0) scrollback.add(readRow(screen, y, cols))
-        for (y in 0 until rows) visible.add(readRow(screen, y, cols))
-        return TerminalScreenBuffer(
-            cols = cols,
-            rows = rows,
-            cursorRow = em.cursorRow,
-            cursorCol = em.cursorCol,
-            visibleRows = visible,
-            scrollbackRows = scrollback,
-        )
+        return try {
+            val screen = em.screen
+            val cols = em.mColumns
+            val rows = em.mRows
+            val transcript = screen.activeTranscriptRows.coerceAtMost(MAX_SCROLLBACK_READ)
+            val visible = ArrayList<List<TerminalCell>>(rows)
+            val scrollback = ArrayList<List<TerminalCell>>(transcript)
+            for (y in -transcript until 0) scrollback.add(readRow(screen, y, cols))
+            for (y in 0 until rows) visible.add(readRow(screen, y, cols))
+            TerminalScreenBuffer(
+                cols = cols,
+                rows = rows,
+                cursorRow = em.cursorRow,
+                cursorCol = em.cursorCol,
+                visibleRows = visible,
+                scrollbackRows = scrollback,
+            )
+        } catch (_: Exception) {
+            TerminalScreenBuffer(cols = 1, rows = 1, cursorRow = 0, cursorCol = 0, visibleRows = listOf(listOf(TerminalCell.EMPTY)))
+        }
     }
 
     private fun readRow(screen: com.termux.terminal.TerminalBuffer, y: Int, cols: Int): List<TerminalCell> {
@@ -297,7 +311,7 @@ class TermuxSessionHandle(
 
     override fun readRecentText(maxLines: Int): String {
         val em = session.emulator ?: return ""
-        val all = em.screen.transcriptText ?: return ""
+        val all = try { em.screen.transcriptText } catch (_: Exception) { null } ?: return ""
         return all.lines().dropLastWhile { it.isBlank() }.takeLast(maxLines.coerceAtLeast(1)).joinToString("\n")
     }
 
