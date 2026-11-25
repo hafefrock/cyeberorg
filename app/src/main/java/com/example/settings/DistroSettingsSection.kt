@@ -29,9 +29,18 @@ import com.example.termux.TermuxSessionBackend
 import com.example.ui.theme.StudioSpacing
 import com.example.ui.theme.StudioTheme
 
-/** Settings > Terminal: install, open and remove Ubuntu via proot-distro (commands run in a new session). */
+/** Settings > Terminal: Ubuntu (proot-distro) followed by the desktop section. */
 @Composable
 fun DistroSettingsSection(modifier: Modifier = Modifier) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(StudioSpacing.sm)) {
+        UbuntuSettingsSection()
+        DesktopSettingsSection()
+    }
+}
+
+/** Install, open and remove Ubuntu via proot-distro (commands run in a new session). */
+@Composable
+private fun UbuntuSettingsSection(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val app = context.applicationContext as CyberorgApp
     val backend = app.appContainer.terminalBackend
