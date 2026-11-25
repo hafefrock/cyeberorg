@@ -124,6 +124,9 @@ class TermuxSessionHandle(
     private var lastStateCheck = 0L
     private var lastStateMtime = stateFile.lastModified()
 
+    /** Input written before the shell process exists (emulator is created on the first resize). */
+    private val pendingInput = ArrayList<ByteArray>()
+
     private fun pollState() {
         val m = stateFile.lastModified()
         if (m == 0L || m == lastStateMtime) return
@@ -230,7 +233,19 @@ class TermuxSessionHandle(
 
     override fun write(bytes: ByteArray) {
         if (closed || bytes.isEmpty()) return
+        if (session.emulator == null) {
+            // Shell not started yet (the view has not measured the screen): keep until it starts.
+            pendingInput.add(bytes)
+            return
+        }
         session.write(bytes, 0, bytes.size)
+    }
+
+    private fun flushPendingInput() {
+        if (pendingInput.isEmpty() || session.emulator == null) return
+        val queued = pendingInput.toList()
+        pendingInput.clear()
+        queued.forEach { session.write(it, 0, it.size) }
     }
 
     override fun pasteText(text: String) {
@@ -244,11 +259,13 @@ class TermuxSessionHandle(
         // After the shell exited its PTY fd is closed: do not touch it (and never restart).
         if (session.emulator != null && !session.isRunning) return
         runCatching { session.updateSize(cols, rows) }
+        runCatching { flushPendingInput() }
     }
 
     override fun close() {
         if (closed) return
         closed = true
+        pendingInput.clear()
         // pid 0 = process never started; kill(0, SIGKILL) would signal our whole process group.
         if (session.pid > 0 && session.isRunning) {
             runCatching { session.finishIfRunning() }

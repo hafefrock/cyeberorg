@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="distro_section_title">Ubuntu (proot-distro)</string>
+    <string name="distro_status_not_installed">Ubuntu belum terpasang</string>
+    <string name="distro_status_installed">Ubuntu terpasang</string>
+    <string name="distro_desc_not_installed">Mengunduh Ubuntu lengkap (beberapa ratus MB) yang berjalan di dalam terminal tanpa root. Pakai Wi-Fi.</string>
+    <string name="distro_desc_installed">Buka shell di dalam Ubuntu dengan apt, python, dan lainnya.</string>
+    <string name="distro_not_ready">Pasang lingkungan Linux di atas dulu, lalu mulai ulang aplikasi.</string>
+    <string name="distro_action_install">Pasang Ubuntu</string>
+    <string name="distro_action_login">Buka Ubuntu</string>
+    <string name="distro_action_remove">Hapus Ubuntu</string>
+    <string name="distro_remove_title">Hapus Ubuntu?</string>
+    <string name="distro_remove_message">Semua berkas di dalam Ubuntu akan dihapus. Folder home Anda tidak terpengaruh.</string>
+    <string name="distro_remove_confirm">Hapus</string>
+    <string name="distro_session_opened">Sesi terminal baru dibuka. Kembali ke terminal.</string>
+</resources>

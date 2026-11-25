@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="distro_section_title">Ubuntu (proot-distro)</string>
+    <string name="distro_status_not_installed">Ubuntu is not installed</string>
+    <string name="distro_status_installed">Ubuntu is installed</string>
+    <string name="distro_desc_not_installed">Downloads a full Ubuntu (a few hundred MB) that runs inside the terminal without root. Use Wi-Fi.</string>
+    <string name="distro_desc_installed">Open a shell inside Ubuntu with apt, python and more.</string>
+    <string name="distro_not_ready">Install the Linux environment above first, then restart the app.</string>
+    <string name="distro_action_install">Install Ubuntu</string>
+    <string name="distro_action_login">Open Ubuntu</string>
+    <string name="distro_action_remove">Remove Ubuntu</string>
+    <string name="distro_remove_title">Remove Ubuntu?</string>
+    <string name="distro_remove_message">All files inside Ubuntu will be deleted. Your home folder is not affected.</string>
+    <string name="distro_remove_confirm">Remove</string>
+    <string name="distro_session_opened">A new terminal session was opened. Go back to the terminal.</string>
+</resources>
