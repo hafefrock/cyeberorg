@@ -119,7 +119,9 @@ fun DesktopSettingsSection(modifier: Modifier = Modifier) {
                 title = stringResource(R.string.desktop_action_start),
                 onClick = {
                     if (prepare()) {
-                        runInNewSession("desktop", DesktopSetup.startCommand(distro))
+                        val metrics = context.resources.displayMetrics
+                        val geometry = DesktopSetup.geometryFor(metrics.widthPixels, metrics.heightPixels)
+                        runInNewSession("desktop", DesktopSetup.startCommand(distro, geometry))
                         showViewer = true
                     }
                 },
