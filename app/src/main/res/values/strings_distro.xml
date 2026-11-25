@@ -3,7 +3,7 @@
     <string name="distro_section_title">Ubuntu (proot-distro)</string>
     <string name="distro_status_not_installed">Ubuntu is not installed</string>
     <string name="distro_status_installed">Ubuntu is installed</string>
-    <string name="distro_desc_not_installed">Downloads a full Ubuntu (a few hundred MB) that runs inside the terminal without root. Use Wi-Fi.</string>
+    <string name="distro_desc_not_installed">Downloads Ubuntu (about 40 MB to download, about 1.2 GB once installed) that runs inside the terminal without root. Use Wi-Fi.</string>
     <string name="distro_desc_installed">Open a shell inside Ubuntu with apt, python and more.</string>
     <string name="distro_not_ready">Install the Linux environment above first, then restart the app.</string>
     <string name="distro_action_install">Install Ubuntu</string>
