@@ -1,11 +1,68 @@
---- a/app/src/main/java/com/example/ui/terminal/TerminalScreen.kt
-+++ b/app/src/main/java/com/example/ui/terminal/TerminalScreen.kt
-@@ -750,7 +750,8 @@
-     val onDismissSheet = remember(viewModel) {
-         { viewModel.toggleAiPanel(forceOpen = false) }
-     }
+--- a/app/src/main/java/com/example/ui/ai/AiComponents.kt
++++ b/app/src/main/java/com/example/ui/ai/AiComponents.kt
+@@ -1389,28 +1389,48 @@
+                     }
+                 }
  
-     Column(modifier = modifier) {
-+        PackageUpdateChip(onRunCommand = viewModel::writeRawBytes)
-         // Box keeps TerminalConsoleView fillMaxSize() so AiBottomSheetOverlay never resizes the terminal
-         Box(
+-                if (displayText.isNotEmpty()) {
++                if (displayText.isNotEmpty() || message.suggestions.isNotEmpty()) {
+                     val liveModifier = when {
+                         isError -> Modifier.semantics { liveRegion = LiveRegionMode.Assertive }
+                         message.isStreaming -> Modifier.semantics { liveRegion = LiveRegionMode.Polite }
+                         else -> Modifier
+                     }
+-                    Text(
+-                        text = displayText,
+-                        style = compactType.body,
+-                        color = if (isError) tokens.error else tokens.textPrimary,
+-                        modifier = liveModifier
+-                    )
+-                }
+-
+-                message.suggestions.forEach { suggestion ->
+-                    AiCommandCard(
+-                        suggestion = suggestion,
+-                        onInsert = onInsertCommand,
+-                        onCopy = onCopyCommand,
+-                        onSaveSnippet = onSaveSnippet,
+-                        onExplain = onExplainCommand
+-                    )
++                    // Suggestion cards are interleaved where the code block was stripped from the text.
++                    val segments = if (message.suggestions.isEmpty()) {
++                        listOf(displayText)
++                    } else {
++                        AiMarkdown.splitAtSuggestionMarkers(displayText)
++                    }
++                    val slots = maxOf(segments.size, message.suggestions.size)
++                    for (index in 0 until slots) {
++                        val segment = segments.getOrNull(index).orEmpty()
++                        if (segment.isNotBlank()) {
++                            if (isError) {
++                                Text(
++                                    text = segment,
++                                    style = compactType.body,
++                                    color = tokens.error,
++                                    modifier = liveModifier
++                                )
++                            } else {
++                                AiMarkdownText(
++                                    text = segment,
++                                    style = compactType.body,
++                                    color = tokens.textPrimary,
++                                    modifier = liveModifier
++                                )
++                            }
++                        }
++                        message.suggestions.getOrNull(index)?.let { suggestion ->
++                            AiCommandCard(
++                                suggestion = suggestion,
++                                onInsert = onInsertCommand,
++                                onCopy = onCopyCommand,
++                                onSaveSnippet = onSaveSnippet,
++                                onExplain = onExplainCommand
++                            )
++                        }
++                    }
+                 }
+ 
+                 AnimatedVisibility(
