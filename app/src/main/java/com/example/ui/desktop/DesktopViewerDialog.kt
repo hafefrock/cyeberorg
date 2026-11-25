@@ -67,6 +67,7 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
     var boxSize by remember { mutableStateOf(IntSize.Zero) }
     var ctrlOn by remember { mutableStateOf(false) }
     var altOn by remember { mutableStateOf(false) }
+    var showKeys by remember { mutableStateOf(true) }
     val bitmapHolder = remember { arrayOfNulls<Bitmap>(1) }
     val pixelHolder = remember { arrayOfNulls<IntArray>(1) }
     val clientHolder = remember { arrayOfNulls<RfbClient>(1) }
@@ -129,8 +130,13 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     style = compactType.cardTitle,
                     color = tokens.textPrimary
                 )
-                TextButton(onClick = onDismiss, modifier = Modifier.testTag("desktop_close")) {
-                    Text(stringResource(R.string.desktop_close), color = tokens.accent)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    TextButton(onClick = { showKeys = !showKeys }, modifier = Modifier.testTag("desktop_toggle_keys")) {
+                        Text("⌨", color = if (showKeys) tokens.accent else tokens.textSecondary)
+                    }
+                    TextButton(onClick = onDismiss, modifier = Modifier.testTag("desktop_close")) {
+                        Text(stringResource(R.string.desktop_close), color = tokens.accent)
+                    }
                 }
             }
 
@@ -212,76 +218,78 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                 altOn = false
             }
 
-            BasicTextField(
-                value = "",
-                onValueChange = { text ->
-                    var i = 0
-                    while (i < text.length) {
-                        val cp = text.codePointAt(i)
-                        typeChar(cp)
-                        i += Character.charCount(cp)
-                    }
-                },
-                textStyle = compactType.body.copy(color = tokens.textPrimary),
-                cursorBrush = SolidColor(tokens.accent),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .border(1.dp, tokens.accentMuted)
-                    .padding(8.dp)
-                    .testTag("desktop_input")
-                    .onPreviewKeyEvent { event ->
-                        if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
-                        val sym = when (event.key) {
-                            Key.Backspace -> VncKeys.BACKSPACE
-                            Key.Enter -> VncKeys.RETURN
-                            Key.DirectionLeft -> VncKeys.LEFT
-                            Key.DirectionRight -> VncKeys.RIGHT
-                            Key.DirectionUp -> VncKeys.UP
-                            Key.DirectionDown -> VncKeys.DOWN
-                            else -> 0
-                        }
-                        if (sym == 0) {
-                            false
-                        } else {
-                            connection.tapKey(sym)
-                            true
+            if (showKeys) {
+                BasicTextField(
+                    value = "",
+                    onValueChange = { text ->
+                        var i = 0
+                        while (i < text.length) {
+                            val cp = text.codePointAt(i)
+                            typeChar(cp)
+                            i += Character.charCount(cp)
                         }
                     },
-                decorationBox = { inner ->
-                    Box {
-                        Text(
-                            text = stringResource(R.string.desktop_type_hint),
-                            style = compactType.body,
-                            color = tokens.textSecondary
-                        )
-                        inner()
+                    textStyle = compactType.body.copy(color = tokens.textPrimary),
+                    cursorBrush = SolidColor(tokens.accent),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .border(1.dp, tokens.accentMuted)
+                        .padding(8.dp)
+                        .testTag("desktop_input")
+                        .onPreviewKeyEvent { event ->
+                            if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                            val sym = when (event.key) {
+                                Key.Backspace -> VncKeys.BACKSPACE
+                                Key.Enter -> VncKeys.RETURN
+                                Key.DirectionLeft -> VncKeys.LEFT
+                                Key.DirectionRight -> VncKeys.RIGHT
+                                Key.DirectionUp -> VncKeys.UP
+                                Key.DirectionDown -> VncKeys.DOWN
+                                else -> 0
+                            }
+                            if (sym == 0) {
+                                false
+                            } else {
+                                connection.tapKey(sym)
+                                true
+                            }
+                        },
+                    decorationBox = { inner ->
+                        Box {
+                            Text(
+                                text = stringResource(R.string.desktop_type_hint),
+                                style = compactType.body,
+                                color = tokens.textSecondary
+                            )
+                            inner()
+                        }
                     }
-                }
-            )
+                )
 
-            Row(
-                modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                KeyButton(stringResource(R.string.desktop_key_esc)) { connection.tapKey(VncKeys.ESCAPE) }
-                KeyButton(stringResource(R.string.desktop_key_tab)) { connection.tapKey(VncKeys.TAB) }
-                KeyButton(stringResource(R.string.desktop_key_ctrl), selected = ctrlOn) { ctrlOn = !ctrlOn }
-                KeyButton(stringResource(R.string.desktop_key_alt), selected = altOn) { altOn = !altOn }
-                KeyButton("⌫") { connection.tapKey(VncKeys.BACKSPACE) }
-                KeyButton("⏎") { connection.tapKey(VncKeys.RETURN) }
-                KeyButton("↑") { connection.tapKey(VncKeys.UP) }
-                KeyButton("↓") { connection.tapKey(VncKeys.DOWN) }
-                KeyButton(stringResource(R.string.desktop_scroll_up)) { wheel(connection, fbSize, VncKeys.WHEEL_UP) }
-                KeyButton(stringResource(R.string.desktop_scroll_down)) { wheel(connection, fbSize, VncKeys.WHEEL_DOWN) }
+                Row(
+                    modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    KeyButton(stringResource(R.string.desktop_key_esc)) { connection.tapKey(VncKeys.ESCAPE) }
+                    KeyButton(stringResource(R.string.desktop_key_tab)) { connection.tapKey(VncKeys.TAB) }
+                    KeyButton(stringResource(R.string.desktop_key_ctrl), selected = ctrlOn) { ctrlOn = !ctrlOn }
+                    KeyButton(stringResource(R.string.desktop_key_alt), selected = altOn) { altOn = !altOn }
+                    KeyButton("⌫") { connection.tapKey(VncKeys.BACKSPACE) }
+                    KeyButton("⏎") { connection.tapKey(VncKeys.RETURN) }
+                    KeyButton("↑") { connection.tapKey(VncKeys.UP) }
+                    KeyButton("↓") { connection.tapKey(VncKeys.DOWN) }
+                    KeyButton(stringResource(R.string.desktop_scroll_up)) { wheel(connection, fbSize, VncKeys.WHEEL_UP) }
+                    KeyButton(stringResource(R.string.desktop_scroll_down)) { wheel(connection, fbSize, VncKeys.WHEEL_DOWN) }
+                }
+                Text(
+                    text = stringResource(R.string.desktop_hint),
+                    style = compactType.body,
+                    color = tokens.textSecondary,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                )
             }
-            Text(
-                text = stringResource(R.string.desktop_hint),
-                style = compactType.body,
-                color = tokens.textSecondary,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
-            )
         }
     }
 }
