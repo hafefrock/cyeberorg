@@ -12,6 +12,7 @@ import com.example.terminal.LongCommandNotifier
 import com.example.terminal.TerminalBackend
 import com.example.terminal.TerminalCommandEvent
 import com.example.terminal.TerminalOutputExporter
+import com.example.termux.PackageUpdateChecker
 import com.example.termux.TermuxPaths
 import com.example.termux.TermuxService
 import com.example.termux.TermuxSessionBackend
@@ -93,14 +94,18 @@ class AppContainer(context: Context) {
     init {
         TerminalOutputExporter.cleanupExportCache(appContext.cacheDir)
 
-        // Keep real shell sessions alive in the background with a foreground service.
         if (terminalBackend is TermuxSessionBackend) {
+            // Keep real shell sessions alive in the background with a foreground service.
             appScope.launch {
                 terminalBackend.sessions.collect { list ->
                     if (list.isNotEmpty()) {
                         runCatching { TermuxService.start(appContext) }
                     }
                 }
+            }
+            // Check for upgradable packages shortly after start (at most every 6 hours).
+            appScope.launch {
+                runCatching { PackageUpdateChecker.checkIfDue(appContext) }
             }
         }
 

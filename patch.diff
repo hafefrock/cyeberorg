@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/example/ui/terminal/TerminalScreen.kt
++++ b/app/src/main/java/com/example/ui/terminal/TerminalScreen.kt
+@@ -750,7 +750,8 @@
+     val onDismissSheet = remember(viewModel) {
+         { viewModel.toggleAiPanel(forceOpen = false) }
+     }
+ 
+     Column(modifier = modifier) {
++        PackageUpdateChip(onRunCommand = viewModel::writeRawBytes)
+         // Box keeps TerminalConsoleView fillMaxSize() so AiBottomSheetOverlay never resizes the terminal
+         Box(
