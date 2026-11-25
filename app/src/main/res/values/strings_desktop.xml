@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_section_title">Ubuntu desktop</string>
+    <string name="desktop_status_not_installed">Desktop is not installed</string>
+    <string name="desktop_status_installed">Desktop is installed</string>
+    <string name="desktop_desc_not_installed">Installs the XFCE desktop (about 1 GB more, 10-30 minutes) so Ubuntu looks like a real computer. Use Wi-Fi and keep the app open.</string>
+    <string name="desktop_desc_installed">Starts the desktop and shows it inside Cyberorg. Landscape works best; the first start takes 10-30 seconds.</string>
+    <string name="desktop_needs_ubuntu">Install Ubuntu above first.</string>
+    <string name="desktop_action_install">Install desktop</string>
+    <string name="desktop_action_start">Start desktop</string>
+    <string name="desktop_action_open">Open desktop viewer</string>
+    <string name="desktop_action_stop">Stop desktop</string>
+    <string name="desktop_viewer_title">Ubuntu desktop</string>
+    <string name="desktop_connecting">Connecting to the desktop…</string>
+    <string name="desktop_failed">Could not connect: %1$s</string>
+    <string name="desktop_close">Close</string>
+    <string name="desktop_type_hint">Type here</string>
+    <string name="desktop_key_ctrl">Ctrl</string>
+    <string name="desktop_key_alt">Alt</string>
+    <string name="desktop_key_esc">Esc</string>
+    <string name="desktop_key_tab">Tab</string>
+    <string name="desktop_scroll_up">Scroll up</string>
+    <string name="desktop_scroll_down">Scroll down</string>
+    <string name="desktop_hint">Tap = click, long press = right click, drag = move.</string>
+</resources>
