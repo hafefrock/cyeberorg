@@ -21,7 +21,7 @@ class VncConnection(
     private val sender = Executors.newSingleThreadExecutor { r -> Thread(r, "vnc-send").apply { isDaemon = true } }
     private var reader: Thread? = null
 
-    fun start(listener: Listener, timeoutMs: Long = 45_000L) {
+    fun start(listener: Listener, timeoutMs: Long = 180_000L) {
         reader = Thread({
             val deadline = System.currentTimeMillis() + timeoutMs
             var lastError: String? = null
