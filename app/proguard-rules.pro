@@ -60,6 +60,11 @@
 -keep class com.example.data.ApiKeyMetadata { *; }
 -keep enum com.example.** { *; }
 
+# Termux terminal emulator: JNI (libtermux.so) looks up classes/fields/methods by name,
+# and TerminalSession/TerminalEmulator are accessed reflectively (FileDescriptor wrapping).
+-keep class com.termux.terminal.** { *; }
+-keep class com.termux.view.** { *; }
+
 # Retrofit & OkHttp
 -keep interface com.example.ai.GeminiRetrofitApi { *; }
 -keep,allowobfuscation,allowshrinking interface retrofit2.Call
@@ -71,4 +76,3 @@
 -dontwarn javax.annotation.**
 -dontwarn org.codehaus.mojo.animal_snuff.IgnoreJRERequirement
 -dontwarn com.google.errorprone.annotations.**
-

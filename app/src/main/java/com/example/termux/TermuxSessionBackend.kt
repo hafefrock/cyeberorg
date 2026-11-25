@@ -6,14 +6,18 @@ import android.content.Context
 import android.os.SystemClock
 import com.example.terminal.TerminalBackend
 import com.example.terminal.TerminalCell
+import com.example.terminal.TerminalCommandEvent
 import com.example.terminal.TerminalErrorContext
 import com.example.terminal.TerminalScreenBuffer
 import com.example.terminal.TerminalSessionHandle
 import com.termux.terminal.TerminalSession
 import com.termux.terminal.TerminalSessionClient
 import com.termux.terminal.TextStyle
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
 
@@ -35,6 +39,7 @@ class TermuxSessionBackend(private val context: Context) : TerminalBackend {
     override val activeSessionId: StateFlow<String> = _activeSessionId.asStateFlow()
 
     init {
+        TermuxIntegration.install(context, paths.home)
         createSession("bash-1")
     }
 
@@ -47,7 +52,7 @@ class TermuxSessionBackend(private val context: Context) : TerminalBackend {
             paths = paths,
             id = id,
             initialTitle = resolved,
-            stateFile = File(stateDir, "state_$id"),
+            stateFile = File(TermuxPaths.normalize(stateDir), "state_$id"),
         )
         handles[id] = handle
         _activeSessionId.value = id
@@ -108,16 +113,64 @@ class TermuxSessionHandle(
     private val _pasteTruncated = MutableStateFlow(false)
     override val lastPasteTruncated: StateFlow<Boolean> = _pasteTruncated.asStateFlow()
 
+    private val _events = MutableSharedFlow<TerminalCommandEvent>(extraBufferCapacity = 8)
+    override val commandEvents: Flow<TerminalCommandEvent> = _events.asSharedFlow()
+
     private var customTitle = false
     private var lastCwdCheck = 0L
+    private var lastStateCheck = 0L
+    private var lastStateMtime = stateFile.lastModified()
+
+    private fun pollState() {
+        val m = stateFile.lastModified()
+        if (m == 0L || m == lastStateMtime) return
+        lastStateMtime = m
+        val text = try { stateFile.readText() } catch (_: Exception) { return }
+        val st = TermuxStateParser.parse(text) ?: return
+        val cwdNorm = TermuxPaths.rewriteUser0(st.cwd)
+        _lastExitCode.value = st.exitCode
+        _cwd.value = cwdNorm
+        if (st.exitCode != 0 && st.command.isNotBlank()) {
+            _lastErrorContext.value = TerminalErrorContext(
+                sessionId = id,
+                command = st.command,
+                exitCode = st.exitCode,
+                errorOutput = readRecentText(30),
+                cwd = cwdNorm,
+            )
+        } else if (st.exitCode == 0) {
+            _lastErrorContext.value = null
+        }
+        val s = st.startSec
+        val e = st.endSec
+        if (s != null && e != null && st.command.isNotBlank()) {
+            _events.tryEmit(
+                TerminalCommandEvent.Finished(
+                    sessionId = id,
+                    sessionTitle = _title.value,
+                    command = st.command,
+                    exitCode = st.exitCode,
+                    startedAtMillis = s * 1000L,
+                    finishedAtMillis = e * 1000L,
+                ),
+            )
+        }
+    }
 
     private val client = object : TerminalSessionClient {
         override fun onTextChanged(changedSession: TerminalSession) {
             _screenVersion.value = _screenVersion.value + 1
             val now = SystemClock.elapsedRealtime()
-            if (now - lastCwdCheck > 750) {
+            if (now - lastStateCheck > 200) {
+                lastStateCheck = now
+                pollState()
+            }
+            if (now - lastCwdCheck > 1000) {
                 lastCwdCheck = now
-                changedSession.cwd?.let { if (it != _cwd.value) _cwd.value = it }
+                changedSession.cwd?.let {
+                    val n = TermuxPaths.rewriteUser0(it)
+                    if (n != _cwd.value) _cwd.value = n
+                }
             }
         }
 
@@ -160,7 +213,11 @@ class TermuxSessionHandle(
         shell.path,
         paths.home.path,
         arrayOf(shell.name),
-        TermuxEnv.build(paths.prefix, paths.home),
+        TermuxEnv.build(
+            paths.prefix,
+            paths.home,
+            extra = mapOf("CYBERORG_STATE_FILE" to stateFile.absolutePath),
+        ),
         SCROLLBACK_ROWS,
         client,
     )
@@ -225,8 +282,8 @@ class TermuxSessionHandle(
         for (x in 0 until cols) {
             val ch = if (x < text.length) text[x] else ' '
             val style = row.getStyle(x)
-            val fg = TermuxEnv.ansiCodeForIndex(TextStyle.decodeForeColor(style), background = false)
-            val bg = TermuxEnv.ansiCodeForIndex(TextStyle.decodeBackColor(style), background = true)
+            val fg = TermuxEnv.approximateAnsiCode(TextStyle.decodeForeColor(style), background = false)
+            val bg = TermuxEnv.approximateAnsiCode(TextStyle.decodeBackColor(style), background = true)
             val bold = (TextStyle.decodeEffect(style) and TextStyle.CHARACTER_ATTRIBUTE_BOLD) != 0
             out.add(
                 if (ch == ' ' && fg == -1 && bg == -1 && !bold) TerminalCell.EMPTY
