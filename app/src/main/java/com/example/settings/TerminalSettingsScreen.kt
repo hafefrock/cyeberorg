@@ -109,6 +109,9 @@ fun TerminalSettingsScreen(
         contentPadding = PaddingValues(StudioSpacing.lg),
         verticalArrangement = Arrangement.spacedBy(StudioSpacing.md)
     ) {
+        item(key = "bootstrap_install") {
+            BootstrapSettingsSection()
+        }
         item(key = "extra_keys_layout") {
             SettingsSection(title = stringResource(R.string.settings_extra_keys_layout)) {
                 Column(verticalArrangement = Arrangement.spacedBy(dimens.listSpacing)) {
