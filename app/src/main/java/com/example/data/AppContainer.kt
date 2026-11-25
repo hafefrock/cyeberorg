@@ -13,6 +13,7 @@ import com.example.terminal.TerminalBackend
 import com.example.terminal.TerminalCommandEvent
 import com.example.terminal.TerminalOutputExporter
 import com.example.termux.TermuxPaths
+import com.example.termux.TermuxService
 import com.example.termux.TermuxSessionBackend
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -84,8 +85,24 @@ class AppContainer(context: Context) {
         settingsStore = settingsRepository
     )
 
+    /** Closes every terminal session (used by the foreground service's Exit action). */
+    fun closeAllTerminalSessions() {
+        terminalBackend.sessions.value.map { it.id }.forEach { terminalBackend.closeSession(it) }
+    }
+
     init {
         TerminalOutputExporter.cleanupExportCache(appContext.cacheDir)
+
+        // Keep real shell sessions alive in the background with a foreground service.
+        if (terminalBackend is TermuxSessionBackend) {
+            appScope.launch {
+                terminalBackend.sessions.collect { list ->
+                    if (list.isNotEmpty()) {
+                        runCatching { TermuxService.start(appContext) }
+                    }
+                }
+            }
+        }
 
         appScope.launch {
             settingsRepository.settingsFlow.collect { settings ->

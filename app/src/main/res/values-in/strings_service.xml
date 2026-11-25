@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_channel_name">Sesi terminal</string>
+    <string name="service_notif_title">Terminal Cyberorg</string>
+    <string name="service_notif_text">%1$d sesi berjalan</string>
+    <string name="service_notif_exit">Keluar</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_channel_name">Terminal sessions</string>
+    <string name="service_notif_title">Cyberorg terminal</string>
+    <string name="service_notif_text">%1$d session(s) running</string>
+    <string name="service_notif_exit">Exit</string>
+</resources>
