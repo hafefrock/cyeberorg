@@ -77,31 +77,30 @@ class BootstrapInstaller(private val context: Context) {
         }
     }.flowOn(Dispatchers.IO)
 
+    private fun openFollowingRedirects(url: String): HttpURLConnection {
+        var current = url
+        for (i in 0 until 6) {
+            val c = URL(current).openConnection() as HttpURLConnection
+            c.instanceFollowRedirects = false
+            c.connectTimeout = 20_000
+            c.readTimeout = 30_000
+            val code = c.responseCode
+            if (code !in 300..399) return c
+            val loc = c.getHeaderField("Location") ?: throw IllegalStateException("Bad redirect")
+            c.disconnect()
+            current = URL(URL(current), loc).toString()
+            if (!current.startsWith("https://")) throw IllegalStateException("Insecure redirect")
+        }
+        throw IllegalStateException("Too many redirects")
+    }
+
     private suspend fun download(
         url: String,
         dest: File,
         digest: MessageDigest,
         onProgress: suspend (Long) -> Unit,
     ) {
-        var current = url
-        var conn: HttpURLConnection? = null
-        repeat(6) {
-            val c = URL(current).openConnection() as HttpURLConnection
-            c.instanceFollowRedirects = false
-            c.connectTimeout = 20_000
-            c.readTimeout = 30_000
-            val code = c.responseCode
-            if (code in 300..399) {
-                val loc = c.getHeaderField("Location") ?: throw IllegalStateException("Bad redirect")
-                c.disconnect()
-                current = URL(URL(current), loc).toString()
-                if (!current.startsWith("https://")) throw IllegalStateException("Insecure redirect")
-            } else {
-                conn = c
-                return@repeat
-            }
-        }
-        val c = conn ?: throw IllegalStateException("Too many redirects")
+        val c = openFollowingRedirects(url)
         if (c.responseCode != 200) throw IllegalStateException("HTTP ${c.responseCode}")
         var total = 0L
         var lastEmit = 0L
