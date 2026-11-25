@@ -3,6 +3,7 @@ package com.example.ui.desktop
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
@@ -69,17 +69,19 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
     var altOn by remember { mutableStateOf(false) }
     val bitmapHolder = remember { arrayOfNulls<Bitmap>(1) }
     val pixelHolder = remember { arrayOfNulls<IntArray>(1) }
+    val clientHolder = remember { arrayOfNulls<RfbClient>(1) }
     val connection = remember { VncConnection() }
     val main = remember { Handler(Looper.getMainLooper()) }
 
     DisposableEffect(Unit) {
         connection.start(object : VncConnection.Listener {
             override fun onConnected(client: RfbClient) {
+                clientHolder[0] = client
                 main.post { connected = true; error = null }
             }
 
             override fun onFrame() {
-                val client = lastClient ?: return
+                val client = clientHolder[0] ?: return
                 val w = client.width
                 val h = client.height
                 if (w <= 0 || h <= 0) return
@@ -92,19 +94,16 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     pixelHolder[0] = buf
                 }
                 if (client.copyPixels(buf)) {
-                    bmp!!.setPixels(buf, 0, w, 0, 0, w, h)
+                    bmp.setPixels(buf, 0, w, 0, 0, w, h)
                     main.post { fbSize = IntSize(w, h); frameTick++ }
                 }
             }
 
             override fun onClosed(error: String?) {
-                if (error != null) main.post { connected = false; this@DisposableEffect.run { } }
-                if (error != null) main.post { errorHolder(error) }
-            }
-
-            private var lastClient: RfbClient? = null
-            private fun errorHolder(message: String) {
-                // set from the main thread
+                main.post {
+                    connected = false
+                    if (error != null) this@run.error = error
+                }
             }
         })
         onDispose { connection.close() }
@@ -187,11 +186,15 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     }
                 }
                 if (!connected || fbSize.width == 0) {
+                    val message = error
                     Text(
-                        text = error?.let { stringResource(R.string.desktop_failed, it) }
-                            ?: stringResource(R.string.desktop_connecting),
+                        text = if (message != null) {
+                            stringResource(R.string.desktop_failed, message)
+                        } else {
+                            stringResource(R.string.desktop_connecting)
+                        },
                         style = compactType.body,
-                        color = if (error != null) tokens.error else tokens.textSecondary,
+                        color = if (message != null) tokens.error else tokens.textSecondary,
                         modifier = Modifier.align(Alignment.Center).padding(16.dp)
                     )
                 }
@@ -239,7 +242,12 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                             Key.DirectionDown -> VncKeys.DOWN
                             else -> 0
                         }
-                        if (sym == 0) false else { connection.tapKey(sym); true }
+                        if (sym == 0) {
+                            false
+                        } else {
+                            connection.tapKey(sym)
+                            true
+                        }
                     },
                 decorationBox = { inner ->
                     Box {
