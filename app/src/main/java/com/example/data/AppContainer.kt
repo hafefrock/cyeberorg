@@ -12,6 +12,8 @@ import com.example.terminal.LongCommandNotifier
 import com.example.terminal.TerminalBackend
 import com.example.terminal.TerminalCommandEvent
 import com.example.terminal.TerminalOutputExporter
+import com.example.termux.TermuxPaths
+import com.example.termux.TermuxSessionBackend
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,7 +42,14 @@ class AppContainer(context: Context) {
         keyVault = keyVault
     )
 
-    val terminalBackend: TerminalBackend = FakeTerminalBackend()
+    // Real Termux shell once the base system is installed (Settings > Terminal > Linux environment;
+    // restart the app after installing). Otherwise the built-in simulated terminal.
+    val terminalBackend: TerminalBackend =
+        if (TermuxPaths(appContext.filesDir).isInstalled()) {
+            TermuxSessionBackend(appContext)
+        } else {
+            FakeTerminalBackend()
+        }
 
     val snippetRepository: SnippetStore = DataStoreSnippetRepository(appContext)
 
