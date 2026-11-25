@@ -61,7 +61,7 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
     val compactType = StudioTheme.compactTypography
 
     var connected by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<String?>(null) }
+    var failure by remember { mutableStateOf<String?>(null) }
     var frameTick by remember { mutableStateOf(0) }
     var fbSize by remember { mutableStateOf(IntSize.Zero) }
     var boxSize by remember { mutableStateOf(IntSize.Zero) }
@@ -77,7 +77,7 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
         connection.start(object : VncConnection.Listener {
             override fun onConnected(client: RfbClient) {
                 clientHolder[0] = client
-                main.post { connected = true; error = null }
+                main.post { connected = true; failure = null }
             }
 
             override fun onFrame() {
@@ -99,10 +99,10 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                 }
             }
 
-            override fun onClosed(error: String?) {
+            override fun onClosed(reason: String?) {
                 main.post {
                     connected = false
-                    if (error != null) this@run.error = error
+                    if (reason != null) failure = reason
                 }
             }
         })
@@ -186,7 +186,7 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     }
                 }
                 if (!connected || fbSize.width == 0) {
-                    val message = error
+                    val message = failure
                     Text(
                         text = if (message != null) {
                             stringResource(R.string.desktop_failed, message)
