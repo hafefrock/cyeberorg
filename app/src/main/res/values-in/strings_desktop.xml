@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_section_title">Desktop Ubuntu</string>
+    <string name="desktop_status_not_installed">Desktop belum dipasang</string>
+    <string name="desktop_status_installed">Desktop sudah dipasang</string>
+    <string name="desktop_desc_not_installed">Memasang desktop XFCE (tambahan sekitar 1 GB, 10-30 menit) supaya Ubuntu tampil seperti komputer sungguhan. Pakai Wi-Fi dan biarkan aplikasi tetap terbuka.</string>
+    <string name="desktop_desc_installed">Menjalankan desktop dan menampilkannya di dalam Cyberorg. Mode lanskap paling nyaman; start pertama butuh 10-30 detik.</string>
+    <string name="desktop_needs_ubuntu">Pasang Ubuntu di atas dulu.</string>
+    <string name="desktop_action_install">Pasang desktop</string>
+    <string name="desktop_action_start">Mulai desktop</string>
+    <string name="desktop_action_open">Buka tampilan desktop</string>
+    <string name="desktop_action_stop">Hentikan desktop</string>
+    <string name="desktop_viewer_title">Desktop Ubuntu</string>
+    <string name="desktop_connecting">Menyambung ke desktop…</string>
+    <string name="desktop_failed">Gagal tersambung: %1$s</string>
+    <string name="desktop_close">Tutup</string>
+    <string name="desktop_type_hint">Ketik di sini</string>
+    <string name="desktop_key_ctrl">Ctrl</string>
+    <string name="desktop_key_alt">Alt</string>
+    <string name="desktop_key_esc">Esc</string>
+    <string name="desktop_key_tab">Tab</string>
+    <string name="desktop_scroll_up">Gulir atas</string>
+    <string name="desktop_scroll_down">Gulir bawah</string>
+    <string name="desktop_hint">Ketuk = klik, tekan lama = klik kanan, geser = seret.</string>
+</resources>
