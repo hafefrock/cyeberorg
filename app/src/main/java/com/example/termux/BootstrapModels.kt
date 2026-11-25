@@ -50,9 +50,14 @@ object BootstrapArch {
     fun current(): String? = forAbis(Build.SUPPORTED_ABIS.toList())
 }
 
-/** Install locations (same layout as Termux, applicationId com.termux). */
-class TermuxPaths(filesDir: File) {
-    val filesDir: File = filesDir
+/**
+ * Install locations (same layout as Termux, applicationId com.termux).
+ *
+ * Termux packages hardcode /data/data/com.termux/files, but Context.filesDir usually resolves to
+ * /data/user/0/com.termux/files. Both are the same directory; we use the /data/data form.
+ */
+class TermuxPaths(rawFilesDir: File) {
+    val filesDir: File = normalize(rawFilesDir)
     val prefix: File = File(filesDir, "usr")
     val stagingPrefix: File = File(filesDir, "usr-staging")
     val home: File = File(filesDir, "home")
@@ -60,7 +65,23 @@ class TermuxPaths(filesDir: File) {
     val versionMarker: File = File(filesDir, "bootstrap-version.txt")
 
     fun isInstalled(): Boolean =
-        File(prefix, "bin/sh").exists() && File(prefix, "bin/login").exists().or(File(prefix, "bin/bash").exists())
+        File(prefix, "bin/sh").exists() &&
+            (File(prefix, "bin/login").exists() || File(prefix, "bin/bash").exists())
+
+    companion object {
+        private const val USER0 = "/data/user/0/"
+
+        fun normalize(dir: File): File {
+            val p = dir.path
+            if (!p.startsWith(USER0)) return dir
+            val alt = File("/data/data/" + p.removePrefix(USER0))
+            return if (alt.exists()) alt else dir
+        }
+
+        /** Pure path rewrite (unit tested). */
+        fun rewriteUser0(path: String): String =
+            if (path.startsWith(USER0)) "/data/data/" + path.removePrefix(USER0) else path
+    }
 }
 
 sealed class BootstrapProgress {
