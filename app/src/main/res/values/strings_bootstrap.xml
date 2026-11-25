@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bootstrap_section_title">Linux environment</string>
+    <string name="bootstrap_status_not_installed">Not installed</string>
+    <string name="bootstrap_status_installed">Installed and ready</string>
+    <string name="bootstrap_desc_not_installed">Download the base system (about 33 MB) so you can use pkg, apt and real shell tools.</string>
+    <string name="bootstrap_desc_installed">The base system is installed. You can reinstall it if something is broken.</string>
+    <string name="bootstrap_action_install">Install environment</string>
+    <string name="bootstrap_action_reinstall">Reinstall environment</string>
+    <string name="bootstrap_action_cancel">Cancel</string>
+    <string name="bootstrap_progress_downloading">Downloading %1$d / %2$d MB</string>
+    <string name="bootstrap_progress_verifying">Verifying checksum…</string>
+    <string name="bootstrap_progress_extracting">Extracting %1$d / %2$d files</string>
+    <string name="bootstrap_progress_finalizing">Finishing…</string>
+    <string name="bootstrap_done">Environment installed.</string>
+    <string name="bootstrap_failed">Install failed: %1$s</string>
+</resources>

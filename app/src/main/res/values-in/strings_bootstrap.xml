@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bootstrap_section_title">Lingkungan Linux</string>
+    <string name="bootstrap_status_not_installed">Belum terpasang</string>
+    <string name="bootstrap_status_installed">Terpasang dan siap</string>
+    <string name="bootstrap_desc_not_installed">Unduh sistem dasar (sekitar 33 MB) agar pkg, apt, dan alat shell asli bisa dipakai.</string>
+    <string name="bootstrap_desc_installed">Sistem dasar sudah terpasang. Pasang ulang jika ada yang rusak.</string>
+    <string name="bootstrap_action_install">Pasang lingkungan</string>
+    <string name="bootstrap_action_reinstall">Pasang ulang lingkungan</string>
+    <string name="bootstrap_action_cancel">Batal</string>
+    <string name="bootstrap_progress_downloading">Mengunduh %1$d / %2$d MB</string>
+    <string name="bootstrap_progress_verifying">Memeriksa checksum…</string>
+    <string name="bootstrap_progress_extracting">Mengekstrak %1$d / %2$d berkas</string>
+    <string name="bootstrap_progress_finalizing">Menyelesaikan…</string>
+    <string name="bootstrap_done">Lingkungan terpasang.</string>
+    <string name="bootstrap_failed">Pemasangan gagal: %1$s</string>
+</resources>
