@@ -13,6 +13,9 @@ class VncConnection(
         fun onConnected(client: RfbClient)
         fun onFrame()
         fun onClosed(error: String?)
+
+        /** The desktop copied some text. Called on the reader thread. */
+        fun onClipboard(text: String) {}
     }
 
     @Volatile private var client: RfbClient? = null
@@ -34,6 +37,7 @@ class VncConnection(
                     socket = s
                     val c = RfbClient(s.getInputStream(), s.getOutputStream())
                     c.onFrame = { listener.onFrame() }
+                    c.onServerCutText = { text -> listener.onClipboard(text) }
                     c.handshake()
                     client = c
                     listener.onConnected(c)
@@ -72,6 +76,9 @@ class VncConnection(
         key(true, keysym)
         key(false, keysym)
     }
+
+    /** Puts [text] on the desktop's clipboard (sent in order with later key presses). */
+    fun clipboard(text: String) = send { it.sendClientCutText(text) }
 
     private fun send(block: (RfbClient) -> Unit) {
         val c = client ?: return
