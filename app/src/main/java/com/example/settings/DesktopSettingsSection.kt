@@ -73,6 +73,8 @@ fun DesktopSettingsSection(modifier: Modifier = Modifier) {
         val handle = backend.createSession(title)
         handle.rename(title)
         handle.write(command.toByteArray(Charsets.UTF_8))
+        // Start the shell right away: it otherwise starts only once a terminal view measures itself.
+        handle.resize(80, 24)
     }
 
     fun prepare(): Boolean = try {
