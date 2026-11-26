@@ -1,5 +1,6 @@
 package com.example.ui.desktop
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
@@ -39,6 +41,7 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -58,14 +61,18 @@ private const val CURSOR_GAIN = 1.6f
 private const val MOVE_SLOP_PX = 8f
 private const val TAP_TRAVEL_PX = 24f
 private const val TAP_MAX_MS = 300L
+private const val LONG_PRESS_MS = 500L
 private const val DOUBLE_TAP_MS = 350L
 private const val SCROLL_STEP_PX = 30f
+private const val PREFS_NAME = "cyberorg_desktop"
+private const val PREF_DIRECT = "direct_touch"
 
-/** Full-screen viewer for the local Ubuntu desktop (VNC on localhost:5901), touchpad style. */
+/** Full-screen viewer for the local Ubuntu desktop (VNC on localhost:5901); touchpad or direct touch. */
 @Composable
 fun DesktopViewerDialog(onDismiss: () -> Unit) {
     val tokens = StudioTheme.tokens
     val compactType = StudioTheme.compactTypography
+    val context = LocalContext.current
 
     var connected by remember { mutableStateOf(false) }
     var failure by remember { mutableStateOf<String?>(null) }
@@ -76,6 +83,13 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
     var altOn by remember { mutableStateOf(false) }
     var showKeys by remember { mutableStateOf(true) }
     var dragLock by remember { mutableStateOf(false) }
+    var directMode by remember {
+        mutableStateOf(
+            runCatching {
+                context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getBoolean(PREF_DIRECT, false)
+            }.getOrDefault(false)
+        )
+    }
     var zoom by remember { mutableStateOf(1f) }
     var panX by remember { mutableStateOf(0f) }
     var panY by remember { mutableStateOf(0f) }
@@ -109,6 +123,14 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
         cursor[0] = (cursor[0] + dx / s * CURSOR_GAIN).coerceIn(0f, (fbSize.width - 1).toFloat())
         cursor[1] = (cursor[1] + dy / s * CURSOR_GAIN).coerceIn(0f, (fbSize.height - 1).toFloat())
         sendCursor(if (dragLock || holdLeft) VncKeys.BUTTON_LEFT else 0)
+    }
+
+    /** Direct touch: the cursor jumps to the finger. */
+    fun setCursorFromScreen(p: Offset) {
+        if (fbSize.width <= 0) return
+        val v = currentView()
+        cursor[0] = ((p.x - v.ox) / v.scale).coerceIn(0f, (fbSize.width - 1).toFloat())
+        cursor[1] = ((p.y - v.oy) / v.scale).coerceIn(0f, (fbSize.height - 1).toFloat())
     }
 
     fun clickAtCursor(button: Int) {
@@ -185,6 +207,23 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     color = tokens.textPrimary
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    TextButton(
+                        onClick = {
+                            directMode = !directMode
+                            runCatching {
+                                context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                                    .edit().putBoolean(PREF_DIRECT, directMode).apply()
+                            }
+                        },
+                        modifier = Modifier.testTag("desktop_mode")
+                    ) {
+                        Text(
+                            text = stringResource(
+                                if (directMode) R.string.desktop_mode_direct else R.string.desktop_mode_touchpad
+                            ),
+                            color = tokens.accent
+                        )
+                    }
                     TextButton(onClick = { showKeys = !showKeys }, modifier = Modifier.testTag("desktop_toggle_keys")) {
                         Text("⌨", color = if (showKeys) tokens.accent else tokens.textSecondary)
                     }
@@ -202,9 +241,14 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     .pointerInput(Unit) {
                         awaitEachGesture {
                             val down = awaitFirstDown(requireUnconsumed = false)
-                            // Touch again right after a tap and slide: hold the left button (drag / double click).
-                            val dragging = down.uptimeMillis - lastTapEnd[0] < DOUBLE_TAP_MS
-                            if (dragging) {
+                            val direct = directMode
+                            // Touchpad: touch again right after a tap and slide = hold left button (drag / double click).
+                            val dragging = !direct && down.uptimeMillis - lastTapEnd[0] < DOUBLE_TAP_MS
+                            var pressedLeft = false
+                            if (direct) {
+                                setCursorFromScreen(down.position)
+                                sendCursor(0)
+                            } else if (dragging) {
                                 ensureCursor()
                                 sendCursor(VncKeys.BUTTON_LEFT)
                             }
@@ -225,7 +269,16 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                                     val c = pressed[0]
                                     val d = c.position - c.previousPosition
                                     travel += abs(d.x) + abs(d.y)
-                                    if (dragging) {
+                                    if (direct) {
+                                        if (!pressedLeft && travel > MOVE_SLOP_PX) {
+                                            pressedLeft = true
+                                            sendCursor(VncKeys.BUTTON_LEFT)
+                                        }
+                                        if (pressedLeft) {
+                                            setCursorFromScreen(c.position)
+                                            sendCursor(VncKeys.BUTTON_LEFT)
+                                        }
+                                    } else if (dragging) {
                                         moveCursor(d.x, d.y, holdLeft = true)
                                     } else if (travel > MOVE_SLOP_PX) {
                                         moveCursor(d.x, d.y)
@@ -277,18 +330,28 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                                 }
                                 event.changes.forEach { it.consume() }
                             }
-                            if (dragging) {
+                            val duration = lastTime - down.uptimeMillis
+                            if (direct) {
+                                if (pressedLeft) {
+                                    sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
+                                } else if (travel < TAP_TRAVEL_PX) {
+                                    if (maxPointers == 2) {
+                                        clickAtCursor(VncKeys.BUTTON_RIGHT)
+                                    } else if (maxPointers == 1) {
+                                        clickAtCursor(
+                                            if (duration >= LONG_PRESS_MS) VncKeys.BUTTON_RIGHT else VncKeys.BUTTON_LEFT
+                                        )
+                                    }
+                                }
+                            } else if (dragging) {
                                 sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
                                 lastTapEnd[0] = 0L
-                            } else {
-                                val duration = lastTime - down.uptimeMillis
-                                if (duration < TAP_MAX_MS && travel < TAP_TRAVEL_PX) {
-                                    if (maxPointers == 1) {
-                                        clickAtCursor(VncKeys.BUTTON_LEFT)
-                                        lastTapEnd[0] = lastTime
-                                    } else if (maxPointers == 2) {
-                                        clickAtCursor(VncKeys.BUTTON_RIGHT)
-                                    }
+                            } else if (duration < TAP_MAX_MS && travel < TAP_TRAVEL_PX) {
+                                if (maxPointers == 1) {
+                                    clickAtCursor(VncKeys.BUTTON_LEFT)
+                                    lastTapEnd[0] = lastTime
+                                } else if (maxPointers == 2) {
+                                    clickAtCursor(VncKeys.BUTTON_RIGHT)
                                 }
                             }
                         }
@@ -412,7 +475,7 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     KeyButton(stringResource(R.string.desktop_scroll_down)) { wheelAtCursor(VncKeys.WHEEL_DOWN, 3) }
                 }
                 Text(
-                    text = stringResource(R.string.desktop_hint),
+                    text = stringResource(if (directMode) R.string.desktop_hint_direct else R.string.desktop_hint),
                     style = compactType.body,
                     color = tokens.textSecondary,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
