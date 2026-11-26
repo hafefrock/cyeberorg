@@ -3,6 +3,7 @@ package com.example.settings
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Language
@@ -48,6 +49,9 @@ import com.example.ui.UiText
  * 4. [SettingsRoute.Terminal] ("Terminal"):
  *    - Extra Keys Row Layout choice (`extra_layout_standard`, `extra_layout_developer`, `extra_layout_compact` -> `SettingsViewModel.setExtraKeysLayout`)
  *
+ * 4b. [SettingsRoute.Linux] ("Ubuntu & Desktop" / "Ubuntu & Desktop"):
+ *    - Linux environment (bootstrap) installer, Ubuntu (proot-distro) install/open/remove, and the XFCE desktop (install/start/viewer/stop)
+ *
  * 5. [SettingsRoute.Language] ("Language" / "Bahasa"):
  *    - App interface & Gemini AI response language choice (`lang_system`, `lang_id`, `lang_en` -> `SettingsViewModel.setAppLanguage`)
  *
@@ -81,6 +85,10 @@ sealed interface SettingsRoute {
         override val key: String = "terminal"
     }
 
+    data object Linux : SettingsRoute {
+        override val key: String = "linux"
+    }
+
     data object Language : SettingsRoute {
         override val key: String = "language"
     }
@@ -99,6 +107,7 @@ sealed interface SettingsRoute {
             ApiKeys.key -> ApiKeys
             Appearance.key -> Appearance
             Terminal.key -> Terminal
+            Linux.key -> Linux
             Language.key -> Language
             DataPrivacy.key -> DataPrivacy
             About.key -> About
@@ -142,6 +151,12 @@ enum class SettingsGroup(
         icon = Icons.Default.Terminal,
         testTagSuffix = "terminal"
     ),
+    LINUX(
+        route = SettingsRoute.Linux,
+        titleRes = R.string.settings_group_linux,
+        icon = Icons.Default.Computer,
+        testTagSuffix = "linux"
+    ),
     LANGUAGE(
         route = SettingsRoute.Language,
         titleRes = R.string.settings_group_language,
@@ -167,11 +182,21 @@ enum class SettingsGroup(
     }
 }
 
-fun visibleSettingsGroups(hasDataPrivacyActions: Boolean = false): List<SettingsGroup> = buildList {
+/**
+ * Groups shown in the Settings menu. [includeLinux] adds the Ubuntu & Desktop entry after Terminal;
+ * the Settings home screen passes true, while the default keeps the original six groups.
+ */
+fun visibleSettingsGroups(
+    hasDataPrivacyActions: Boolean = false,
+    includeLinux: Boolean = false
+): List<SettingsGroup> = buildList {
     add(SettingsGroup.AI_ASSISTANT)
     add(SettingsGroup.API_KEYS)
     add(SettingsGroup.APPEARANCE)
     add(SettingsGroup.TERMINAL)
+    if (includeLinux) {
+        add(SettingsGroup.LINUX)
+    }
     add(SettingsGroup.LANGUAGE)
     if (hasDataPrivacyActions) {
         add(SettingsGroup.DATA_PRIVACY)
@@ -249,6 +274,8 @@ object SettingsSummaries {
             UiText.Resource(settings.extraKeysLayout.labelRes)
         )
 
+    fun buildLinuxSummary(): UiText = UiText.Resource(R.string.settings_summary_linux)
+
     fun buildLanguageSummary(settings: AppSettings): UiText =
         UiText.Resource(settings.appLanguage.labelRes)
 
@@ -266,6 +293,7 @@ object SettingsSummaries {
         SettingsGroup.API_KEYS -> buildKeysSummary(snapshot, vaultStatus)
         SettingsGroup.APPEARANCE -> buildAppearanceSummary(settings)
         SettingsGroup.TERMINAL -> buildTerminalSummary(settings)
+        SettingsGroup.LINUX -> buildLinuxSummary()
         SettingsGroup.LANGUAGE -> buildLanguageSummary(settings)
         SettingsGroup.DATA_PRIVACY -> UiText.Resource(R.string.settings_data_empty)
         SettingsGroup.ABOUT -> buildAboutSummary(versionName)
