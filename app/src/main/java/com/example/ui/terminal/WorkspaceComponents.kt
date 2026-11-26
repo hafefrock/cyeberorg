@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -29,8 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
@@ -38,9 +35,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.outlined.AutoAwesome
@@ -83,6 +78,7 @@ import com.example.R
 import com.example.ai.KeyManagerSnapshot
 import com.example.data.GeminiModels
 import com.example.terminal.FakeTerminalBackend
+import com.example.ui.files.FileBrowserPane
 import com.example.ui.linux.LocalOpenLinux
 import com.example.ui.theme.AppThemePreset
 import com.example.ui.theme.JetBrainsMonoFamily
@@ -786,97 +782,5 @@ fun FilesPlaceholderPane(
     onInspectCommand: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val tokens = StudioTheme.tokens
-    val dimens = StudioTheme.dimens
-    val compactType = StudioTheme.compactTypography
-    val sampleTree = remember {
-        listOf(
-            Triple("~/projects/cyberorg-cli", true, "ls -la ~/projects/cyberorg-cli"),
-            Triple("~/projects/cyberorg-cli/main.py", false, "cat ~/projects/cyberorg-cli/main.py"),
-            Triple("~/scripts/deploy.sh", false, "cat ~/scripts/deploy.sh"),
-            Triple("~/.bashrc", false, "cat ~/.bashrc"),
-            Triple("~/notes.md", false, "cat ~/notes.md")
-        )
-    }
-
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = StudioSpacing.lg),
-        contentPadding = PaddingValues(vertical = StudioSpacing.lg),
-        verticalArrangement = Arrangement.spacedBy(dimens.listSpacing)
-    ) {
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(StudioSpacing.xs)) {
-                Text(
-                    text = tokens.formatHeading(stringResource(R.string.files_title)),
-                    style = compactType.screenTitle,
-                    color = tokens.textPrimary
-                )
-                Text(
-                    text = stringResource(R.string.files_subtitle),
-                    style = compactType.body,
-                    color = tokens.textSecondary
-                )
-            }
-        }
-
-        items(sampleTree) { (path, isDir, inspectCmd) ->
-            Surface(
-                color = tokens.layer1,
-                shape = tokens.cardShape,
-                border = BorderStroke(tokens.borderWidth, tokens.thinBorderBrush)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(safeContentPadding(tokens.cardShape, dimens.cardPaddingH, dimens.cardPaddingV)),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(StudioSpacing.sm),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            imageVector = if (isDir) Icons.Default.FolderOpen else Icons.Default.Description,
-                            contentDescription = null,
-                            tint = if (isDir) tokens.accent else tokens.textSecondary,
-                            modifier = Modifier.size(dimens.iconSize)
-                        )
-                        Text(
-                            text = path,
-                            style = compactType.monoPreview,
-                            color = tokens.textPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .height(dimens.controlHeightSmall)
-                            .studioTouchTarget(
-                                minSize = dimens.minTouchTarget,
-                                onOutOfBoundsTap = { onInspectCommand(inspectCmd) }
-                            )
-                            .background(tokens.accentMuted, tokens.smallShape)
-                            .border(tokens.borderWidth, tokens.accent.copy(alpha = 0.45f), tokens.smallShape)
-                            .clickable(role = Role.Button) { onInspectCommand(inspectCmd) }
-                            .padding(safeContentPadding(tokens.smallShape, dimens.cardPaddingH)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.files_open_in_terminal),
-                            style = compactType.tabOrChip,
-                            color = tokens.accent,
-                            maxLines = 1,
-                            softWrap = false
-                        )
-                    }
-                }
-            }
-        }
-    }
+    FileBrowserPane(onTerminalCommand = onInspectCommand, modifier = modifier)
 }
