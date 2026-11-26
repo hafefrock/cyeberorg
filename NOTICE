@@ -1,0 +1,20 @@
+Cyberorg
+========
+
+Cyberorg is distributed under the GNU General Public License, version 3
+(GPL-3.0). The full license text is in the LICENSE file at the root of this
+repository, and is also available at https://www.gnu.org/licenses/gpl-3.0.txt
+
+Third-party components
+----------------------
+
+* Termux terminal-emulator and terminal-view libraries
+  (https://github.com/termux/termux-app), GPL-3.0, used as unmodified
+  libraries via JitPack.
+* Termux bootstrap packages and the packages installed from the Termux
+  repositories keep their own licenses.
+* proot-distro, Ubuntu, XFCE, TigerVNC and other software installed on the
+  user's request are downloaded at run time from their own distributors and
+  keep their own licenses.
+
+This project is not affiliated with or endorsed by the Termux project.
