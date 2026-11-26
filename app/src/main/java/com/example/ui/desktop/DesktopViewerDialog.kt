@@ -58,6 +58,7 @@ private const val CURSOR_GAIN = 1.6f
 private const val MOVE_SLOP_PX = 8f
 private const val TAP_TRAVEL_PX = 24f
 private const val TAP_MAX_MS = 300L
+private const val DOUBLE_TAP_MS = 350L
 private const val SCROLL_STEP_PX = 30f
 
 /** Full-screen viewer for the local Ubuntu desktop (VNC on localhost:5901), touchpad style. */
@@ -79,6 +80,7 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
     var panX by remember { mutableStateOf(0f) }
     var panY by remember { mutableStateOf(0f) }
     val cursor = remember { floatArrayOf(-1f, -1f) }
+    val lastTapEnd = remember { longArrayOf(0L) }
     val bitmapHolder = remember { arrayOfNulls<Bitmap>(1) }
     val pixelHolder = remember { arrayOfNulls<IntArray>(1) }
     val clientHolder = remember { arrayOfNulls<RfbClient>(1) }
@@ -100,13 +102,13 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
         if (cursor[0] >= 0f) connection.pointer(mask, cursor[0].toInt(), cursor[1].toInt())
     }
 
-    fun moveCursor(dx: Float, dy: Float) {
+    fun moveCursor(dx: Float, dy: Float, holdLeft: Boolean = false) {
         if (fbSize.width <= 0) return
         ensureCursor()
         val s = currentView().scale.coerceAtLeast(0.1f)
         cursor[0] = (cursor[0] + dx / s * CURSOR_GAIN).coerceIn(0f, (fbSize.width - 1).toFloat())
         cursor[1] = (cursor[1] + dy / s * CURSOR_GAIN).coerceIn(0f, (fbSize.height - 1).toFloat())
-        sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
+        sendCursor(if (dragLock || holdLeft) VncKeys.BUTTON_LEFT else 0)
     }
 
     fun clickAtCursor(button: Int) {
@@ -200,6 +202,12 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     .pointerInput(Unit) {
                         awaitEachGesture {
                             val down = awaitFirstDown(requireUnconsumed = false)
+                            // Touch again right after a tap and slide: hold the left button (drag / double click).
+                            val dragging = down.uptimeMillis - lastTapEnd[0] < DOUBLE_TAP_MS
+                            if (dragging) {
+                                ensureCursor()
+                                sendCursor(VncKeys.BUTTON_LEFT)
+                            }
                             var lastTime = down.uptimeMillis
                             var maxPointers = 1
                             var travel = 0f
@@ -217,7 +225,11 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                                     val c = pressed[0]
                                     val d = c.position - c.previousPosition
                                     travel += abs(d.x) + abs(d.y)
-                                    if (travel > MOVE_SLOP_PX) moveCursor(d.x, d.y)
+                                    if (dragging) {
+                                        moveCursor(d.x, d.y, holdLeft = true)
+                                    } else if (travel > MOVE_SLOP_PX) {
+                                        moveCursor(d.x, d.y)
+                                    }
                                     prevDist = 0f
                                 } else if (pressed.size >= 2) {
                                     val a = pressed[0].position
@@ -265,10 +277,19 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                                 }
                                 event.changes.forEach { it.consume() }
                             }
-                            val duration = lastTime - down.uptimeMillis
-                            if (duration < TAP_MAX_MS && travel < TAP_TRAVEL_PX) {
-                                if (maxPointers == 1) clickAtCursor(VncKeys.BUTTON_LEFT)
-                                else if (maxPointers == 2) clickAtCursor(VncKeys.BUTTON_RIGHT)
+                            if (dragging) {
+                                sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
+                                lastTapEnd[0] = 0L
+                            } else {
+                                val duration = lastTime - down.uptimeMillis
+                                if (duration < TAP_MAX_MS && travel < TAP_TRAVEL_PX) {
+                                    if (maxPointers == 1) {
+                                        clickAtCursor(VncKeys.BUTTON_LEFT)
+                                        lastTapEnd[0] = lastTime
+                                    } else if (maxPointers == 2) {
+                                        clickAtCursor(VncKeys.BUTTON_RIGHT)
+                                    }
+                                }
                             }
                         }
                     }
