@@ -18,6 +18,10 @@ class VncConnection(
         fun onClipboard(text: String) {}
     }
 
+    private companion object {
+        const val RECONNECT_MS = 30_000L
+    }
+
     @Volatile private var client: RfbClient? = null
     @Volatile private var socket: Socket? = null
     @Volatile private var closed = false
@@ -26,7 +30,7 @@ class VncConnection(
 
     fun start(listener: Listener, timeoutMs: Long = 180_000L) {
         reader = Thread({
-            val deadline = System.currentTimeMillis() + timeoutMs
+            var deadline = System.currentTimeMillis() + timeoutMs
             var lastError: String? = null
             while (!closed) {
                 var s: Socket? = null
@@ -42,13 +46,15 @@ class VncConnection(
                     client = c
                     listener.onConnected(c)
                     c.runLoop()
+                    throw java.io.EOFException("connection closed")
                 } catch (e: Exception) {
                     lastError = e.message ?: e.javaClass.simpleName
                     runCatching { s?.close() }
                     if (closed) break
-                    val wasConnected = client != null
+                    // A dropped session is retried for a while: the desktop is usually still running.
+                    if (client != null) deadline = System.currentTimeMillis() + RECONNECT_MS
                     client = null
-                    if (wasConnected || System.currentTimeMillis() >= deadline) {
+                    if (System.currentTimeMillis() >= deadline) {
                         listener.onClosed(lastError)
                         return@Thread
                     }
