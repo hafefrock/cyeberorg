@@ -20,17 +20,6 @@ for b in $paths; do
 done
 xf -c xsettings -p /Net/ThemeName -n -t string -s Adwaita-dark
 xf -c xsettings -p /Net/IconThemeName -n -t string -s Adwaita
-# Lighter desktop over VNC: no compositing, shadows or animations; windows move as outlines.
-xf -c xfwm4 -p /general/use_compositing -n -t bool -s false
-xf -c xfwm4 -p /general/show_dock_shadow -n -t bool -s false
-xf -c xfwm4 -p /general/show_frame_shadow -n -t bool -s false
-xf -c xfwm4 -p /general/show_popup_shadow -n -t bool -s false
-xf -c xfwm4 -p /general/box_move -n -t bool -s true
-xf -c xfwm4 -p /general/box_resize -n -t bool -s true
-xf -c xsettings -p /Gtk/EnableAnimations -n -t bool -s false
-pkill -x xfce4-power-manager 2>/dev/null
-pkill -x xfce4-screensaver 2>/dev/null
-pkill -x light-locker 2>/dev/null
 exit 0
 EOF
 
@@ -49,7 +38,7 @@ export MOZ_DISABLE_CONTENT_SANDBOX=1
 mkdir -p "$XDG_RUNTIME_DIR"
 chmod 700 "$XDG_RUNTIME_DIR"
 (vncconfig -nowin >/tmp/vncconfig.log 2>&1 &)
-exec dbus-launch --exit-with-session sh -c '(sleep 8; sh /root/cyberorg-theme.sh; sleep 25; sh /root/cyberorg-theme.sh) >/tmp/theme.log 2>&1 & exec startxfce4'
+exec dbus-launch --exit-with-session sh -c '(sleep 10; sh /root/cyberorg-theme.sh) >/tmp/theme.log 2>&1 & exec startxfce4'
 EOF
 chmod +x /root/.vnc/xstartup
 
