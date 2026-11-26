@@ -1,6 +1,7 @@
 package com.example.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -11,6 +12,8 @@ import com.example.data.AppContainer
 import com.example.settings.SettingsRoute
 import com.example.settings.SettingsScreen
 import com.example.settings.SettingsViewModel
+import com.example.ui.linux.LinuxScreen
+import com.example.ui.linux.LocalOpenLinux
 import com.example.ui.onboarding.OnboardingScreen
 import com.example.ui.terminal.TerminalScreen
 import com.example.ui.terminal.TerminalViewModel
@@ -19,6 +22,7 @@ object CyberorgRoutes {
     const val ONBOARDING = "onboarding"
     const val TERMINAL = "terminal"
     const val SETTINGS = "settings"
+    const val LINUX = "linux"
     const val SETTINGS_API_KEYS = "settings/api_keys"
 }
 
@@ -80,19 +84,29 @@ fun CyberorgNavGraph(
         }
 
         composable(route = CyberorgRoutes.TERMINAL) {
-            TerminalScreen(
-                viewModel = terminalViewModel,
-                onNavigateToSettings = {
-                    navController.navigate(CyberorgRoutes.SETTINGS) {
-                        launchSingleTop = true
-                    }
-                },
-                onNavigateToApiKeysSettings = {
-                    navController.navigate(CyberorgRoutes.SETTINGS_API_KEYS) {
-                        launchSingleTop = true
-                    }
+            CompositionLocalProvider(
+                LocalOpenLinux provides {
+                    navController.navigate(CyberorgRoutes.LINUX) { launchSingleTop = true }
                 }
-            )
+            ) {
+                TerminalScreen(
+                    viewModel = terminalViewModel,
+                    onNavigateToSettings = {
+                        navController.navigate(CyberorgRoutes.SETTINGS) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onNavigateToApiKeysSettings = {
+                        navController.navigate(CyberorgRoutes.SETTINGS_API_KEYS) {
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+        }
+
+        composable(route = CyberorgRoutes.LINUX) {
+            LinuxScreen(onNavigateBack = { navController.popBackStack() })
         }
 
         composable(route = CyberorgRoutes.SETTINGS) {
