@@ -24,12 +24,15 @@ exit 0
 EOF
 
 # Session script is rewritten on every start so updates to it reach existing installs.
-# vncconfig bridges the X clipboard with the VNC clipboard; the MOZ_ variables let Firefox run under proot.
+# vncconfig bridges the X clipboard with the VNC clipboard. The sandbox variables let browsers
+# (WebKit/Epiphany, Firefox) run under proot, where the usual sandboxes are not available.
 cat > /root/.vnc/xstartup <<'EOF'
 #!/bin/sh
 unset SESSION_MANAGER
 unset DBUS_SESSION_BUS_ADDRESS
 export XDG_RUNTIME_DIR=/tmp/runtime-root
+export WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1
+export WEBKIT_DISABLE_COMPOSITING_MODE=1
 export MOZ_FAKE_NO_SANDBOX=1
 export MOZ_DISABLE_CONTENT_SANDBOX=1
 mkdir -p "$XDG_RUNTIME_DIR"
