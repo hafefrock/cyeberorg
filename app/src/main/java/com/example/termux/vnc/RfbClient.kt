@@ -9,7 +9,7 @@ import java.io.OutputStream
 
 /**
  * Minimal RFB 3.7/3.8 client: security "None" only (the desktop listens on localhost),
- * Raw + CopyRect + DesktopSize encodings, 32-bit true colour.
+ * Raw + CopyRect + DesktopSize encodings, 32-bit true colour, Latin-1 clipboard text.
  */
 class RfbClient(input: InputStream, output: OutputStream) {
     private val din = DataInputStream(BufferedInputStream(input, 64 * 1024))
@@ -31,6 +31,9 @@ class RfbClient(input: InputStream, output: OutputStream) {
 
     /** Called on the reader thread when the remote desktop size changed. */
     var onResize: ((Int, Int) -> Unit)? = null
+
+    /** Called on the reader thread when the desktop copied text (ServerCutText). */
+    var onServerCutText: ((String) -> Unit)? = null
 
     fun handshake() {
         val versionBytes = ByteArray(12)
@@ -83,7 +86,13 @@ class RfbClient(input: InputStream, output: OutputStream) {
                 skipFully(3)
                 val len = din.readInt()
                 if (len < 0) throw IOException("Bad cut text length")
-                skipFully(len)
+                if (len > MAX_CUT_TEXT) {
+                    skipFully(len)
+                } else {
+                    val bytes = ByteArray(len)
+                    din.readFully(bytes)
+                    onServerCutText?.invoke(String(bytes, Charsets.ISO_8859_1))
+                }
             }
             else -> throw IOException("Unknown server message $type")
         }
@@ -119,6 +128,23 @@ class RfbClient(input: InputStream, output: OutputStream) {
                 (keysym shr 24).toByte(), (keysym shr 16).toByte(), (keysym shr 8).toByte(), keysym.toByte()
             )
         )
+    }
+
+    /** ClientCutText: puts [text] (Latin-1, other characters become '?') on the desktop's clipboard. */
+    fun sendClientCutText(text: String) {
+        val bytes = ByteArray(text.length) { i ->
+            val c = text[i].code
+            if (c in 1..0xFF) c.toByte() else '?'.code.toByte()
+        }
+        val len = bytes.size.coerceAtMost(MAX_CUT_TEXT)
+        val msg = ByteArray(8 + len)
+        msg[0] = 6
+        msg[4] = (len shr 24).toByte()
+        msg[5] = (len shr 16).toByte()
+        msg[6] = (len shr 8).toByte()
+        msg[7] = len.toByte()
+        System.arraycopy(bytes, 0, msg, 8, len)
+        sendRaw(msg)
     }
 
     /** Copies the framebuffer (ARGB) into [dst]; returns false when the size does not match. */
@@ -256,5 +282,9 @@ class RfbClient(input: InputStream, output: OutputStream) {
             dout.write(bytes)
             dout.flush()
         }
+    }
+
+    private companion object {
+        const val MAX_CUT_TEXT = 1_000_000
     }
 }
