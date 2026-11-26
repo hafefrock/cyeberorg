@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -64,6 +67,7 @@ fun DesktopSettingsSection(modifier: Modifier = Modifier) {
         ubuntuInstalled && DesktopSetup.isInstalled(DistroPaths.rootfs(paths.prefix, distro))
     }
     var showViewer by remember { mutableStateOf(false) }
+    var advanced by rememberSaveable { mutableStateOf(false) }
 
     fun runInNewSession(title: String, command: String) {
         val handle = backend.createSession(title)
@@ -150,38 +154,47 @@ fun DesktopSettingsSection(modifier: Modifier = Modifier) {
                 modifier = Modifier.testTag("desktop_launch")
             )
             SettingsActionRow(
-                icon = Icons.Default.PlayArrow,
-                title = stringResource(R.string.desktop_action_start),
-                onClick = {
-                    if (prepare()) {
-                        val metrics = context.resources.displayMetrics
-                        val geometry = DesktopSetup.geometryFor(metrics.widthPixels, metrics.heightPixels)
-                        val share = LinuxPrefs.effectiveShareStorage(context)
-                        runInNewSession("desktop", DesktopSetup.startCommand(distro, geometry, share))
-                        showViewer = true
-                    }
-                },
-                enabled = ready,
+                icon = if (advanced) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                title = stringResource(if (advanced) R.string.desktop_advanced_hide else R.string.desktop_advanced_show),
+                onClick = { advanced = !advanced },
                 trailingIcon = null,
-                modifier = Modifier.testTag("desktop_start")
+                modifier = Modifier.testTag("desktop_advanced_toggle")
             )
-            SettingsActionRow(
-                icon = Icons.Default.PlayArrow,
-                title = stringResource(R.string.desktop_action_open),
-                onClick = { showViewer = true },
-                enabled = ready,
-                trailingIcon = null,
-                modifier = Modifier.testTag("desktop_open")
-            )
-            SettingsActionRow(
-                icon = Icons.Default.Delete,
-                title = stringResource(R.string.desktop_action_stop),
-                onClick = { runInNewSession("desktop-stop", DesktopSetup.stopCommand(distro)) },
-                enabled = ready,
-                isDestructive = true,
-                trailingIcon = null,
-                modifier = Modifier.testTag("desktop_stop")
-            )
+            if (advanced) {
+                SettingsActionRow(
+                    icon = Icons.Default.PlayArrow,
+                    title = stringResource(R.string.desktop_action_restart),
+                    onClick = {
+                        if (prepare()) {
+                            val metrics = context.resources.displayMetrics
+                            val geometry = DesktopSetup.geometryFor(metrics.widthPixels, metrics.heightPixels)
+                            val share = LinuxPrefs.effectiveShareStorage(context)
+                            runInNewSession("desktop", DesktopSetup.startCommand(distro, geometry, share))
+                            showViewer = true
+                        }
+                    },
+                    enabled = ready,
+                    trailingIcon = null,
+                    modifier = Modifier.testTag("desktop_start")
+                )
+                SettingsActionRow(
+                    icon = Icons.Default.PlayArrow,
+                    title = stringResource(R.string.desktop_action_open),
+                    onClick = { showViewer = true },
+                    enabled = ready,
+                    trailingIcon = null,
+                    modifier = Modifier.testTag("desktop_open")
+                )
+                SettingsActionRow(
+                    icon = Icons.Default.Delete,
+                    title = stringResource(R.string.desktop_action_stop),
+                    onClick = { runInNewSession("desktop-stop", DesktopSetup.stopCommand(distro)) },
+                    enabled = ready,
+                    isDestructive = true,
+                    trailingIcon = null,
+                    modifier = Modifier.testTag("desktop_stop")
+                )
+            }
         }
     }
 
