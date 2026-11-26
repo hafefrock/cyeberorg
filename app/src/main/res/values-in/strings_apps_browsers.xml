@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_desc_epiphany">Peramban web (GNOME Web). Jalan di ARM 32-bit, tidak seperti Firefox.</string>
+    <string name="app_desc_netsurf">Peramban sangat ringan. JavaScript terbatas; cocok untuk halaman sederhana.</string>
+</resources>
