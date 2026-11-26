@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="files_loc_home">Home</string>
+    <string name="files_loc_ubuntu">Ubuntu</string>
+    <string name="files_loc_phone">HP</string>
+    <string name="files_up">Naik satu folder</string>
+    <string name="files_cd_here">Buka di terminal</string>
+    <string name="files_empty">Folder ini kosong.</string>
+    <string name="files_unreadable">Folder ini tidak bisa dibaca.</string>
+    <string name="files_action_view">Lihat di terminal</string>
+    <string name="files_action_copy_path">Salin jalur</string>
+    <string name="files_action_delete">Hapus</string>
+    <string name="files_path_copied">Jalur disalin</string>
+    <string name="files_delete_title">Hapus?</string>
+    <string name="files_delete_message">%1$s akan dihapus permanen.</string>
+    <string name="files_delete_failed">Gagal menghapus.</string>
+</resources>
