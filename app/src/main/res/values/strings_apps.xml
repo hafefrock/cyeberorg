@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apps_section_title">Desktop apps</string>
+    <string name="apps_intro">One-tap installs inside Ubuntu. Sizes are rough. Each install opens a terminal session so you can follow it.</string>
+    <string name="apps_needs_ubuntu">Install Ubuntu first.</string>
+    <string name="app_desc_firefox">Web browser from the Mozilla repository. Experimental under proot; may be slow.</string>
+    <string name="app_desc_mousepad">Simple, light text editor.</string>
+    <string name="app_desc_geany">Light code editor with syntax colors.</string>
+    <string name="app_desc_python">Python 3 with pip and virtual environments.</string>
+    <string name="app_desc_node">Node.js and npm.</string>
+    <string name="app_desc_git">Git version control.</string>
+    <string name="app_desc_libreoffice">Writer, Calc and Impress. Large download.</string>
+    <string name="app_desc_gimp">Image editor. Large download.</string>
+    <string name="app_desc_evince">PDF and document viewer.</string>
+    <string name="app_desc_tools">htop, curl, wget, nano and vim.</string>
+
+    <string name="storage_section_title">Phone files</string>
+    <string name="storage_share_title">Share phone storage with Ubuntu</string>
+    <string name="storage_share_desc">Shows your phone\'s files in Ubuntu under the Android folder in your home (~/Android). Applies the next time you open Ubuntu or start the desktop.</string>
+    <string name="storage_permission_denied">Storage permission was denied.</string>
+
+    <string name="desktop_paste">Paste</string>
+    <string name="desktop_paste_terminal">Paste (terminal)</string>
+</resources>
