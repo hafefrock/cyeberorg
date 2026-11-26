@@ -1,5 +1,7 @@
 package com.example.ui.desktop
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Handler
@@ -150,6 +152,22 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
         }
     }
 
+    /** Sends the phone's clipboard text to the desktop, then presses Ctrl+V (or Ctrl+Shift+V in terminals). */
+    fun pasteFromPhone(terminal: Boolean) {
+        val text = runCatching {
+            val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = cm.primaryClip
+            if (clip != null && clip.itemCount > 0) clip.getItemAt(0).coerceToText(context).toString() else null
+        }.getOrNull()
+        if (text.isNullOrEmpty()) return
+        connection.clipboard(text)
+        connection.key(true, VncKeys.CONTROL_L)
+        if (terminal) connection.key(true, VncKeys.SHIFT_L)
+        connection.tapKey('v'.code)
+        if (terminal) connection.key(false, VncKeys.SHIFT_L)
+        connection.key(false, VncKeys.CONTROL_L)
+    }
+
     DisposableEffect(Unit) {
         connection.start(object : VncConnection.Listener {
             override fun onConnected(client: RfbClient) {
@@ -173,6 +191,15 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                 if (client.copyPixels(buf)) {
                     bmp.setPixels(buf, 0, w, 0, 0, w, h)
                     main.post { fbSize = IntSize(w, h); frameTick++ }
+                }
+            }
+
+            override fun onClipboard(text: String) {
+                main.post {
+                    runCatching {
+                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        cm.setPrimaryClip(ClipData.newPlainText("desktop", text))
+                    }
                 }
             }
 
@@ -457,6 +484,8 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                 ) {
                     KeyButton(stringResource(R.string.desktop_click)) { clickAtCursor(VncKeys.BUTTON_LEFT) }
                     KeyButton(stringResource(R.string.desktop_right_click)) { clickAtCursor(VncKeys.BUTTON_RIGHT) }
+                    KeyButton(stringResource(R.string.desktop_paste)) { pasteFromPhone(terminal = false) }
+                    KeyButton(stringResource(R.string.desktop_paste_terminal)) { pasteFromPhone(terminal = true) }
                     KeyButton(stringResource(R.string.desktop_drag_lock), selected = dragLock) {
                         dragLock = !dragLock
                         ensureCursor()
