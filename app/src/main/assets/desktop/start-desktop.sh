@@ -4,7 +4,7 @@ GEOMETRY="${1:-1280x720}"
 export DISPLAY=:1
 pkill -f 'Xvnc :1' 2>/dev/null
 rm -f /tmp/.X1-lock /tmp/.X11-unix/X1
-mkdir -p /tmp/.X11-unix /root/.vnc
+mkdir -p /tmp/.X11-unix /root/.vnc /root/Android
 
 # Theme helper (best effort): dark background and dark GTK theme once the session is up.
 cat > /root/cyberorg-theme.sh <<'EOF'
@@ -24,13 +24,17 @@ exit 0
 EOF
 
 # Session script is rewritten on every start so updates to it reach existing installs.
+# vncconfig bridges the X clipboard with the VNC clipboard; the MOZ_ variables let Firefox run under proot.
 cat > /root/.vnc/xstartup <<'EOF'
 #!/bin/sh
 unset SESSION_MANAGER
 unset DBUS_SESSION_BUS_ADDRESS
 export XDG_RUNTIME_DIR=/tmp/runtime-root
+export MOZ_FAKE_NO_SANDBOX=1
+export MOZ_DISABLE_CONTENT_SANDBOX=1
 mkdir -p "$XDG_RUNTIME_DIR"
 chmod 700 "$XDG_RUNTIME_DIR"
+(vncconfig -nowin >/tmp/vncconfig.log 2>&1 &)
 exec dbus-launch --exit-with-session sh -c '(sleep 10; sh /root/cyberorg-theme.sh) >/tmp/theme.log 2>&1 & exec startxfce4'
 EOF
 chmod +x /root/.vnc/xstartup
