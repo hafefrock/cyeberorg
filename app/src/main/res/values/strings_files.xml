@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="files_loc_home">Home</string>
+    <string name="files_loc_ubuntu">Ubuntu</string>
+    <string name="files_loc_phone">Phone</string>
+    <string name="files_up">Up one folder</string>
+    <string name="files_cd_here">Open in terminal</string>
+    <string name="files_empty">This folder is empty.</string>
+    <string name="files_unreadable">This folder cannot be read.</string>
+    <string name="files_action_view">View in terminal</string>
+    <string name="files_action_copy_path">Copy path</string>
+    <string name="files_action_delete">Delete</string>
+    <string name="files_path_copied">Path copied</string>
+    <string name="files_delete_title">Delete?</string>
+    <string name="files_delete_message">%1$s will be deleted permanently.</string>
+    <string name="files_delete_failed">Could not delete.</string>
+</resources>
