@@ -34,8 +34,9 @@ class LinuxFeaturesTest {
             app.packages.forEach { assertTrue(script.contains(it)) }
             assertTrue(AppCatalog.installCommand("ubuntu", app).contains(AppCatalog.scriptFileName(app)))
         }
-        val firefox = AppCatalog.apps.first { it.id == "firefox" }
-        assertTrue(AppCatalog.script(firefox).contains("packages.mozilla.org"))
+        // Firefox has no armhf build and Ubuntu only ships a snap stub, so it must not be offered.
+        assertFalse(ids.contains("firefox"))
+        assertTrue(ids.contains("epiphany"))
     }
 
     @Test
