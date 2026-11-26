@@ -24,12 +24,14 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.CyberorgApp
 import com.example.R
 import com.example.termux.DistroPaths
+import com.example.termux.LinuxPrefs
 import com.example.termux.TermuxPaths
 import com.example.termux.TermuxSessionBackend
 import com.example.ui.theme.StudioSpacing
 import com.example.ui.theme.StudioTheme
+import java.io.File
 
-/** Settings > Terminal: Ubuntu (proot-distro) followed by the desktop section. */
+/** Settings > Ubuntu & Desktop: Ubuntu (proot-distro) followed by the desktop section. */
 @Composable
 fun DistroSettingsSection(modifier: Modifier = Modifier) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(StudioSpacing.sm)) {
@@ -69,6 +71,14 @@ private fun UbuntuSettingsSection(modifier: Modifier = Modifier) {
         Toast.makeText(context, R.string.distro_session_opened, Toast.LENGTH_LONG).show()
     }
 
+    fun openUbuntu() {
+        val share = LinuxPrefs.effectiveShareStorage(context)
+        if (share) {
+            runCatching { File(DistroPaths.rootfs(paths.prefix, DistroPaths.UBUNTU), "root/Android").mkdirs() }
+        }
+        runInNewSession(DistroPaths.loginCommand(DistroPaths.UBUNTU, share))
+    }
+
     SettingsSection(
         title = stringResource(R.string.distro_section_title),
         modifier = modifier.testTag("distro_section")
@@ -98,7 +108,7 @@ private fun UbuntuSettingsSection(modifier: Modifier = Modifier) {
             SettingsActionRow(
                 icon = Icons.Default.PlayArrow,
                 title = stringResource(R.string.distro_action_login),
-                onClick = { runInNewSession(DistroPaths.loginCommand(DistroPaths.UBUNTU)) },
+                onClick = { openUbuntu() },
                 enabled = ready,
                 trailingIcon = null,
                 modifier = Modifier.testTag("distro_login")
