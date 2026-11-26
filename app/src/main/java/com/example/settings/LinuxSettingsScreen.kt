@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.example.ui.theme.StudioSpacing
 
-/** Settings > Ubuntu & Desktop: Linux environment, Ubuntu (proot-distro) and the XFCE desktop in one place. */
+/** Settings > Ubuntu & Desktop: Linux environment, Ubuntu, desktop, phone files and apps in one place. */
 @Composable
 fun LinuxSettingsScreen(modifier: Modifier = Modifier) {
     LazyColumn(
@@ -24,6 +24,12 @@ fun LinuxSettingsScreen(modifier: Modifier = Modifier) {
         }
         item(key = "ubuntu_and_desktop") {
             DistroSettingsSection()
+        }
+        item(key = "phone_files") {
+            StorageShareSettingsSection()
+        }
+        item(key = "desktop_apps") {
+            AppsSettingsSection()
         }
     }
 }
