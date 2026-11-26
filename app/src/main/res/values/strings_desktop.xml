@@ -4,7 +4,7 @@
     <string name="desktop_status_not_installed">Desktop is not installed</string>
     <string name="desktop_status_installed">Desktop is installed</string>
     <string name="desktop_desc_not_installed">Installs the XFCE desktop (about 1 GB more, 10-30 minutes) so Ubuntu looks like a real computer. Use Wi-Fi and keep the app open.</string>
-    <string name="desktop_desc_installed">Starts the desktop and shows it inside Cyberorg. Landscape works best; the first start takes 10-30 seconds.</string>
+    <string name="desktop_desc_installed">Starts the desktop and shows it inside Cyberorg. Rotate the phone to the orientation you will use first; the first start takes 10-30 seconds.</string>
     <string name="desktop_needs_ubuntu">Install Ubuntu above first.</string>
     <string name="desktop_action_install">Install desktop</string>
     <string name="desktop_action_start">Start desktop</string>
@@ -21,5 +21,8 @@
     <string name="desktop_key_tab">Tab</string>
     <string name="desktop_scroll_up">Scroll up</string>
     <string name="desktop_scroll_down">Scroll down</string>
-    <string name="desktop_hint">Tap = click, long press = right click, drag = move.</string>
+    <string name="desktop_click">Click</string>
+    <string name="desktop_right_click">Right click</string>
+    <string name="desktop_drag_lock">Drag</string>
+    <string name="desktop_hint">Touchpad: slide = move cursor, tap = click, two-finger tap = right click, pinch = zoom.</string>
 </resources>
