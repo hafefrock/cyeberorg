@@ -25,10 +25,11 @@ object DesktopSetup {
         return "${maxOf(w, 640)}x${maxOf(h, 360)}"
     }
 
-    /** Copies the bundled scripts into Ubuntu's /root so they can be run inside proot. */
+    /** Copies the bundled scripts into Ubuntu's /root and prepares the phone-storage mount point. */
     fun writeScripts(context: Context, rootfs: File) {
         val dir = File(rootfs, "root")
         dir.mkdirs()
+        File(dir, "Android").mkdirs()
         copyAsset(context, "desktop/install-desktop.sh", File(dir, INSTALL_SCRIPT))
         copyAsset(context, "desktop/start-desktop.sh", File(dir, START_SCRIPT))
     }
@@ -42,8 +43,12 @@ object DesktopSetup {
     fun installCommand(distro: String): String =
         "proot-distro login $distro -- bash /root/$INSTALL_SCRIPT\r"
 
-    fun startCommand(distro: String, geometry: String = DEFAULT_GEOMETRY): String =
-        "proot-distro login $distro -- bash /root/$START_SCRIPT $geometry\r"
+    fun startCommand(
+        distro: String,
+        geometry: String = DEFAULT_GEOMETRY,
+        shareStorage: Boolean = false
+    ): String =
+        "proot-distro login $distro${DistroPaths.bindArgs(shareStorage)} -- bash /root/$START_SCRIPT $geometry\r"
 
     fun stopCommand(distro: String): String =
         "proot-distro login $distro -- pkill Xvnc\r"
