@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="linux_overview_title">Status</string>
+    <string name="linux_step_base">Base system</string>
+    <string name="linux_step_ubuntu">Ubuntu</string>
+    <string name="linux_step_desktop">Desktop</string>
+    <string name="linux_next_base">Next: install the base system (below, \"Show base system\").</string>
+    <string name="linux_next_ubuntu">Next: install Ubuntu.</string>
+    <string name="linux_next_desktop">Next: install the desktop.</string>
+    <string name="linux_next_ready">All set. Tap \"Launch desktop\" to start.</string>
+    <string name="linux_show">Show %1$s</string>
+    <string name="linux_hide">Hide %1$s</string>
+    <string name="linux_group_apps">desktop apps</string>
+    <string name="linux_group_files">phone files</string>
+    <string name="linux_group_base">base system</string>
+    <string name="desktop_action_restart">Restart desktop</string>
+    <string name="desktop_advanced_show">More options</string>
+    <string name="desktop_advanced_hide">Hide more options</string>
+</resources>
