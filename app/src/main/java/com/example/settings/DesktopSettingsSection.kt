@@ -1,5 +1,7 @@
 package com.example.settings
 
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +33,9 @@ import com.example.termux.TermuxSessionBackend
 import com.example.ui.desktop.DesktopViewerDialog
 import com.example.ui.theme.StudioSpacing
 import com.example.ui.theme.StudioTheme
+import java.net.InetSocketAddress
+import java.net.Socket
+import kotlin.concurrent.thread
 
 /** Settings > Ubuntu & Desktop: install the XFCE desktop inside Ubuntu, start it and view it in-app over VNC. */
 @Composable
@@ -74,6 +79,27 @@ fun DesktopSettingsSection(modifier: Modifier = Modifier) {
         false
     }
 
+    // One tap: if the desktop is already listening just open the viewer, otherwise start it first.
+    fun launchDesktop() {
+        thread(name = "desktop-probe") {
+            val running = try {
+                Socket().use { it.connect(InetSocketAddress("127.0.0.1", 5901), 300) }
+                true
+            } catch (_: Exception) {
+                false
+            }
+            Handler(Looper.getMainLooper()).post {
+                if (!running && prepare()) {
+                    val metrics = context.resources.displayMetrics
+                    val geometry = DesktopSetup.geometryFor(metrics.widthPixels, metrics.heightPixels)
+                    val share = LinuxPrefs.effectiveShareStorage(context)
+                    runInNewSession("desktop", DesktopSetup.startCommand(distro, geometry, share))
+                }
+                showViewer = true
+            }
+        }
+    }
+
     SettingsSection(
         title = stringResource(R.string.desktop_section_title),
         modifier = modifier.testTag("desktop_section")
@@ -115,6 +141,14 @@ fun DesktopSettingsSection(modifier: Modifier = Modifier) {
             )
         }
         if (desktopInstalled) {
+            SettingsActionRow(
+                icon = Icons.Default.PlayArrow,
+                title = stringResource(R.string.desktop_action_launch),
+                onClick = { launchDesktop() },
+                enabled = ready,
+                trailingIcon = null,
+                modifier = Modifier.testTag("desktop_launch")
+            )
             SettingsActionRow(
                 icon = Icons.Default.PlayArrow,
                 title = stringResource(R.string.desktop_action_start),
