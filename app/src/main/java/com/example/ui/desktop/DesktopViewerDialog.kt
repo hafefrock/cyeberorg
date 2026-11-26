@@ -6,8 +6,8 @@ import android.os.Looper
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
@@ -53,8 +52,15 @@ import com.example.termux.vnc.RfbClient
 import com.example.termux.vnc.VncConnection
 import com.example.termux.vnc.VncKeys
 import com.example.ui.theme.StudioTheme
+import kotlin.math.abs
 
-/** Full-screen viewer for the local Ubuntu desktop (VNC on localhost:5901). */
+private const val CURSOR_GAIN = 1.6f
+private const val MOVE_SLOP_PX = 8f
+private const val TAP_TRAVEL_PX = 24f
+private const val TAP_MAX_MS = 300L
+private const val SCROLL_STEP_PX = 30f
+
+/** Full-screen viewer for the local Ubuntu desktop (VNC on localhost:5901), touchpad style. */
 @Composable
 fun DesktopViewerDialog(onDismiss: () -> Unit) {
     val tokens = StudioTheme.tokens
@@ -68,11 +74,57 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
     var ctrlOn by remember { mutableStateOf(false) }
     var altOn by remember { mutableStateOf(false) }
     var showKeys by remember { mutableStateOf(true) }
+    var dragLock by remember { mutableStateOf(false) }
+    var zoom by remember { mutableStateOf(1f) }
+    var panX by remember { mutableStateOf(0f) }
+    var panY by remember { mutableStateOf(0f) }
+    val cursor = remember { floatArrayOf(-1f, -1f) }
     val bitmapHolder = remember { arrayOfNulls<Bitmap>(1) }
     val pixelHolder = remember { arrayOfNulls<IntArray>(1) }
     val clientHolder = remember { arrayOfNulls<RfbClient>(1) }
     val connection = remember { VncConnection() }
     val main = remember { Handler(Looper.getMainLooper()) }
+
+    fun currentView(): ViewState = ViewTransform.view(
+        fbSize.width, fbSize.height, boxSize.width, boxSize.height, zoom, panX, panY
+    )
+
+    fun ensureCursor() {
+        if (cursor[0] < 0f && fbSize.width > 0) {
+            cursor[0] = fbSize.width / 2f
+            cursor[1] = fbSize.height / 2f
+        }
+    }
+
+    fun sendCursor(mask: Int) {
+        if (cursor[0] >= 0f) connection.pointer(mask, cursor[0].toInt(), cursor[1].toInt())
+    }
+
+    fun moveCursor(dx: Float, dy: Float) {
+        if (fbSize.width <= 0) return
+        ensureCursor()
+        val s = currentView().scale.coerceAtLeast(0.1f)
+        cursor[0] = (cursor[0] + dx / s * CURSOR_GAIN).coerceIn(0f, (fbSize.width - 1).toFloat())
+        cursor[1] = (cursor[1] + dy / s * CURSOR_GAIN).coerceIn(0f, (fbSize.height - 1).toFloat())
+        sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
+    }
+
+    fun clickAtCursor(button: Int) {
+        if (fbSize.width <= 0) return
+        ensureCursor()
+        sendCursor(0)
+        sendCursor(button)
+        sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
+    }
+
+    fun wheelAtCursor(button: Int, times: Int = 1) {
+        if (fbSize.width <= 0) return
+        ensureCursor()
+        repeat(times) {
+            sendCursor(button)
+            sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
+        }
+    }
 
     DisposableEffect(Unit) {
         connection.start(object : VncConnection.Listener {
@@ -146,49 +198,96 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     .fillMaxWidth()
                     .onSizeChanged { boxSize = it }
                     .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = { p -> click(connection, fbSize, boxSize, p, VncKeys.BUTTON_LEFT) },
-                            onLongPress = { p -> click(connection, fbSize, boxSize, p, VncKeys.BUTTON_RIGHT) }
-                        )
-                    }
-                    .pointerInput(Unit) {
-                        var last = Offset.Zero
-                        detectDragGestures(
-                            onDragStart = { p ->
-                                last = p
-                                val (x, y) = toFramebuffer(fbSize, boxSize, p)
-                                connection.pointer(0, x, y)
-                                connection.pointer(VncKeys.BUTTON_LEFT, x, y)
-                            },
-                            onDrag = { change, _ ->
-                                last = change.position
-                                val (x, y) = toFramebuffer(fbSize, boxSize, change.position)
-                                connection.pointer(VncKeys.BUTTON_LEFT, x, y)
-                            },
-                            onDragEnd = {
-                                val (x, y) = toFramebuffer(fbSize, boxSize, last)
-                                connection.pointer(0, x, y)
-                            },
-                            onDragCancel = {
-                                val (x, y) = toFramebuffer(fbSize, boxSize, last)
-                                connection.pointer(0, x, y)
+                        awaitEachGesture {
+                            val down = awaitFirstDown(requireUnconsumed = false)
+                            var lastTime = down.uptimeMillis
+                            var maxPointers = 1
+                            var travel = 0f
+                            var prevDist = 0f
+                            var prevCx = 0f
+                            var prevCy = 0f
+                            var scrollAcc = 0f
+                            while (true) {
+                                val event = awaitPointerEvent()
+                                val pressed = event.changes.filter { it.pressed }
+                                if (pressed.isEmpty()) break
+                                lastTime = event.changes[0].uptimeMillis
+                                if (pressed.size > maxPointers) maxPointers = pressed.size
+                                if (pressed.size == 1 && maxPointers == 1) {
+                                    val c = pressed[0]
+                                    val d = c.position - c.previousPosition
+                                    travel += abs(d.x) + abs(d.y)
+                                    if (travel > MOVE_SLOP_PX) moveCursor(d.x, d.y)
+                                    prevDist = 0f
+                                } else if (pressed.size >= 2) {
+                                    val a = pressed[0].position
+                                    val b = pressed[1].position
+                                    val dist = (a - b).getDistance()
+                                    val cx = (a.x + b.x) / 2f
+                                    val cy = (a.y + b.y) / 2f
+                                    if (prevDist > 0f && fbSize.width > 0) {
+                                        travel += abs(dist - prevDist) + abs(cx - prevCx) + abs(cy - prevCy)
+                                        val ratio = dist / prevDist
+                                        if (abs(ratio - 1f) > 0.004f) {
+                                            val old = currentView()
+                                            val newZoom = (zoom * ratio).coerceIn(ViewTransform.MIN_ZOOM, ViewTransform.MAX_ZOOM)
+                                            val (px, py) = ViewTransform.panForZoom(
+                                                fbSize.width, fbSize.height, boxSize.width, boxSize.height,
+                                                old, newZoom, cx, cy
+                                            )
+                                            zoom = newZoom
+                                            panX = px
+                                            panY = py
+                                        }
+                                        if (zoom > 1.01f) {
+                                            val (px, py) = ViewTransform.clampPan(
+                                                fbSize.width, fbSize.height, boxSize.width, boxSize.height,
+                                                zoom, panX + (cx - prevCx), panY + (cy - prevCy)
+                                            )
+                                            panX = px
+                                            panY = py
+                                        } else {
+                                            scrollAcc += cy - prevCy
+                                            while (abs(scrollAcc) > SCROLL_STEP_PX) {
+                                                if (scrollAcc > 0f) {
+                                                    wheelAtCursor(VncKeys.WHEEL_UP)
+                                                    scrollAcc -= SCROLL_STEP_PX
+                                                } else {
+                                                    wheelAtCursor(VncKeys.WHEEL_DOWN)
+                                                    scrollAcc += SCROLL_STEP_PX
+                                                }
+                                            }
+                                        }
+                                    }
+                                    prevDist = dist
+                                    prevCx = cx
+                                    prevCy = cy
+                                }
+                                event.changes.forEach { it.consume() }
                             }
-                        )
+                            val duration = lastTime - down.uptimeMillis
+                            if (duration < TAP_MAX_MS && travel < TAP_TRAVEL_PX) {
+                                if (maxPointers == 1) clickAtCursor(VncKeys.BUTTON_LEFT)
+                                else if (maxPointers == 2) clickAtCursor(VncKeys.BUTTON_RIGHT)
+                            }
+                        }
                     }
             ) {
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     @Suppress("UNUSED_VARIABLE")
                     val tick = frameTick
                     val bmp = bitmapHolder[0]
-                    if (bmp != null && fbSize.width > 0) {
-                        val scale = minOf(size.width / fbSize.width, size.height / fbSize.height)
-                        val dw = (fbSize.width * scale).toInt()
-                        val dh = (fbSize.height * scale).toInt()
-                        drawImage(
-                            image = bmp.asImageBitmap(),
-                            dstOffset = IntOffset(((size.width - dw) / 2).toInt(), ((size.height - dh) / 2).toInt()),
-                            dstSize = IntSize(dw, dh)
-                        )
+                    if (bmp != null && fbSize.width > 0 && boxSize.width > 0) {
+                        val v = currentView()
+                        val dw = (fbSize.width * v.scale).toInt()
+                        val dh = (fbSize.height * v.scale).toInt()
+                        if (dw > 0 && dh > 0) {
+                            drawImage(
+                                image = bmp.asImageBitmap(),
+                                dstOffset = IntOffset(v.ox.toInt(), v.oy.toInt()),
+                                dstSize = IntSize(dw, dh)
+                            )
+                        }
                     }
                 }
                 if (!connected || fbSize.width == 0) {
@@ -272,6 +371,14 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
+                    KeyButton(stringResource(R.string.desktop_click)) { clickAtCursor(VncKeys.BUTTON_LEFT) }
+                    KeyButton(stringResource(R.string.desktop_right_click)) { clickAtCursor(VncKeys.BUTTON_RIGHT) }
+                    KeyButton(stringResource(R.string.desktop_drag_lock), selected = dragLock) {
+                        dragLock = !dragLock
+                        ensureCursor()
+                        sendCursor(if (dragLock) VncKeys.BUTTON_LEFT else 0)
+                    }
+                    KeyButton("1×") { zoom = 1f; panX = 0f; panY = 0f }
                     KeyButton(stringResource(R.string.desktop_key_esc)) { connection.tapKey(VncKeys.ESCAPE) }
                     KeyButton(stringResource(R.string.desktop_key_tab)) { connection.tapKey(VncKeys.TAB) }
                     KeyButton(stringResource(R.string.desktop_key_ctrl), selected = ctrlOn) { ctrlOn = !ctrlOn }
@@ -280,8 +387,8 @@ fun DesktopViewerDialog(onDismiss: () -> Unit) {
                     KeyButton("⏎") { connection.tapKey(VncKeys.RETURN) }
                     KeyButton("↑") { connection.tapKey(VncKeys.UP) }
                     KeyButton("↓") { connection.tapKey(VncKeys.DOWN) }
-                    KeyButton(stringResource(R.string.desktop_scroll_up)) { wheel(connection, fbSize, VncKeys.WHEEL_UP) }
-                    KeyButton(stringResource(R.string.desktop_scroll_down)) { wheel(connection, fbSize, VncKeys.WHEEL_DOWN) }
+                    KeyButton(stringResource(R.string.desktop_scroll_up)) { wheelAtCursor(VncKeys.WHEEL_UP, 3) }
+                    KeyButton(stringResource(R.string.desktop_scroll_down)) { wheelAtCursor(VncKeys.WHEEL_DOWN, 3) }
                 }
                 Text(
                     text = stringResource(R.string.desktop_hint),
@@ -299,31 +406,5 @@ private fun KeyButton(label: String, selected: Boolean = false, onClick: () -> U
     val tokens = StudioTheme.tokens
     TextButton(onClick = onClick) {
         Text(label, color = if (selected) tokens.accent else tokens.textPrimary)
-    }
-}
-
-private fun toFramebuffer(fb: IntSize, box: IntSize, p: Offset): Pair<Int, Int> {
-    if (fb.width <= 0 || fb.height <= 0 || box.width <= 0 || box.height <= 0) return 0 to 0
-    val scale = minOf(box.width.toFloat() / fb.width, box.height.toFloat() / fb.height)
-    val ox = (box.width - fb.width * scale) / 2f
-    val oy = (box.height - fb.height * scale) / 2f
-    val x = ((p.x - ox) / scale).toInt().coerceIn(0, fb.width - 1)
-    val y = ((p.y - oy) / scale).toInt().coerceIn(0, fb.height - 1)
-    return x to y
-}
-
-private fun click(connection: VncConnection, fb: IntSize, box: IntSize, p: Offset, button: Int) {
-    val (x, y) = toFramebuffer(fb, box, p)
-    connection.pointer(0, x, y)
-    connection.pointer(button, x, y)
-    connection.pointer(0, x, y)
-}
-
-private fun wheel(connection: VncConnection, fb: IntSize, button: Int) {
-    val x = fb.width / 2
-    val y = fb.height / 2
-    repeat(3) {
-        connection.pointer(button, x, y)
-        connection.pointer(0, x, y)
     }
 }
