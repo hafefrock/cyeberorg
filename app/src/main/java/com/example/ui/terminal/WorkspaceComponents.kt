@@ -127,6 +127,11 @@ fun WorkspaceNavigationRail(
             ) {
                 Spacer(modifier = Modifier.height(StudioSpacing.sm))
                 workspaceNavItems(aiEnabled).forEach { item ->
+                    if (item.section == WorkspaceSection.SETTINGS) {
+                        NavGroupDivider()
+                        LinuxRailEntry()
+                        NavGroupDivider()
+                    }
                     val selected = selectedSection == item.section
                     val navIcon = when (tokens.iconStyle) {
                         StudioIconStyle.THIN_OUTLINE -> item.icon
@@ -209,7 +214,6 @@ fun WorkspaceNavigationRail(
                         }
                     }
                 }
-                LinuxRailEntry()
             }
             Box(
                 modifier = Modifier
@@ -362,6 +366,11 @@ fun WorkspaceSidebarDrawer(
                         verticalArrangement = Arrangement.spacedBy(StudioSpacing.xs)
                     ) {
                         workspaceNavItems(aiEnabled).forEach { item ->
+                            if (item.section == WorkspaceSection.SETTINGS) {
+                                NavGroupDivider()
+                                LinuxDrawerEntry(onDismiss = onDismiss)
+                                NavGroupDivider()
+                            }
                             val selected = selectedSection == item.section
                             val navIcon = when (tokens.iconStyle) {
                                 StudioIconStyle.THIN_OUTLINE -> item.icon
@@ -464,7 +473,6 @@ fun WorkspaceSidebarDrawer(
                                 }
                             }
                         }
-                        LinuxDrawerEntry(onDismiss = onDismiss)
                     }
                 }
             }
@@ -487,6 +495,19 @@ private fun workspaceNavItems(aiEnabled: Boolean): List<WorkspaceNavItem> = buil
     }
     add(WorkspaceNavItem(WorkspaceSection.SNIPPETS, R.string.nav_snippets, Icons.Outlined.Code, Icons.Filled.Code))
     add(WorkspaceNavItem(WorkspaceSection.SETTINGS, R.string.nav_settings, Icons.Outlined.Settings, Icons.Filled.Settings))
+}
+
+@Composable
+private fun NavGroupDivider() {
+    val tokens = StudioTheme.tokens
+    val dimens = StudioTheme.dimens
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = StudioSpacing.md)
+            .height(dimens.hairlineWidth)
+            .background(tokens.thinBorderBrush)
+    )
 }
 
 @Composable
