@@ -25,13 +25,14 @@ import com.example.CyberorgApp
 import com.example.R
 import com.example.termux.DesktopSetup
 import com.example.termux.DistroPaths
+import com.example.termux.LinuxPrefs
 import com.example.termux.TermuxPaths
 import com.example.termux.TermuxSessionBackend
 import com.example.ui.desktop.DesktopViewerDialog
 import com.example.ui.theme.StudioSpacing
 import com.example.ui.theme.StudioTheme
 
-/** Settings > Terminal: install the XFCE desktop inside Ubuntu, start it and view it in-app over VNC. */
+/** Settings > Ubuntu & Desktop: install the XFCE desktop inside Ubuntu, start it and view it in-app over VNC. */
 @Composable
 fun DesktopSettingsSection(modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -121,7 +122,8 @@ fun DesktopSettingsSection(modifier: Modifier = Modifier) {
                     if (prepare()) {
                         val metrics = context.resources.displayMetrics
                         val geometry = DesktopSetup.geometryFor(metrics.widthPixels, metrics.heightPixels)
-                        runInNewSession("desktop", DesktopSetup.startCommand(distro, geometry))
+                        val share = LinuxPrefs.effectiveShareStorage(context)
+                        runInNewSession("desktop", DesktopSetup.startCommand(distro, geometry, share))
                         showViewer = true
                     }
                 },
