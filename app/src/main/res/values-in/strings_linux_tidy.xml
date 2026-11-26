@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="linux_overview_title">Status</string>
+    <string name="linux_step_base">Sistem dasar</string>
+    <string name="linux_step_ubuntu">Ubuntu</string>
+    <string name="linux_step_desktop">Desktop</string>
+    <string name="linux_next_base">Berikutnya: pasang sistem dasar (di bawah, \"Tampilkan sistem dasar\").</string>
+    <string name="linux_next_ubuntu">Berikutnya: pasang Ubuntu.</string>
+    <string name="linux_next_desktop">Berikutnya: pasang desktop.</string>
+    <string name="linux_next_ready">Semua siap. Tekan \"Jalankan desktop\" untuk mulai.</string>
+    <string name="linux_show">Tampilkan %1$s</string>
+    <string name="linux_hide">Sembunyikan %1$s</string>
+    <string name="linux_group_apps">aplikasi desktop</string>
+    <string name="linux_group_files">file HP</string>
+    <string name="linux_group_base">sistem dasar</string>
+    <string name="desktop_action_restart">Mulai ulang desktop</string>
+    <string name="desktop_advanced_show">Opsi lainnya</string>
+    <string name="desktop_advanced_hide">Sembunyikan opsi lainnya</string>
+</resources>
