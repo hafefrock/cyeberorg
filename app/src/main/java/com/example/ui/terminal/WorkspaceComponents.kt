@@ -45,6 +45,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Computer
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Terminal
@@ -82,6 +83,7 @@ import com.example.R
 import com.example.ai.KeyManagerSnapshot
 import com.example.data.GeminiModels
 import com.example.terminal.FakeTerminalBackend
+import com.example.ui.linux.LocalOpenLinux
 import com.example.ui.theme.AppThemePreset
 import com.example.ui.theme.JetBrainsMonoFamily
 import com.example.ui.theme.NavIndicatorStyle
@@ -207,6 +209,7 @@ fun WorkspaceNavigationRail(
                         }
                     }
                 }
+                LinuxRailEntry()
             }
             Box(
                 modifier = Modifier
@@ -461,6 +464,7 @@ fun WorkspaceSidebarDrawer(
                                 }
                             }
                         }
+                        LinuxDrawerEntry(onDismiss = onDismiss)
                     }
                 }
             }
@@ -483,6 +487,90 @@ private fun workspaceNavItems(aiEnabled: Boolean): List<WorkspaceNavItem> = buil
     }
     add(WorkspaceNavItem(WorkspaceSection.SNIPPETS, R.string.nav_snippets, Icons.Outlined.Code, Icons.Filled.Code))
     add(WorkspaceNavItem(WorkspaceSection.SETTINGS, R.string.nav_settings, Icons.Outlined.Settings, Icons.Filled.Settings))
+}
+
+@Composable
+private fun LinuxRailEntry() {
+    val tokens = StudioTheme.tokens
+    val dimens = StudioTheme.dimens
+    val compactType = StudioTheme.compactTypography
+    val openLinux = LocalOpenLinux.current
+    val label = stringResource(R.string.settings_group_linux)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = dimens.bottomBarHeight)
+            .clickable(role = Role.Button, onClick = openLinux)
+            .testTag("rail_linux")
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = StudioSpacing.xxs, vertical = StudioSpacing.xs),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(StudioSpacing.xxs, Alignment.CenterVertically)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Computer,
+                contentDescription = label,
+                tint = tokens.textSecondary,
+                modifier = Modifier.size(dimens.navIconSize)
+            )
+            Text(
+                text = "Ubuntu",
+                style = compactType.navLabel,
+                color = tokens.textSecondary,
+                maxLines = 1,
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun LinuxDrawerEntry(onDismiss: () -> Unit) {
+    val tokens = StudioTheme.tokens
+    val dimens = StudioTheme.dimens
+    val compactType = StudioTheme.compactTypography
+    val haptic = LocalHapticFeedback.current
+    val openLinux = LocalOpenLinux.current
+    val action = {
+        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+        onDismiss()
+        openLinux()
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(dimens.sidebarItemHeight)
+            .studioTouchTarget(minSize = dimens.minTouchTarget, onOutOfBoundsTap = action)
+            .clickable(role = Role.Button, onClick = action)
+            .testTag("sidebar_linux")
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(safeContentPadding(tokens.smallShape, dimens.cardPaddingH)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(StudioSpacing.md)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Computer,
+                contentDescription = null,
+                tint = tokens.textSecondary,
+                modifier = Modifier.size(dimens.navIconSize)
+            )
+            Text(
+                text = stringResource(R.string.settings_group_linux),
+                style = compactType.body,
+                color = tokens.textSecondary,
+                maxLines = 1,
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
 }
 
 @Composable
