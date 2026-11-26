@@ -15,17 +15,9 @@ data class LinuxApp(
 )
 
 object AppCatalog {
-    private val firefoxPreInstall = """
-apt-get install -y --no-install-recommends ca-certificates wget gnupg
-install -d -m 0755 /etc/apt/keyrings
-wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O /etc/apt/keyrings/packages.mozilla.org.asc
-echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" > /etc/apt/sources.list.d/mozilla.list
-printf 'Package: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000\n' > /etc/apt/preferences.d/mozilla
-apt-get update
-""".trim()
-
     val apps: List<LinuxApp> = listOf(
-        LinuxApp("firefox", "Firefox", R.string.app_desc_firefox, 300, listOf("firefox"), firefoxPreInstall),
+        LinuxApp("epiphany", "Epiphany (Web)", R.string.app_desc_epiphany, 250, listOf("epiphany-browser")),
+        LinuxApp("netsurf", "NetSurf", R.string.app_desc_netsurf, 20, listOf("netsurf-gtk")),
         LinuxApp("mousepad", "Mousepad", R.string.app_desc_mousepad, 5, listOf("mousepad")),
         LinuxApp("geany", "Geany", R.string.app_desc_geany, 15, listOf("geany")),
         LinuxApp("python", "Python 3", R.string.app_desc_python, 40, listOf("python3-pip", "python3", "python3-venv")),
