@@ -24,5 +24,8 @@
     <string name="desktop_click">Klik</string>
     <string name="desktop_right_click">Klik kanan</string>
     <string name="desktop_drag_lock">Seret</string>
-    <string name="desktop_hint">Touchpad: geser = gerakkan kursor, ketuk = klik, ketuk dua jari = klik kanan, cubit = zoom.</string>
+    <string name="desktop_mode_touchpad">Touchpad</string>
+    <string name="desktop_mode_direct">Sentuh langsung</string>
+    <string name="desktop_hint">Touchpad: geser = gerakkan kursor, ketuk = klik, ketuk lalu geser = seret, ketuk dua jari = klik kanan, cubit = zoom.</string>
+    <string name="desktop_hint_direct">Sentuh langsung: ketuk = klik, geser = seret, tekan lama = klik kanan, cubit = zoom.</string>
 </resources>
