@@ -83,6 +83,7 @@ fun AppsSettingsSection(modifier: Modifier = Modifier) {
                         val handle = backend.createSession(title)
                         handle.rename(title)
                         handle.write(AppCatalog.installCommand(distro, linuxApp).toByteArray(Charsets.UTF_8))
+                        handle.resize(80, 24)
                         Toast.makeText(context, R.string.distro_session_opened, Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
                         Toast.makeText(context, e.message ?: "error", Toast.LENGTH_LONG).show()
