@@ -24,5 +24,8 @@
     <string name="desktop_click">Click</string>
     <string name="desktop_right_click">Right click</string>
     <string name="desktop_drag_lock">Drag</string>
-    <string name="desktop_hint">Touchpad: slide = move cursor, tap = click, two-finger tap = right click, pinch = zoom.</string>
+    <string name="desktop_mode_touchpad">Touchpad</string>
+    <string name="desktop_mode_direct">Direct touch</string>
+    <string name="desktop_hint">Touchpad: slide = move cursor, tap = click, tap then slide = drag, two-finger tap = right click, pinch = zoom.</string>
+    <string name="desktop_hint_direct">Direct touch: tap = click, slide = drag, long press = right click, pinch = zoom.</string>
 </resources>
