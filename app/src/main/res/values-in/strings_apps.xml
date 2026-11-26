@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apps_section_title">Aplikasi desktop</string>
+    <string name="apps_intro">Pasang sekali ketuk di dalam Ubuntu. Ukuran hanya perkiraan. Setiap pemasangan membuka sesi terminal supaya bisa dipantau.</string>
+    <string name="apps_needs_ubuntu">Pasang Ubuntu dulu.</string>
+    <string name="app_desc_firefox">Peramban dari repositori Mozilla. Masih percobaan di proot; bisa lambat.</string>
+    <string name="app_desc_mousepad">Editor teks sederhana dan ringan.</string>
+    <string name="app_desc_geany">Editor kode ringan dengan pewarnaan sintaks.</string>
+    <string name="app_desc_python">Python 3 dengan pip dan virtual environment.</string>
+    <string name="app_desc_node">Node.js dan npm.</string>
+    <string name="app_desc_git">Git untuk kontrol versi.</string>
+    <string name="app_desc_libreoffice">Writer, Calc, dan Impress. Unduhan besar.</string>
+    <string name="app_desc_gimp">Editor gambar. Unduhan besar.</string>
+    <string name="app_desc_evince">Pembaca PDF dan dokumen.</string>
+    <string name="app_desc_tools">htop, curl, wget, nano, dan vim.</string>
+
+    <string name="storage_section_title">Berkas HP</string>
+    <string name="storage_share_title">Bagikan penyimpanan HP ke Ubuntu</string>
+    <string name="storage_share_desc">Menampilkan berkas HP di Ubuntu pada folder Android di home (~/Android). Berlaku saat Ubuntu dibuka atau desktop dimulai berikutnya.</string>
+    <string name="storage_permission_denied">Izin penyimpanan ditolak.</string>
+
+    <string name="desktop_paste">Tempel</string>
+    <string name="desktop_paste_terminal">Tempel (terminal)</string>
+</resources>
