@@ -237,6 +237,9 @@ private fun SettingsDetailContent(
             viewModel = viewModel,
             modifier = modifier
         )
+        SettingsRoute.Linux -> LinuxSettingsScreen(
+            modifier = modifier
+        )
         SettingsRoute.Language -> LanguageSettingsScreen(
             state = state,
             viewModel = viewModel,
