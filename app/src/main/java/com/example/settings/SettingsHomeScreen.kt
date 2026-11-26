@@ -19,7 +19,7 @@ fun SettingsHomeScreen(
     selectedGroup: SettingsGroup?,
     onSelectGroup: (SettingsGroup) -> Unit,
     modifier: Modifier = Modifier,
-    groups: List<SettingsGroup> = visibleSettingsGroups(includeLinux = true)
+    groups: List<SettingsGroup> = visibleSettingsGroups()
 ) {
     val dimens = StudioTheme.dimens
     LazyColumn(
